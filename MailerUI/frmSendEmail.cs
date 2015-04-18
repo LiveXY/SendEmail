@@ -28,7 +28,7 @@ namespace MailerUI {
             btnStop.Enabled = true;
             MailerCenter.Start((msg) => {
                 if (!listBox1.IsHandleCreated) return;
-                listBox1.BeginInvoke(new Action(() => {
+				listBox1.BeginInvoke(new Pub.Class.Action(() => {
                     msg = "[{0}]-{1}".FormatWith(DateTime.Now.ToDateTimeFFF(), msg);
                     Log.WriteLog(msg);
                     if (listBox1.Items.Count > 10000) listBox1.Items.Clear();
@@ -36,7 +36,7 @@ namespace MailerUI {
                     listBox1.SelectedIndex = listBox1.Items.Count - 1;
                 }));
             }, () => {
-                this.BeginInvoke(new Action(() => {
+				this.BeginInvoke(new Pub.Class.Action(() => {
                     btnStart.Enabled = true;
                     btnStop.Enabled = false;
                 }));

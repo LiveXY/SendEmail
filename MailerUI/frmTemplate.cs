@@ -24,7 +24,7 @@ namespace MailerUI {
 
         private void frmTemplate_Load(object sender, EventArgs e) {
             ThreadPool.QueueUserWorkItem(new WaitCallback((o) => {
-                dataGridView.BeginInvoke(new Action(() => {
+				dataGridView.BeginInvoke(new Pub.Class.Action(() => {
                     dataGridView.DataSource = HtmlTemplateHelper.SelectListByAll().OrderByDescending(p => p.TemplateID).Select(p => new {
                         编号 = p.TemplateID,
                         邮件主题 = p.Subject

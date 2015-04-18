@@ -17,7 +17,7 @@ namespace TH.Mailer {
         /// </summary>
         /// <param name="msg"></param>
         /// <param name="done"></param>
-        public static void Start(Action<string> msg = null, Action done = null) {
+		public static void Start(Action<string> msg = null, Pub.Class.Action done = null) {
             ServicePointManager.DefaultConnectionLimit = 10000;
             mailer.Start(msg, done);
         }

@@ -19,7 +19,7 @@ namespace TH.Mailer {
         private SendSetting sendSetting; //发送设置
         private IList<HtmlTemplate> templateList; //模版列表
         private Action<string> uiMsg; //通知消息
-        private Action uiDone; //完成时执行
+		private Pub.Class.Action uiDone; //完成时执行
         private bool exit = false; //是否停止执行
         private Thread thread; //发送邮件线程
 
@@ -32,7 +32,7 @@ namespace TH.Mailer {
         /// </summary>
         /// <param name="msg">通知消息</param>
         /// <param name="done">完成执行</param>
-        public void Start(Action<string> msg = null, Action done = null) {
+		public void Start(Action<string> msg = null, Pub.Class.Action done = null) {
             exit = false;
             uiMsg = msg; uiDone = done;
             thread = new Thread(() => {

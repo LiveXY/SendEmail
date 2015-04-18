@@ -144,7 +144,7 @@ namespace MailerUI {
                     listView1.Columns.Add("ex7", 80, HorizontalAlignment.Left);
                     listView1.Columns.Add("ex8", 80, HorizontalAlignment.Left);
 
-                    this.listView1.BeginInvoke(new Action(() => {
+                    this.listView1.BeginInvoke(new Pub.Class.Action(() => {
                         string tempStatus = string.Empty;
                         emailList.Do((p, i) => {
                             switch (p.LastSendStatus) {
@@ -199,7 +199,7 @@ namespace MailerUI {
                     listView1.Columns.Add("发送次数", 100, HorizontalAlignment.Left);
                     listView1.Columns.Add("发送失败次数", 100, HorizontalAlignment.Left);
 
-                    listView1.BeginInvoke(new Action(() => {
+                    listView1.BeginInvoke(new Pub.Class.Action(() => {
                         smtpList.Do((p, i) => {
                             ListViewItem item = new ListViewItem((i + 1).ToString());
                             item.Tag = p.SmtpServer.ToString() + ',' + p.SmtpPort.ToString() + ',' + p.UserName.ToString() + ',' + p.SPassword.ToString();
@@ -228,7 +228,7 @@ namespace MailerUI {
                     listView1.Columns.Add("IP地址", 200, HorizontalAlignment.Left);
                     listView1.Columns.Add("使用时间", 200, HorizontalAlignment.Left);
 
-                    listView1.BeginInvoke(new Action(() => {
+                    listView1.BeginInvoke(new Pub.Class.Action(() => {
                         ipList.Do((p, i) => {
                             ListViewItem item = new ListViewItem((i + 1).ToString());
                             item.Tag = p.IP.ToString();

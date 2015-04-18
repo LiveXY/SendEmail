@@ -82,7 +82,7 @@ namespace MailerUI {
         }
 
         private void WriteLog(string msg) {
-            listBox1.BeginInvoke(new Action(() => {
+			listBox1.BeginInvoke(new Pub.Class.Action(() => {
                 if (listBox1.Items.Count > 10000) listBox1.Items.Clear();
                 listBox1.Items.Add(msg);
                 listBox1.SelectedIndex = listBox1.Items.Count - 1;

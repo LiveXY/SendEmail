@@ -25,7 +25,7 @@ namespace TH.Mailer {
         /// <param name="done">完成时执行</param>
         /// <param name="index">第几次执行</param>
         /// <returns></returns>
-        public static string ChangeIP(int netType, Action<string> msg = null, Action done = null, int index = 0) {
+		public static string ChangeIP(int netType, Action<string> msg = null, Pub.Class.Action done = null, int index = 0) {
             string name = GetNetName(netType);
             setting = SendSettingHelper.SelectByID(1);
 

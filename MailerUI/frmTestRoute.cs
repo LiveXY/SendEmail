@@ -35,13 +35,13 @@ namespace MailerUI {
         private void threadRun() {
             NetHelper.ChangeIP(0, msg => {
                 if (!listBox1.IsHandleCreated) return;
-                listBox1.BeginInvoke(new Action(() => {
+				listBox1.BeginInvoke(new Pub.Class.Action(() => {
                     if (listBox1.Items.Count > 10000) listBox1.Items.Clear();
                     listBox1.Items.Add(msg);
                     listBox1.SelectedIndex = listBox1.Items.Count - 1;
                 }));
             }, () => {
-                this.BeginInvoke(new Action(() => {
+				this.BeginInvoke(new Pub.Class.Action(() => {
                     btnConnect.Enabled = true;
                 }));
             });

@@ -77,7 +77,7 @@ namespace TH.Mailer {
             return content;
         }
 
-        public static void TestIPStart(Action<string> msg, Action done) {
+		public static void TestIPStart(Action<string> msg, Pub.Class.Action done) {
             IList<IpSetting> list = IpSettingHelper.SelectListByAll();
             if (list.Count == 0) { msg("请设置需要获取IP的网址！"); return; }
             msg("共有{0}个获取IP的网址！".FormatWith(list.Count));
