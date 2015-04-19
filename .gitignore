@@ -22,3 +22,9 @@ MailerUI/frmTestTY.resources
 MailerUI/frmTYSetting.resources
 MailerUI/frmView.resources
 MailerUI/Properties/Resources.resources
+bin/MailerService.pdb
+bin/MailerUI.pdb
+bin/MailerUI.vshost.exe
+bin/MailerUI.vshost.exe.config
+bin/MailerUI.vshost.exe.manifest
+bin/TH.Mailer.pdb
