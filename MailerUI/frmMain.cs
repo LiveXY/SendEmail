@@ -11,16 +11,70 @@ using TH.Mailer;
 using TH.Mailer.Entity;
 using WeifenLuo.WinFormsUI.Docking;
 using System.Threading;
+using Pub.Class.Linq;
 
 namespace MailerUI {
     public partial class frmMain : Form {
         private string serviceName = "MailerService";
         private string servicePath = AppDomain.CurrentDomain.BaseDirectory.Trim('\\') + "\\MailerService.exe";
+        private string week;
 
         public static frmMain Instance;
 
         public frmMain() {
             InitializeComponent();
+            testToolStripMenuItem.Visible = false;
+            test2ToolStripMenuItem.Visible = false;
+            ControlsHint(this);
+        }
+
+        public void ShowStatusText(string msg) {
+            if (!this.IsHandleCreated) return;
+			this.BeginInvoke(new Pub.Class.Action(() => {
+                statusMsg.Text = msg;
+            }));
+        }
+        private void MenuHintShowInStatusBar(MenuStrip menu) { foreach (ToolStripMenuItem item in menu.Items) { MenuItemHint(item); } }
+        private void MenuHint_Enter(object sender, EventArgs e) { statusMsg.Text = (sender as ToolStripMenuItem).ToolTipText; }
+        private void Hint_Leave(object sender, EventArgs e) {
+            if (statusMsg.Text.IndexOf("...") != -1) return;
+            if (statusMsg.Text.IndexOf("！") != -1) return;
+            statusMsg.Text = "";
+        }
+        private void MenuItemHint(ToolStripMenuItem element) {
+            for (int i = 0; i < element.DropDownItems.Count; i++) {
+                if (!(element.DropDownItems[i] is ToolStripSeparator)) {
+                    ToolStripMenuItem item = element.DropDownItems[i] as ToolStripMenuItem;
+                    if (item.ToolTipText != "") {
+                        item.MouseEnter += MenuHint_Enter;
+                        item.MouseLeave += Hint_Leave;
+                    }
+                    MenuItemHint(item);
+                }
+            }
+        }
+        private void ToolHintShowInStatusBar(ToolStrip tool) { foreach (ToolStripItem item in tool.Items) { ToolItemHint(item); } }
+        private void ToolHint_Enter(object sender, EventArgs e) { statusMsg.Text = (sender as ToolStripItem).ToolTipText; }
+        private void ToolItemHint(ToolStripItem element) {
+            if (!(element is ToolStripSeparator)) {
+                ToolStripItem item = element as ToolStripItem;
+                if (item.ToolTipText != "") {
+                    item.MouseEnter += ToolHint_Enter;
+                    item.MouseLeave += Hint_Leave;
+                }
+            }
+        }
+        public void ControlsHint(Form from) {
+            foreach (Control c in from.Controls) {
+                if (c is MenuStrip) MenuHintShowInStatusBar(c as MenuStrip);
+                if (c is ToolStrip) ToolHintShowInStatusBar(c as ToolStrip);
+                if (c is Panel) {
+                    foreach (Control c2 in c.Controls) {
+                        if (c2 is MenuStrip) MenuHintShowInStatusBar(c2 as MenuStrip);
+                        if (c2 is ToolStrip) ToolHintShowInStatusBar(c2 as ToolStrip);
+                    }
+                }
+            }
         }
 
         private bool FormExist(string formName) {
@@ -146,6 +200,20 @@ namespace MailerUI {
         private void frmMain_Load(object sender, EventArgs e) {
             this.Text = this.Text + " - " + Data.Pool("ConnString").DBType;
             Instance = this;
+            switch (DateTime.Now.DayOfWeek) {
+                case DayOfWeek.Monday: week = " 星期一"; break;
+                case DayOfWeek.Tuesday: week = " 星期二"; break;
+                case DayOfWeek.Wednesday: week = " 星期三"; break;
+                case DayOfWeek.Thursday: week = " 星期四"; break;
+                case DayOfWeek.Friday: week = " 星期五"; break;
+                case DayOfWeek.Saturday: week = " 星期六"; break;
+                case DayOfWeek.Sunday: week = " 星期天"; break;
+            }
+            if (!ServiceHelper.ServiceIsInstalled(serviceName)) ShowStatusText("发送邮件服务未安装！");
+            else {
+                if (ServiceHelper.ServiceIsStarted(serviceName)) ShowStatusText("发送邮件服务已安装并启动！"); else ShowStatusText("发送邮件服务已安装未启动！");
+            }
+            //MessageBox.Show(Mailer.Jammer(HtmlTemplateHelper.SelectListByAll().FirstOrDefault().Body));
         }
 
         private void mnuTestModel_Click(object sender, EventArgs e) {
@@ -220,6 +288,24 @@ namespace MailerUI {
                 } else {
                     MessageBox.Show("无法停止服务：" + serviceName, " 系统提示");
                 }
+            }
+        }
+
+        private void testToolStripMenuItem_Click(object sender, EventArgs e) {
+            if (!FormExist("frm1")) {
+                frm1 test = new frm1();
+                test.Show(dockPanel);
+            }
+        }
+
+        private void timer1_Tick(object sender, EventArgs e) {
+            statusTime.Text = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + week;
+        }
+
+        private void test2ToolStripMenuItem_Click(object sender, EventArgs e) {
+            if (!FormExist("frm2")) {
+                frm2 test = new frm2();
+                test.Show(dockPanel);
             }
         }
     }

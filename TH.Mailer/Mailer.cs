@@ -189,10 +189,44 @@ namespace TH.Mailer {
         /// <param name="e"></param>
         /// <returns></returns>
         private string processText(string text, EmailList e) {
-            return text.Replace("{EmailAddress}", e.EmailAddress).Replace("{Email}", e.EmailAddress).Replace("{email}", e.EmailAddress)
+            return Jammer(text.Replace("{EmailAddress}", e.EmailAddress).Replace("{Email}", e.EmailAddress).Replace("{email}", e.EmailAddress)
                 .Replace("{NickName}", e.NickName).Replace("{Name}", e.NickName).Replace("{name}", e.NickName)
                 .Replace("{ex0}", e.ex0).Replace("{ex1}", e.ex1).Replace("{ex2}", e.ex2).Replace("{ex3}", e.ex3).Replace("{ex4}", e.ex4)
-                .Replace("{ex5}", e.ex5).Replace("{ex6}", e.ex6).Replace("{ex7}", e.ex7).Replace("{ex8}", e.ex8);
+                .Replace("{ex5}", e.ex5).Replace("{ex6}", e.ex6).Replace("{ex7}", e.ex7).Replace("{ex8}", e.ex8));
+        }
+        public class JammerData {
+            public int Index { get; set; }
+            public string RandText { get; set; }
+        }
+        public static string Jammer(string emailHTML, int count = 1) {
+            string emailText = emailHTML.RemoveAllHTML();
+            if (emailText.Length < 20) return emailHTML;
+
+            IList<JammerData> list = new List<JammerData>();
+            for (int i = 0; i < count; i++) {
+                int index = 0;
+                while (true) {
+                    index = Rand.RndInt(0, emailHTML.Length);
+                    string leftHTML = emailHTML.Substring(0, index);
+                    int left = leftHTML.LastIndexOf("<");
+                    int right = leftHTML.LastIndexOf(">");
+                    if (left != -1 && right != -1) {
+                        if (right > left) break;
+                    } else if (left == -1 && right != -1) break;
+                    else if (left == -1 && right == -1) break;
+                }
+                int randLen = Rand.RndInt(5, emailText.Length - 10);
+                list.Add(new JammerData() {
+                    RandText = "<b style='display:none'>" + emailText.Substring(Rand.RndInt(0, emailText.Length - randLen), randLen).ReplaceRN() + "</b>",
+                    Index = index
+                });
+            }
+            int len = 0;
+            foreach (JammerData d in list) {
+                emailHTML = emailHTML.Insert(d.Index + len, d.RandText);
+                len += d.RandText.Length;
+            }
+            return emailHTML;
         }
 
         /// <summary>

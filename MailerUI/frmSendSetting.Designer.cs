@@ -53,6 +53,8 @@
             this.label14 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
             this.txtSendRetryCount = new System.Windows.Forms.TextBox();
+            this.label16 = new System.Windows.Forms.Label();
+            this.label17 = new System.Windows.Forms.Label();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -324,6 +326,24 @@
             this.txtSendRetryCount.TabIndex = 5;
             this.txtSendRetryCount.Text = "10";
             // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(194, 251);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(107, 12);
+            this.label16.TabIndex = 0;
+            this.label16.Text = "设置为0时不更换IP";
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(194, 301);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(119, 12);
+            this.label17.TabIndex = 0;
+            this.label17.Text = "设置为0时不更换SMTP";
+            // 
             // frmSendSetting
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -345,6 +365,8 @@
             this.Controls.Add(this.label7);
             this.Controls.Add(this.cboTemplate);
             this.Controls.Add(this.label5);
+            this.Controls.Add(this.label17);
+            this.Controls.Add(this.label16);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label13);
@@ -401,5 +423,7 @@
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.TextBox txtSendRetryCount;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.Label label17;
     }
 }

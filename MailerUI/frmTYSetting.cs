@@ -18,6 +18,7 @@ namespace MailerUI {
 
         public frmTYSetting() {
             InitializeComponent();
+            frmMain.Instance.ControlsHint(this);
         }
 
         private void mnuEdit_Click(object sender, EventArgs e) {
@@ -53,9 +54,11 @@ namespace MailerUI {
         }
 
         private void frmRoute_Activated(object sender, EventArgs e) {
+            frmMain.Instance.ShowStatusText("正在数据....");
             setting = TianYiSettingHelper.SelectByID(1);
             if (setting.IsNull() || setting.TianYiID.IsNull()) return;
             txtPath.Text = setting.TianYiExePath;
+            frmMain.Instance.ShowStatusText("数据加载完成！");
         }
     }
 }

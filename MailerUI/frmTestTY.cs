@@ -22,6 +22,7 @@ namespace MailerUI {
 
         public frmTestTY() {
             InitializeComponent();
+            frmMain.Instance.ControlsHint(this);
         }
 
         private void btnStart_Click(object sender, EventArgs e) {

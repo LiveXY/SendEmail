@@ -46,8 +46,8 @@ namespace MailerUI {
                 MessageBox.Show("发送的Email不能为空","系统提示");
                 return;
             }
-          
-            this.button1.DialogResult = System.Windows.Forms.DialogResult.OK;
+
+            DialogResult = System.Windows.Forms.DialogResult.OK;
 
             EmailList info = new EmailList();
 

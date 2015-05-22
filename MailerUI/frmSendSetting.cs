@@ -16,11 +16,11 @@ namespace MailerUI {
 
         public frmSendSetting() {
             InitializeComponent();
+            frmMain.Instance.ControlsHint(this);
         }
 
         private void mnuEdit_Click(object sender, EventArgs e) {
             if (this.cboTemplate.SelectedIndex < 0) {
-
                 MessageBox.Show("发送主题为空,保存失败", "系统提示");
                  return;
             }
@@ -33,6 +33,7 @@ namespace MailerUI {
             info.Status = this.cboStatus.SelectedValue.ToString().ToInt(0);
             info.MaxRetryCount = txtMaxRetryCount.Text.ToInt(10);
             info.SendRetryCount = txtSendRetryCount.Text.ToInt(10);
+            info.DeleteInterval = txtDeleteInterval.Text.ToInt(60);
 
             if (sendSetting.IsNull() || sendSetting.SettingID.IsNull()) {
                 info.SettingID = 1;
@@ -71,6 +72,7 @@ namespace MailerUI {
         }
 
         private void frmSendSetting_Activated(object sender, EventArgs e) {
+            frmMain.Instance.ShowStatusText("正在数据....");
             HtmlTemplateHelper.ClearCacheAll();
             cboTemplate.DataSource = null; ;
             cboTemplate.ValueMember = "TemplateID";
@@ -104,7 +106,7 @@ namespace MailerUI {
             txtSendRetryCount.Text = sendSetting.SendRetryCount.ToString();
             cboStatus.SelectedValue = sendSetting.Status;
             cboStatus.Tag = sendSetting.Status.Value;
-
+            frmMain.Instance.ShowStatusText("数据加载完成！");
         }
     }
 }

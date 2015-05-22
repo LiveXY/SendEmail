@@ -66,6 +66,7 @@
             this.toolStripLabel1.Name = "toolStripLabel1";
             this.toolStripLabel1.Size = new System.Drawing.Size(419, 22);
             this.toolStripLabel1.Text = "文件内容格式为：email@qq.com,0,1,2,3,4,5,6,7,8或email@qq.com,,,,,,,,,";
+            this.toolStripLabel1.ToolTipText = "文件内容格式为：email@qq.com,0,1,2,3,4,5,6,7,8或email@qq.com,,,,,,,,,";
             // 
             // mnuExit
             // 

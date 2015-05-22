@@ -41,7 +41,7 @@ namespace MailerUI {
                 MessageBox.Show("网址地址不能为空", "系统提示");
                 return;
             }
-            this.button1.DialogResult = System.Windows.Forms.DialogResult.OK;
+            DialogResult = System.Windows.Forms.DialogResult.OK;
 
             IpSetting info = new IpSetting();
 

@@ -23,36 +23,34 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
-            this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmView));
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
             this.listView1 = new MailerUI.ListViewEx();
             this.toolStrip2 = new System.Windows.Forms.ToolStrip();
-            this.mnuNext = new System.Windows.Forms.ToolStripButton();
-            this.mnuPrev = new System.Windows.Forms.ToolStripButton();
             this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.mnuAdd = new System.Windows.Forms.ToolStripButton();
-            this.mnuEdit = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-            this.mnuSelectAll = new System.Windows.Forms.ToolStripButton();
-            this.mnuDelete = new System.Windows.Forms.ToolStripButton();
-            this.mnuDeleteAll = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
-            this.mnuEnable = new System.Windows.Forms.ToolStripButton();
-            this.mnuDisable = new System.Windows.Forms.ToolStripButton();
-            this.mnuExport = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
-            this.mnuRefresh = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
             this.mnu = new System.Windows.Forms.ToolStripLabel();
             this.toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
             this.toolStripComboBox1 = new System.Windows.Forms.ToolStripComboBox();
-            this.mnuSearch = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
-            this.mnuExit = new System.Windows.Forms.ToolStripButton();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+            this.mnuPrev = new System.Windows.Forms.ToolStripButton();
+            this.mnuNext = new System.Windows.Forms.ToolStripButton();
+            this.mnuAdd = new System.Windows.Forms.ToolStripButton();
+            this.mnuEdit = new System.Windows.Forms.ToolStripButton();
+            this.mnuSelectAll = new System.Windows.Forms.ToolStripButton();
+            this.mnuDelete = new System.Windows.Forms.ToolStripButton();
+            this.mnuDeleteAll = new System.Windows.Forms.ToolStripButton();
+            this.mnuEnable = new System.Windows.Forms.ToolStripButton();
+            this.mnuDisable = new System.Windows.Forms.ToolStripButton();
+            this.mnuExport = new System.Windows.Forms.ToolStripButton();
+            this.mnuRefresh = new System.Windows.Forms.ToolStripButton();
+            this.mnuSearch = new System.Windows.Forms.ToolStripButton();
+            this.mnuExit = new System.Windows.Forms.ToolStripButton();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
             this.toolStrip2.SuspendLayout();
@@ -104,32 +102,14 @@
             // 
             this.toolStrip2.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.toolStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.mnuNext,
+            this.toolStripLabel1,
             this.mnuPrev,
-            this.toolStripLabel1});
+            this.mnuNext});
             this.toolStrip2.Location = new System.Drawing.Point(0, 672);
             this.toolStrip2.Name = "toolStrip2";
             this.toolStrip2.Size = new System.Drawing.Size(1302, 27);
             this.toolStrip2.TabIndex = 0;
             this.toolStrip2.Text = "toolStrip2";
-            // 
-            // mnuNext
-            // 
-            this.mnuNext.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.mnuNext.Image = ((System.Drawing.Image)(resources.GetObject("mnuNext.Image")));
-            this.mnuNext.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.mnuNext.Name = "mnuNext";
-            this.mnuNext.Size = new System.Drawing.Size(118, 24);
-            this.mnuNext.Text = "显示下一页数据";
-            // 
-            // mnuPrev
-            // 
-            this.mnuPrev.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.mnuPrev.Image = global::MailerUI.Properties.Resources.edit16;
-            this.mnuPrev.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.mnuPrev.Name = "mnuPrev";
-            this.mnuPrev.Size = new System.Drawing.Size(118, 24);
-            this.mnuPrev.Text = "显示上一页数据";
             // 
             // toolStripLabel1
             // 
@@ -166,101 +146,20 @@
             this.toolStrip1.TabIndex = 4;
             this.toolStrip1.Text = "toolStrip1";
             // 
-            // mnuAdd
-            // 
-            this.mnuAdd.Image = global::MailerUI.Properties.Resources.add16;
-            this.mnuAdd.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.mnuAdd.Name = "mnuAdd";
-            this.mnuAdd.Size = new System.Drawing.Size(89, 25);
-            this.mnuAdd.Text = "添加数据";
-            this.mnuAdd.Click += new System.EventHandler(this.mnuAdd_Click);
-            // 
-            // mnuEdit
-            // 
-            this.mnuEdit.Image = global::MailerUI.Properties.Resources.edit16;
-            this.mnuEdit.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.mnuEdit.Name = "mnuEdit";
-            this.mnuEdit.Size = new System.Drawing.Size(89, 25);
-            this.mnuEdit.Text = "修改数据";
-            this.mnuEdit.Click += new System.EventHandler(this.mnuEdit_Click);
-            // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
             this.toolStripSeparator3.Size = new System.Drawing.Size(6, 28);
-            // 
-            // mnuSelectAll
-            // 
-            this.mnuSelectAll.Image = global::MailerUI.Properties.Resources.accept16;
-            this.mnuSelectAll.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.mnuSelectAll.Name = "mnuSelectAll";
-            this.mnuSelectAll.Size = new System.Drawing.Size(59, 25);
-            this.mnuSelectAll.Text = "全选";
-            this.mnuSelectAll.Click += new System.EventHandler(this.mnuSelectAll_Click);
-            // 
-            // mnuDelete
-            // 
-            this.mnuDelete.Image = global::MailerUI.Properties.Resources.delete16;
-            this.mnuDelete.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.mnuDelete.Name = "mnuDelete";
-            this.mnuDelete.Size = new System.Drawing.Size(89, 25);
-            this.mnuDelete.Text = "删除选中";
-            this.mnuDelete.Click += new System.EventHandler(this.mnuDelete_Click);
-            // 
-            // mnuDeleteAll
-            // 
-            this.mnuDeleteAll.Image = global::MailerUI.Properties.Resources.cancel16;
-            this.mnuDeleteAll.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.mnuDeleteAll.Name = "mnuDeleteAll";
-            this.mnuDeleteAll.Size = new System.Drawing.Size(89, 25);
-            this.mnuDeleteAll.Text = "删除全部";
-            this.mnuDeleteAll.Click += new System.EventHandler(this.mnuDeleteAll_Click);
             // 
             // toolStripSeparator6
             // 
             this.toolStripSeparator6.Name = "toolStripSeparator6";
             this.toolStripSeparator6.Size = new System.Drawing.Size(6, 28);
             // 
-            // mnuEnable
-            // 
-            this.mnuEnable.Image = global::MailerUI.Properties.Resources.enable;
-            this.mnuEnable.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.mnuEnable.Name = "mnuEnable";
-            this.mnuEnable.Size = new System.Drawing.Size(89, 25);
-            this.mnuEnable.Text = "批量可用";
-            this.mnuEnable.Click += new System.EventHandler(this.mnuEnable_Click);
-            // 
-            // mnuDisable
-            // 
-            this.mnuDisable.Image = global::MailerUI.Properties.Resources.disable;
-            this.mnuDisable.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.mnuDisable.Name = "mnuDisable";
-            this.mnuDisable.Size = new System.Drawing.Size(104, 25);
-            this.mnuDisable.Text = "批量不可用";
-            this.mnuDisable.Click += new System.EventHandler(this.mnuDisable_Click);
-            // 
-            // mnuExport
-            // 
-            this.mnuExport.Image = global::MailerUI.Properties.Resources.app2;
-            this.mnuExport.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.mnuExport.Name = "mnuExport";
-            this.mnuExport.Size = new System.Drawing.Size(119, 25);
-            this.mnuExport.Text = "导出邮件列表";
-            this.mnuExport.Click += new System.EventHandler(this.mnuExport_Click);
-            // 
             // toolStripSeparator7
             // 
             this.toolStripSeparator7.Name = "toolStripSeparator7";
             this.toolStripSeparator7.Size = new System.Drawing.Size(6, 28);
-            // 
-            // mnuRefresh
-            // 
-            this.mnuRefresh.Image = global::MailerUI.Properties.Resources.refresh16;
-            this.mnuRefresh.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.mnuRefresh.Name = "mnuRefresh";
-            this.mnuRefresh.Size = new System.Drawing.Size(59, 25);
-            this.mnuRefresh.Text = "刷新";
-            this.mnuRefresh.Click += new System.EventHandler(this.mnuRefresh_Click);
             // 
             // toolStripSeparator8
             // 
@@ -290,6 +189,110 @@
             this.toolStripComboBox1.Name = "toolStripComboBox1";
             this.toolStripComboBox1.Size = new System.Drawing.Size(121, 28);
             // 
+            // toolStripSeparator9
+            // 
+            this.toolStripSeparator9.Name = "toolStripSeparator9";
+            this.toolStripSeparator9.Size = new System.Drawing.Size(6, 28);
+            // 
+            // mnuPrev
+            // 
+            this.mnuPrev.Image = global::MailerUI.Properties.Resources.pre1;
+            this.mnuPrev.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.mnuPrev.Name = "mnuPrev";
+            this.mnuPrev.Size = new System.Drawing.Size(74, 24);
+            this.mnuPrev.Text = "上一页";
+            this.mnuPrev.Click += new System.EventHandler(this.mnuPrev_Click);
+            // 
+            // mnuNext
+            // 
+            this.mnuNext.Image = global::MailerUI.Properties.Resources.next;
+            this.mnuNext.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.mnuNext.Name = "mnuNext";
+            this.mnuNext.Size = new System.Drawing.Size(74, 24);
+            this.mnuNext.Text = "下一页";
+            this.mnuNext.Click += new System.EventHandler(this.mnuNext_Click);
+            // 
+            // mnuAdd
+            // 
+            this.mnuAdd.Image = global::MailerUI.Properties.Resources.add16;
+            this.mnuAdd.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.mnuAdd.Name = "mnuAdd";
+            this.mnuAdd.Size = new System.Drawing.Size(89, 25);
+            this.mnuAdd.Text = "添加数据";
+            this.mnuAdd.Click += new System.EventHandler(this.mnuAdd_Click);
+            // 
+            // mnuEdit
+            // 
+            this.mnuEdit.Image = global::MailerUI.Properties.Resources.edit16;
+            this.mnuEdit.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.mnuEdit.Name = "mnuEdit";
+            this.mnuEdit.Size = new System.Drawing.Size(89, 25);
+            this.mnuEdit.Text = "修改数据";
+            this.mnuEdit.Click += new System.EventHandler(this.mnuEdit_Click);
+            // 
+            // mnuSelectAll
+            // 
+            this.mnuSelectAll.Image = global::MailerUI.Properties.Resources.accept16;
+            this.mnuSelectAll.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.mnuSelectAll.Name = "mnuSelectAll";
+            this.mnuSelectAll.Size = new System.Drawing.Size(59, 25);
+            this.mnuSelectAll.Text = "全选";
+            this.mnuSelectAll.Click += new System.EventHandler(this.mnuSelectAll_Click);
+            // 
+            // mnuDelete
+            // 
+            this.mnuDelete.Image = global::MailerUI.Properties.Resources.delete16;
+            this.mnuDelete.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.mnuDelete.Name = "mnuDelete";
+            this.mnuDelete.Size = new System.Drawing.Size(89, 25);
+            this.mnuDelete.Text = "删除选中";
+            this.mnuDelete.Click += new System.EventHandler(this.mnuDelete_Click);
+            // 
+            // mnuDeleteAll
+            // 
+            this.mnuDeleteAll.Image = global::MailerUI.Properties.Resources.cancel16;
+            this.mnuDeleteAll.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.mnuDeleteAll.Name = "mnuDeleteAll";
+            this.mnuDeleteAll.Size = new System.Drawing.Size(89, 25);
+            this.mnuDeleteAll.Text = "删除全部";
+            this.mnuDeleteAll.Click += new System.EventHandler(this.mnuDeleteAll_Click);
+            // 
+            // mnuEnable
+            // 
+            this.mnuEnable.Image = global::MailerUI.Properties.Resources.enable;
+            this.mnuEnable.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.mnuEnable.Name = "mnuEnable";
+            this.mnuEnable.Size = new System.Drawing.Size(89, 25);
+            this.mnuEnable.Text = "批量可用";
+            this.mnuEnable.Click += new System.EventHandler(this.mnuEnable_Click);
+            // 
+            // mnuDisable
+            // 
+            this.mnuDisable.Image = global::MailerUI.Properties.Resources.disable;
+            this.mnuDisable.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.mnuDisable.Name = "mnuDisable";
+            this.mnuDisable.Size = new System.Drawing.Size(104, 25);
+            this.mnuDisable.Text = "批量不可用";
+            this.mnuDisable.Click += new System.EventHandler(this.mnuDisable_Click);
+            // 
+            // mnuExport
+            // 
+            this.mnuExport.Image = global::MailerUI.Properties.Resources.app2;
+            this.mnuExport.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.mnuExport.Name = "mnuExport";
+            this.mnuExport.Size = new System.Drawing.Size(119, 25);
+            this.mnuExport.Text = "导出邮件列表";
+            this.mnuExport.Click += new System.EventHandler(this.mnuExport_Click);
+            // 
+            // mnuRefresh
+            // 
+            this.mnuRefresh.Image = global::MailerUI.Properties.Resources.refresh16;
+            this.mnuRefresh.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.mnuRefresh.Name = "mnuRefresh";
+            this.mnuRefresh.Size = new System.Drawing.Size(59, 25);
+            this.mnuRefresh.Text = "刷新";
+            this.mnuRefresh.Click += new System.EventHandler(this.mnuRefresh_Click);
+            // 
             // mnuSearch
             // 
             this.mnuSearch.Image = global::MailerUI.Properties.Resources.view16_16;
@@ -298,11 +301,6 @@
             this.mnuSearch.Size = new System.Drawing.Size(59, 25);
             this.mnuSearch.Text = "查询";
             this.mnuSearch.Click += new System.EventHandler(this.mnuSearch_Click);
-            // 
-            // toolStripSeparator9
-            // 
-            this.toolStripSeparator9.Name = "toolStripSeparator9";
-            this.toolStripSeparator9.Size = new System.Drawing.Size(6, 28);
             // 
             // mnuExit
             // 
@@ -351,8 +349,6 @@
         private System.Windows.Forms.ToolStripButton mnuAdd;
         private ListViewEx listView1;
         private System.Windows.Forms.ToolStrip toolStrip2;
-        private System.Windows.Forms.ToolStripButton mnuNext;
-        private System.Windows.Forms.ToolStripButton mnuPrev;
         private System.Windows.Forms.ToolStripLabel toolStripLabel1;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripButton mnuSelectAll;
@@ -368,5 +364,7 @@
         private System.Windows.Forms.ToolStripLabel toolStripLabel2;
         private System.Windows.Forms.ToolStripButton mnuEnable;
         private System.Windows.Forms.ToolStripButton mnuDisable;
+        private System.Windows.Forms.ToolStripButton mnuPrev;
+        private System.Windows.Forms.ToolStripButton mnuNext;
     }
 }

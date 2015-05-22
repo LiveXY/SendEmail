@@ -4,6 +4,8 @@ using System.Text;
 using System.Windows.Forms;
 using System.ServiceProcess;
 using Pub.Class;
+using System.Threading;
+ 
 
 namespace MailerUI {
     static class Program {
@@ -13,14 +15,24 @@ namespace MailerUI {
         [STAThread]
         static void Main() {
             Data.UsePool("ConnString");
-
-            try {
+			//MessageBox.Show ("1");
+			//bool isRunning;
+			//try {
+			//Mutex m = new Mutex(true, "MailerUI", out isRunning);
+			//	if (!isRunning) { 
+			//		Application.Exit();
+			//		return;
+			//	}
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
                 Application.Run(new frmMain());
-            } catch (Exception ex) {
-                string s = ex.Message;
-            }
+			//	m.ReleaseMutex();
+			//}
+			//catch (Exception ex) {
+			//     string s = ex.Message;
+			//}
+
+         
         }
     }
 }

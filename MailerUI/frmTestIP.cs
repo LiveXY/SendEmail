@@ -22,6 +22,7 @@ namespace MailerUI {
 
         public frmTestIP() {
             InitializeComponent();
+            frmMain.Instance.ControlsHint(this);
         }
 
         private void mnuExit_Click(object sender, EventArgs e) {

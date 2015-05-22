@@ -72,9 +72,8 @@ namespace MailerUI {
             //    return;
             //}
 
-            //DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.button1.DialogResult = System.Windows.Forms.DialogResult.OK;
-
+            DialogResult = System.Windows.Forms.DialogResult.OK;
+ 
             if (!smtp.IsNullEmpty() || SmtpListHelper.IsExistByID(info.SmtpServer, info.SmtpPort.Value, info.UserName)) {
                 SmtpListHelper.Update(info);
             } else {

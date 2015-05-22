@@ -18,6 +18,7 @@ namespace MailerUI {
 
         public frmModelSetting() {
             InitializeComponent();
+            frmMain.Instance.ControlsHint(this);
         }
 
         private void mnuEdit_Click(object sender, EventArgs e) {
@@ -43,11 +44,13 @@ namespace MailerUI {
         }
 
         private void frmRoute_Activated(object sender, EventArgs e) {
+            frmMain.Instance.ShowStatusText("正在数据....");
             modelSetting = ModelSettingHelper.SelectByID(1);
             if (modelSetting.IsNull() || modelSetting.ModelID.IsNull()) return;
             txtModelName.Text = modelSetting.ModelName;
             txtPassword.Text = modelSetting.MPassword;
             txtUserName.Text = modelSetting.UserName;
+            frmMain.Instance.ShowStatusText("数据加载完成！");
         }
     }
 }

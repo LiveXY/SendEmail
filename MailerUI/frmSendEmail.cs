@@ -14,12 +14,7 @@ namespace MailerUI {
     public partial class frmSendEmail : DockContent {
         public frmSendEmail() {
             InitializeComponent();
-        }
-
-        private void btnStart_Click(object sender, EventArgs e) {
-        }
-
-        private void btnStop_Click(object sender, EventArgs e) {
+            frmMain.Instance.ControlsHint(this);
         }
 
         private void mnuAdd_Click(object sender, EventArgs e) {

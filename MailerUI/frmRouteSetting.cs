@@ -18,6 +18,7 @@ namespace MailerUI {
 
         public frmRouteSetting() {
             InitializeComponent();
+            frmMain.Instance.ControlsHint(this);
         }
 
         private void mnuEdit_Click(object sender, EventArgs e) {
@@ -46,6 +47,7 @@ namespace MailerUI {
         }
 
         private void frmRoute_Activated(object sender, EventArgs e) {
+            frmMain.Instance.ShowStatusText("正在数据....");
             routeSetting = RouteSettingHelper.SelectByID(1);
             if (routeSetting.IsNull() || routeSetting.RouteID.IsNull()) return;
             txtPassword.Text = routeSetting.RPassword;
@@ -55,6 +57,7 @@ namespace MailerUI {
             txtRouteDisConnect.Text = routeSetting.RouteDisConnect;
             if (routeSetting.RouteMethod == "GET") rdoGET.Checked = true;
             if (routeSetting.RouteMethod == "POST") rdoPOST.Checked = true;
+            frmMain.Instance.ShowStatusText("数据加载完成！");
         }
 
         private void label8_DoubleClick(object sender, EventArgs e) {

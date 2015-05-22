@@ -20,16 +20,19 @@ namespace MailerUI {
 
         public frmTemplate() {
             InitializeComponent();
+            frmMain.Instance.ControlsHint(this);
         }
 
         private void frmTemplate_Load(object sender, EventArgs e) {
             ThreadPool.QueueUserWorkItem(new WaitCallback((o) => {
+                frmMain.Instance.ShowStatusText("正在加载模版数据....");
 				dataGridView.BeginInvoke(new Pub.Class.Action(() => {
                     dataGridView.DataSource = HtmlTemplateHelper.SelectListByAll().OrderByDescending(p => p.TemplateID).Select(p => new {
                         编号 = p.TemplateID,
                         邮件主题 = p.Subject
                     }).ToDataTable();
                     getRowData();
+                    frmMain.Instance.ShowStatusText("模版数据加载完成！");
                 }));
             }), null);
         }

@@ -12,20 +12,27 @@ using TH.Mailer.Entity;
 using Pub.Class;
 using Pub.Class.Linq;
 
-namespace MailerUI {
-    public partial class frmView : DockContent {
+namespace MailerUI
+{
+    public partial class frmView : DockContent
+    {
+        private delegate void CallFormInThread(object data);  //为了在线程里访问控件
         private int type;
         private int pageSize = 50;
         private int page = 1;
         private int pages = 0;
 
-        public frmView(int type) {
+        public frmView(int type)
+        {
             this.type = type;
             InitializeComponent();
+            frmMain.Instance.ControlsHint(this);
         }
 
-        private void frmView_Load(object sender, EventArgs e) {
-            switch (type) {
+        private void frmView_Load(object sender, EventArgs e)
+        {
+            switch (type)
+            {
                 case 1:
                     mnuAdd.Visible = true;
                     mnuAdd.Visible = true;
@@ -63,7 +70,7 @@ namespace MailerUI {
                     toolStripSeparator7.Visible = true;
                     toolStripSeparator8.Visible = false;
                     toolStripSeparator9.Visible = true;
-                   this.mnuEnable.Visible = true;
+                    this.mnuEnable.Visible = true;
                     this.mnuDisable.Visible = true;
                     break;
                 case 3:
@@ -87,44 +94,28 @@ namespace MailerUI {
                     break;
             }
 
-            loadData();
+            BindData();
             this.toolStripComboBox1.SelectedIndex = 0;
         }
 
-        private void loadData() {
+        private void loadData(Object obj)
+        {
             mnuNext.Enabled = false;
             mnuPrev.Enabled = false;
 
-            int totals = 0;
 
             listView1.View = View.Details;
             listView1.Columns.Clear();
             listView1.Items.Clear();
             listView1.BeginUpdate();
 
-            switch (type) {
+            switch (type)
+            {
                 case 1:
-                    Where where = null;
-                    switch (toolStripComboBox1.Text) {
-                        case "等待发送":
-                            where = new Where().And("LastSendStatus", 0, Operator.Equal);
-                            break;
-                        case "发送成功":
-                            where = new Where().And("LastSendStatus", 1, Operator.Equal);
-                            break;
-                        case "发送失败":
-                            where = new Where().And("LastSendStatus", 2, Operator.Equal);
-                            break;
-                        default:
-                            where = null;
-                            break;
-                    }
 
-    
+                    EmailListobj o1 = obj as EmailListobj;
 
-                    IList<EmailList> emailList = EmailListHelper.SelectPageList(page, pageSize, out totals, "", where);
-                    pages = totals / pageSize + (totals % pageSize == 0 ? 0 : 1);
-
+                    IList<EmailList> emailList = o1.list;
 
                     listView1.Columns.Add("序号", 60, HorizontalAlignment.Left);
                     listView1.Columns.Add("邮件地址", 150, HorizontalAlignment.Left);
@@ -144,10 +135,13 @@ namespace MailerUI {
                     listView1.Columns.Add("ex7", 80, HorizontalAlignment.Left);
                     listView1.Columns.Add("ex8", 80, HorizontalAlignment.Left);
 
-                    this.listView1.BeginInvoke(new Pub.Class.Action(() => {
+                    this.listView1.BeginInvoke(new Pub.Class.Action(() =>
+                    {
                         string tempStatus = string.Empty;
-                        emailList.Do((p, i) => {
-                            switch (p.LastSendStatus) {
+                        emailList.Do((p, i) =>
+                        {
+                            switch (p.LastSendStatus)
+                            {
                                 case 0:
                                     tempStatus = "等待发送";
                                     break;
@@ -177,18 +171,52 @@ namespace MailerUI {
                             item.SubItems.Add(p.ex6.ToString());
                             item.SubItems.Add(p.ex7.ToString());
                             item.SubItems.Add(p.ex8.ToString());
-
+                            if (i % 2 == 0)
+                            {
+                                item.BackColor = Color.FromArgb(247, 247, 247);
+                            }
                             this.listView1.Items.Add(item);
+ 
+
+
                         });
 
                     }));
+       
+
+                    if (o1.page <= 1)
+                    {
+                        mnuNext.Enabled = true;
+                        mnuPrev.Enabled = false;
+                    }
+
+                    if (o1.page == o1.pages)
+                    {
+                        mnuNext.Enabled = false;
+                        mnuPrev.Enabled = true;
+                    }
+
+                    if (o1.page <= 1 && o1.page >= o1.pages)
+                    {
+                        mnuNext.Enabled = false;
+                        mnuPrev.Enabled = false;
+                    }
+                    if (o1.page > 1 && o1.page < o1.pages)
+                    {
+                        mnuNext.Enabled = true;
+                        mnuPrev.Enabled = true;
+                    }
+                    toolStripLabel1.Text = "总记录数：{0}，总页数：{1}，当前页：{2}".FormatWith(o1.totals, o1.pages, o1.page);
+
+
+
                     break;
                 case 2:
- 
 
-                    IList<SmtpList> smtpList = SmtpListHelper.SelectPageList(page, pageSize, out totals);
-                    pages = totals / pageSize + (totals % pageSize == 0 ? 0 : 1);
 
+             
+                    SmtpListobj o2 = obj as SmtpListobj;
+                     IList<SmtpList> smtpList = o2.list;
                     listView1.Columns.Add("序号", 100, HorizontalAlignment.Left);
                     listView1.Columns.Add("SMTP服务器", 200, HorizontalAlignment.Left);
                     listView1.Columns.Add("SMTP端口", 100, HorizontalAlignment.Left);
@@ -199,8 +227,10 @@ namespace MailerUI {
                     listView1.Columns.Add("发送次数", 100, HorizontalAlignment.Left);
                     listView1.Columns.Add("发送失败次数", 100, HorizontalAlignment.Left);
 
-                    listView1.BeginInvoke(new Pub.Class.Action(() => {
-                        smtpList.Do((p, i) => {
+                    listView1.BeginInvoke(new Pub.Class.Action(() =>
+                    {
+                        smtpList.Do((p, i) =>
+                        {
                             ListViewItem item = new ListViewItem((i + 1).ToString());
                             item.Tag = p.SmtpServer.ToString() + ',' + p.SmtpPort.ToString() + ',' + p.UserName.ToString() + ',' + p.SPassword.ToString();
                             item.ToolTipText = p.SmtpServer.ToString();
@@ -214,98 +244,236 @@ namespace MailerUI {
                             item.SubItems.Add(p.Status.ToString() == "0" ? "可用" : "不可用");
                             item.SubItems.Add(p.Sends.ToString());
                             item.SubItems.Add(p.SendFails.ToString());
-
+                            if (i % 2 == 0)
+                            {
+                                item.BackColor = Color.FromArgb(247, 247, 247);
+                            }
                             this.listView1.Items.Add(item);
+   
+            
                         });
                     }));
+                    if (o2.page <= 1)
+                    {
+                        mnuNext.Enabled = true;
+                        mnuPrev.Enabled = false;
+                    }
+
+                    if (o2.page == o2.pages)
+                    {
+                        mnuNext.Enabled = false;
+                        mnuPrev.Enabled = true;
+                    }
+
+                    if (o2.page <= 1 && o2.page >= o2.pages)
+                    {
+                        mnuNext.Enabled = false;
+                        mnuPrev.Enabled = false;
+                    }
+                    if (o2.page > 1 && o2.page < o2.pages)
+                    {
+                        mnuNext.Enabled = true;
+                        mnuPrev.Enabled = true;
+                    }
+                    toolStripLabel1.Text = "总记录数：{0}，总页数：{1}，当前页：{2}".FormatWith(o2.totals, o2.pages, o2.page);
+
                     break;
                 case 3:
-                    IList<IpHistory> ipList = IpHistoryHelper.SelectPageList(page, pageSize, out totals);
-                    pages = totals / pageSize + (totals % pageSize == 0 ? 0 : 1);
 
+                    IpHistoryobj o3 = obj as IpHistoryobj;
+                    IList<IpHistory> ipList = o3.list;
                     listView1.CheckBoxes = false;
                     listView1.Columns.Add("序号", 60, HorizontalAlignment.Left);
                     listView1.Columns.Add("IP地址", 200, HorizontalAlignment.Left);
                     listView1.Columns.Add("使用时间", 200, HorizontalAlignment.Left);
 
-                    listView1.BeginInvoke(new Pub.Class.Action(() => {
-                        ipList.Do((p, i) => {
+                    listView1.BeginInvoke(new Pub.Class.Action(() =>
+                    {
+                        ipList.Do((p, i) =>
+                        {
                             ListViewItem item = new ListViewItem((i + 1).ToString());
                             item.Tag = p.IP.ToString();
                             item.ToolTipText = p.IP.ToString();
 
                             item.SubItems.Add(p.IP.ToString());
                             item.SubItems.Add(p.CreateTime.ToString());
-
+                            if (i % 2 == 0)
+                            {
+                                item.BackColor = Color.FromArgb(247, 247, 247);
+                            }
                             this.listView1.Items.Add(item);
+ 
                         });
                     }));
+                      if (o3.page <= 1)
+                    {
+                        mnuNext.Enabled = true;
+                        mnuPrev.Enabled = false;
+                    }
+
+                    if (o3.page == o3.pages)
+                    {
+                        mnuNext.Enabled = false;
+                        mnuPrev.Enabled = true;
+                    }
+
+                    if (o3.page <= 1 && o3.page >= o3.pages)
+                    {
+                        mnuNext.Enabled = false;
+                        mnuPrev.Enabled = false;
+                    }
+                    if (o3.page > 1 && o3.page < o3.pages)
+                    {
+                        mnuNext.Enabled = true;
+                        mnuPrev.Enabled = true;
+                    }
+                    toolStripLabel1.Text = "总记录数：{0}，总页数：{1}，当前页：{2}".FormatWith(o3.totals, o3.pages, o3.page);
+
                     break;
             }
 
-            if (page <= 1) {
-                mnuNext.Enabled = true;
-                mnuPrev.Enabled = false;
-            }
-
-            if (page == pages) {
-                mnuNext.Enabled = false;
-                mnuPrev.Enabled = true;
-            }
-
-            if (page <= 1 && page >= pages) {
-                mnuNext.Enabled = false;
-                mnuPrev.Enabled = false;
-            }
-
-            toolStripLabel1.Text = "总记录数：{0}，总页数：{1}，当前页：{2}".FormatWith(totals, pages, page);
-
             this.listView1.EndUpdate();
+
         }
 
-        private void mnuPrev_Click(object sender, EventArgs e) {
+        private void BindData()
+        {
+            int totals = 0;
+
+            string strStatus = this.toolStripComboBox1.Text.Trim();
+
+            ThreadPool.QueueUserWorkItem(new WaitCallback((o) =>
+            {
+
+                switch (type)
+                {
+                    case 1:
+
+                        Where where = null;
+                        switch (strStatus)
+                        {
+                            case "等待发送":
+                                where = new Where().And("LastSendStatus", 0, Operator.Equal);
+                                break;
+                            case "发送成功":
+                                where = new Where().And("LastSendStatus", 1, Operator.Equal);
+                                break;
+                            case "发送失败":
+                                where = new Where().And("LastSendStatus", 2, Operator.Equal);
+                                break;
+                            default:
+                                where = null;
+                                break;
+                        }
+                        IList<EmailList> emailList = EmailListHelper.SelectPageList(page, pageSize, out totals, "", where);
+
+                        pages = totals / pageSize + (totals % pageSize == 0 ? 0 : 1);
+
+                        EmailListobj obj1 = new EmailListobj();
+                        obj1.list = emailList;
+                        obj1.page = page;
+                        obj1.pages = pages;
+                        obj1.totals = totals;
+
+                        this.Invoke(new CallFormInThread(loadData), obj1);
+
+                        break;
+
+                    case 2:
+
+                        IList<SmtpList> smtpList = SmtpListHelper.SelectPageList(page, pageSize, out totals);
+
+                        pages = totals / pageSize + (totals % pageSize == 0 ? 0 : 1);
+
+                        SmtpListobj obj2 = new SmtpListobj();
+                        obj2.list = smtpList;
+                        obj2.page = page;
+                        obj2.pages = pages;
+                        obj2.totals = totals;
+
+                        this.Invoke(new CallFormInThread(loadData), obj2);
+
+                        break;
+
+                    case 3:
+                        IList<IpHistory> ipList = IpHistoryHelper.SelectPageList(page, pageSize, out totals);
+
+                        pages = totals / pageSize + (totals % pageSize == 0 ? 0 : 1);
+
+
+                        IpHistoryobj obj3 = new IpHistoryobj();
+                         obj3.list = ipList;
+                         obj3.page = page;
+                         obj3.pages = pages;
+                         obj3.totals = totals;
+
+                         this.Invoke(new CallFormInThread(loadData), obj3);
+
+                        break;
+                }
+
+
+            }), null);
+
+
+
+        }
+
+        private void mnuPrev_Click(object sender, EventArgs e)
+        {
             --page;
-            loadData();
+            BindData();
         }
 
-        private void mnuNext_Click(object sender, EventArgs e) {
+        private void mnuNext_Click(object sender, EventArgs e)
+        {
             ++page;
-            loadData();
+            BindData();
         }
 
-        private void mnuExit_Click(object sender, EventArgs e) {
+        private void mnuExit_Click(object sender, EventArgs e)
+        {
             Close();
         }
 
-        private void mnuAdd_Click(object sender, EventArgs e) {
-            switch (type) {
+        private void mnuAdd_Click(object sender, EventArgs e)
+        {
+            switch (type)
+            {
                 case 1:
                     frmAddEmailList frm2 = new frmAddEmailList();
-                    if (frm2.ShowDialog() == DialogResult.OK) loadData();
+                    if (frm2.ShowDialog() == DialogResult.OK) BindData();
                     break;
 
                 case 2:
                     frmAddSMTPList frm1 = new frmAddSMTPList();
-                    if (frm1.ShowDialog() == DialogResult.OK) loadData();
+                    if (frm1.ShowDialog() == DialogResult.OK) BindData();
                     break;
             }
         }
 
-        private void mnuEdit_Click(object sender, EventArgs e) {
+        private void mnuEdit_Click(object sender, EventArgs e)
+        {
             edit();
         }
 
-        private void mnuDelete_Click(object sender, EventArgs e) {
-            switch (type) {
+        private void mnuDelete_Click(object sender, EventArgs e)
+        {
+            switch (type)
+            {
                 case 1:
-                    if (listView1.CheckedItems.Count == 0) {
+                    if (listView1.CheckedItems.Count == 0)
+                    {
                         MessageBox.Show("请选择你要删除的记录！", " 系统提示");
                         return;
                     }
-                    if (MessageBox.Show("确认要删除选中的记录吗？", " 系统提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK) {
+                    if (MessageBox.Show("确认要删除选中的记录吗？", " 系统提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
+                    {
                         IList<string> data = new List<string>();
-                        foreach (ListViewItem item in listView1.Items) {
-                            if (item.Checked) {
+                        foreach (ListViewItem item in listView1.Items)
+                        {
+                            if (item.Checked)
+                            {
                                 data.Add(item.Tag.ToString());
                             }
                         }
@@ -315,20 +483,24 @@ namespace MailerUI {
                             ).ToExec();
 
                         EmailListHelper.ClearCacheAll();
-                        loadData();
+                        BindData();
 
                     }
                     break;
                 case 2:
-                    if (listView1.CheckedItems.Count == 0) {
+                    if (listView1.CheckedItems.Count == 0)
+                    {
                         MessageBox.Show("请选择你要删除的记录！", " 系统提示");
                         return;
                     }
 
-                    if (MessageBox.Show("确认要删除选中的记录吗？", " 系统提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK) {
+                    if (MessageBox.Show("确认要删除选中的记录吗？", " 系统提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
+                    {
 
-                        foreach (ListViewItem item in listView1.Items) {
-                            if (item.Checked) {
+                        foreach (ListViewItem item in listView1.Items)
+                        {
+                            if (item.Checked)
+                            {
                                 string[] list = item.Tag.ToString().Split(',');
 
                                 string id = list[0].ToString();
@@ -340,25 +512,30 @@ namespace MailerUI {
                             }
                         }
                         SmtpListHelper.ClearCacheAll();
-                        loadData();
+                        BindData();
                     }
                     break;
             }
         }
 
-        private void edit() {
-            switch (type) {
+        private void edit()
+        {
+            switch (type)
+            {
                 case 1:
-                    if (this.listView1.SelectedItems.Count > 0 && this.listView1.SelectedItems[0].Tag != null) {
+                    if (this.listView1.SelectedItems.Count > 0 && this.listView1.SelectedItems[0].Tag != null)
+                    {
                         string id = this.listView1.SelectedItems[0].Tag.ToString();
 
                         frmAddEmailList frm = new frmAddEmailList(id);
-                        if (frm.ShowDialog() == DialogResult.OK) loadData();
-                    } else
+                        if (frm.ShowDialog() == DialogResult.OK) BindData();
+                    }
+                    else
                         MessageBox.Show("请选择你要修改的记录！", " 系统提示");
                     break;
                 case 2:
-                    if (this.listView1.SelectedItems.Count > 0 && this.listView1.SelectedItems[0].Tag != null) {
+                    if (this.listView1.SelectedItems.Count > 0 && this.listView1.SelectedItems[0].Tag != null)
+                    {
                         string[] list = this.listView1.SelectedItems[0].Tag.ToString().Split(',');
 
                         string id = list[0].ToString();
@@ -368,19 +545,23 @@ namespace MailerUI {
 
                         frmAddSMTPList frm = new frmAddSMTPList(id, port, username);
 
-                        if (frm.ShowDialog() == DialogResult.OK) loadData();
-                    } else
+                        if (frm.ShowDialog() == DialogResult.OK) BindData();
+                    }
+                    else
                         MessageBox.Show("请选择你要修改的记录！", " 系统提示");
                     break;
             }
         }
 
-        private void listView1_MouseDoubleClick(object sender, MouseEventArgs e) {
+        private void listView1_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
             edit();
         }
 
-        private void mnuRefresh_Click(object sender, EventArgs e) {
-            switch (type) {
+        private void mnuRefresh_Click(object sender, EventArgs e)
+        {
+            switch (type)
+            {
                 case 1:
                     EmailListHelper.ClearCacheAll();
                     break;
@@ -391,11 +572,13 @@ namespace MailerUI {
                     IpHistoryHelper.ClearCacheAll();
                     break;
             }
-            loadData();
+            BindData();
         }
 
-        private void mnuSelectAll_Click(object sender, EventArgs e) {
-            foreach (ListViewItem item in listView1.Items) {
+        private void mnuSelectAll_Click(object sender, EventArgs e)
+        {
+            foreach (ListViewItem item in listView1.Items)
+            {
                 //if (item.Checked) {
                 //    item.Checked = false;
                 //} else {
@@ -406,56 +589,67 @@ namespace MailerUI {
             }
         }
 
-        private void mnuDeleteAll_Click(object sender, EventArgs e) {
-            switch (type) {
+        private void mnuDeleteAll_Click(object sender, EventArgs e)
+        {
+            switch (type)
+            {
                 case 1:
-                    if (MessageBox.Show("确认要删除全部记录吗？", " 系统提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK) {
+                    if (MessageBox.Show("确认要删除全部记录吗？", " 系统提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
+                    {
                         int rows = new SQL().Database("ConnString").Delete(EmailList._).ToExec();
                         EmailListHelper.ClearCacheAll();
-                        loadData();
+                        BindData();
                     }
                     break;
                 case 2:
-                    if (MessageBox.Show("确认要删除全部记录吗？", " 系统提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK) {
+                    if (MessageBox.Show("确认要删除全部记录吗？", " 系统提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
+                    {
                         int rows = new SQL().Database("ConnString").Delete(SmtpList._).ToExec();
                         SmtpListHelper.ClearCacheAll();
-                        loadData();
+                        BindData();
                     }
                     break;
                 case 3:
-                    if (MessageBox.Show("确认要删除全部记录吗？", " 系统提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK) {
+                    if (MessageBox.Show("确认要删除全部记录吗？", " 系统提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
+                    {
                         int rows = new SQL().Database("ConnString").Delete(IpHistory._).ToExec();
                         IpHistoryHelper.ClearCacheAll();
-                        loadData();
+                        BindData();
                     }
                     break;
             }
         }
 
-        private void mnuExport_Click(object sender, EventArgs e) {
+        private void mnuExport_Click(object sender, EventArgs e)
+        {
             saveFileDialog1.InitialDirectory = ".\\";
             saveFileDialog1.Filter = "txt files (*.txt)|*.txt|csv files (*.csv)|*.csv|All files (*.*)|*.*";
             saveFileDialog1.FilterIndex = 1;
             saveFileDialog1.RestoreDirectory = true;
-            if (saveFileDialog1.ShowDialog() == DialogResult.OK) {
+            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+            {
                 ThreadPool.QueueUserWorkItem(new WaitCallback(exportEmailList), saveFileDialog1.FileName);
             }
         }
 
-        private void exportEmailList(object o) {
+        private void exportEmailList(object o)
+        {
             string fileName = (string)o;
             var emailList = EmailListHelper.SelectListByAll();
 
             StringBuilder sb = new StringBuilder();
             if (FileDirectory.FileExists(fileName)) FileDirectory.FileDelete(fileName);
-            emailList.Do(p => {
+            emailList.Do(p =>
+            {
                 if (p.LastSendError.IndexOf("Mailbox not found") == -1) sb.AppendLine(p.EmailAddress);
             });
             FileDirectory.FileWrite(fileName, sb.ToString(), Encoding.UTF8);
         }
 
-        private void mnuSearch_Click(object sender, EventArgs e) {
-            switch (type) {
+        private void mnuSearch_Click(object sender, EventArgs e)
+        {
+            switch (type)
+            {
                 case 1:
                     EmailListHelper.ClearCacheAll();
                     break;
@@ -466,21 +660,25 @@ namespace MailerUI {
                     IpHistoryHelper.ClearCacheAll();
                     break;
             }
-            loadData();
+            BindData();
         }
 
 
-        private void mnuEnable_Click(object sender, EventArgs e) {
+        private void mnuEnable_Click(object sender, EventArgs e)
+        {
 
 
-            switch (type) {
+            switch (type)
+            {
                 case 1:
                     EmailListHelper.ClearCacheAll();
                     break;
                 case 2:
                     SmtpListHelper.ClearCacheAll();
-                    foreach (ListViewItem item in listView1.Items) {
-                        if (item.Checked) {
+                    foreach (ListViewItem item in listView1.Items)
+                    {
+                        if (item.Checked)
+                        {
                             string[] list = item.Tag.ToString().Split(',');
 
                             SmtpList info = new SmtpList();
@@ -501,22 +699,26 @@ namespace MailerUI {
                     IpHistoryHelper.ClearCacheAll();
                     break;
             }
-            loadData();
+            BindData();
 
 
 
         }
 
-        private void mnuDisable_Click(object sender, EventArgs e) {
+        private void mnuDisable_Click(object sender, EventArgs e)
+        {
 
-            switch (type) {
+            switch (type)
+            {
                 case 1:
                     EmailListHelper.ClearCacheAll();
                     break;
                 case 2:
                     SmtpListHelper.ClearCacheAll();
-                    foreach (ListViewItem item in listView1.Items) {
-                        if (item.Checked) {
+                    foreach (ListViewItem item in listView1.Items)
+                    {
+                        if (item.Checked)
+                        {
                             string[] list = item.Tag.ToString().Split(',');
 
                             SmtpList info = new SmtpList();
@@ -537,8 +739,10 @@ namespace MailerUI {
                     IpHistoryHelper.ClearCacheAll();
                     break;
             }
-            loadData();
+            BindData();
         }
+
+
 
 
     }

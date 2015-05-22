@@ -15,24 +15,30 @@ namespace MailerUI {
 
         public frmIpSetting() {
             InitializeComponent();
+            frmMain.Instance.ControlsHint(this);
         }
 
-         public void loadData() {
+        public void loadData() {
+            frmMain.Instance.ShowStatusText("正在数据....");
             this.listView1.Items.Clear();
             this.listView1.BeginUpdate();
             IpSettingHelper.SelectListByAll().OrderBy(p => p.IPCID).Do((p, i) => {
-                ListViewItem item = new ListViewItem((i+1).ToString());
+                ListViewItem item = new ListViewItem((i + 1).ToString());
                 item.Tag = p.IPCID.Value;
                 item.ToolTipText = p.IPCID.ToString();
- 
+
                 item.SubItems.Add(p.WebName.ToString());
                 item.SubItems.Add(p.IPUrl.ToString());
                 item.SubItems.Add(p.IPRegex.ToString());
                 item.SubItems.Add(p.DataEncode.ToString());
+                if (i % 2 == 0) {
+                    item.BackColor = Color.FromArgb(247, 247, 247);
+                }
                 this.listView1.Items.Add(item);
             });
             this.listView1.EndUpdate();
-       }
+            frmMain.Instance.ShowStatusText("数据加载完成！");
+        }
 
         private void frmSetting_Load(object sender, EventArgs e) {
             loadData();
@@ -75,7 +81,7 @@ namespace MailerUI {
             frmAddIpSetting frm = new frmAddIpSetting();
             if (frm.ShowDialog() == DialogResult.OK)
                 loadData();
-     
+
         }
 
         private void mnuExit_Click(object sender, EventArgs e) {
