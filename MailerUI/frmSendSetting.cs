@@ -27,9 +27,9 @@ namespace MailerUI {
             SendSetting info = new SendSetting();
             info.TemplateID = (long)this.cboTemplate.SelectedValue;
             info.ConnectType = rdoRoute.Checked ? 0 : rdoModel.Checked ? 1 : 2;
-            info.IPInterval = txtIPInterval.Text.ToInt(1000);
+            info.IPInterval = txtIPInterval.Text == "0" ? 0 : txtIPInterval.Text.ToInt(1000);
             info.SendInterval = txtSendInterval.Text.ToInt(10);
-            info.SmtpInterval = txtSmtpInterval.Text.ToInt(20);
+            info.SmtpInterval = txtSmtpInterval.Text == "0" ? 0 : txtSmtpInterval.Text.ToInt(20);
             info.Status = this.cboStatus.SelectedValue.ToString().ToInt(0);
             info.MaxRetryCount = txtMaxRetryCount.Text.ToInt(10);
             info.SendRetryCount = txtSendRetryCount.Text.ToInt(10);
