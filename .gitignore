@@ -31,3 +31,9 @@ bin/TH.Mailer.pdb
 bin/InstallUtil.InstallLog
 bin/MailerService.InstallLog
 bin/log/
+Mailer/obj/
+bin/Mailer.pdb
+Mailer/bin/
+bin/Mailer.vshost.exe
+bin/Mailer.vshost.exe.config
+bin/Mailer.vshost.exe.manifest
