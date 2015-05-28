@@ -51,7 +51,7 @@ namespace MailerUI {
                 txtShowName.Text = info.ShowName;
                 checkBoxIsHTML.Checked = info.IsHTML == true ? true : false;
                 checkBoxStatus.Checked = info.Status == 0 ? true : false;
-                info.CreateTime = System.DateTime.Now;
+                info.CreateTime = System.DateTime.Now.ToDateTime().ToDateTime();
                 mnuEdit.Enabled = true;
                 mnuDelete.Enabled = true;
             } else {
@@ -136,7 +136,7 @@ namespace MailerUI {
             info.Body = this.txtBody.Text;
             info.IsHTML = this.checkBoxIsHTML.Checked ? true : false;
             info.ShowName = this.txtShowName.Text;
-            info.CreateTime = DateTime.Now;
+            info.CreateTime = DateTime.Now.ToDateTime().ToDateTime();
             long id = HtmlTemplateHelper.Insert(info);
             HtmlTemplateHelper.ClearCacheAll();
             frmTemplate_Load(sender, e);

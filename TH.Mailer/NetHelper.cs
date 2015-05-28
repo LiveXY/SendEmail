@@ -43,7 +43,7 @@ namespace TH.Mailer {
                 //清空多少分钟前的历史IP
                 if (Data.Pool("ConnString").DBType == "SqlServer") {
                     "delete from IpHistory where CreateTime < DateAdd(MINUTE , -{0}, getdate())".FormatWith(setting.DeleteInterval).ToSQL().ToExec();
-                } else if (Data.Pool("ConnString").DBType == "SQLite") {
+                } else if (Data.Pool("ConnString").DBType == "SQLite" || Data.Pool("ConnString").DBType == "MonoSQLite") {
                     "delete from IpHistory where datetime(CreateTime) < datetime('now','localtime', '-{0} minute')".FormatWith(setting.DeleteInterval).ToSQL().ToExec();
                 }
                 if (!msg.IsNull()) msg("正在重启" + name + "......");
@@ -70,7 +70,7 @@ namespace TH.Mailer {
                         if (!msg.IsNull()) msg("检测到IP：" + ip + "最近已使用！");
                         return ChangeIP(netType, msg, done, index + 1);
                     } else {
-                        IpHistoryHelper.Insert(new IpHistory() { IP = ip, CreateTime = DateTime.Now });
+                        IpHistoryHelper.Insert(new IpHistory() { IP = ip, CreateTime = DateTime.Now.ToDateTime().ToDateTime() });
                     };
                     return ip;
                 }

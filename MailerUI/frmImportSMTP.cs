@@ -70,7 +70,7 @@ namespace MailerUI {
                                 info.UserName = list[1];
                                 info.SPassword = list[2];
                                 info.SmtpPort = 25;
-                                info.CreateTime = DateTime.Now;
+                                info.CreateTime = DateTime.Now.ToDateTime().ToDateTime();
                                 SmtpListHelper.Insert(info);
                                 success++;
                             //} else {

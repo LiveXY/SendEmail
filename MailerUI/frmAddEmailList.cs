@@ -69,7 +69,7 @@ namespace MailerUI {
             if (!email.IsNullEmpty() || EmailListHelper.IsExistByID(info.EmailAddress)) {
                 EmailListHelper.Update(info);
             } else {
-                info.CreateTime = DateTime.Now;
+                info.CreateTime = DateTime.Now.ToDateTime().ToDateTime();
                 EmailListHelper.Insert(info);
             }
             EmailListHelper.ClearCacheAll();

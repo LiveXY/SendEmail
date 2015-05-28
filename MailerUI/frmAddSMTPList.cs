@@ -77,7 +77,7 @@ namespace MailerUI {
             if (!smtp.IsNullEmpty() || SmtpListHelper.IsExistByID(info.SmtpServer, info.SmtpPort.Value, info.UserName)) {
                 SmtpListHelper.Update(info);
             } else {
-                info.CreateTime = DateTime.Now;
+                info.CreateTime = DateTime.Now.ToDateTime().ToDateTime();
                 SmtpListHelper.Insert(info);
             }
             SmtpListHelper.ClearCacheAll();

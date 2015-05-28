@@ -71,7 +71,7 @@ namespace MailerUI {
                             info.ex7 = list[8];
                             info.ex8 = list[9];
                         }
-                        info.CreateTime = DateTime.Now;
+                        info.CreateTime = DateTime.Now.ToDateTime().ToDateTime();
                         EmailListHelper.Insert(info);
                         success++;
                     }
