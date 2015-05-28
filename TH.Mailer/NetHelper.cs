@@ -78,7 +78,7 @@ namespace TH.Mailer {
         }
         public static string GetNetName(int netType) {
             switch (netType) {
-                case 0: return "路由";
+                case 0: return "路由连接";
                 case 1: return "拨号连接";
                 case 2: return "天翼无线宽带";
             }
