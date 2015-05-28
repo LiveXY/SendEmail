@@ -13,7 +13,7 @@ namespace Mailer {
             Data.UsePool("ConnString");
             if (args.Length == 0) Help(); else Parse(args[0]);
         }
-        public static void Input() { 
+        public static void Input() {
             Console.Write("> ");
             Parse(Console.ReadLine());
         }
@@ -42,7 +42,7 @@ namespace Mailer {
                 default: Input(); break;
             }
         }
-        public static void Config() { 
+        public static void Config() {
             SendSetting sendSetting = SendSettingHelper.SelectByID(1);
             Console.WriteLine("连接类型：{0}", NetHelper.GetNetName(sendSetting.ConnectType.Value));
             Console.WriteLine("发送邮件时间间隔(毫秒)：{0}", sendSetting.SendInterval);
@@ -73,30 +73,28 @@ namespace Mailer {
 
             Send();
         }
-        public static void Templates() { 
+        public static void Templates() {
             IList<HtmlTemplate> templateList = HtmlTemplateHelper.SelectListByAll();
             foreach(var t in templateList) Console.WriteLine("{0}-{1}", t.TemplateID, t.Subject);
             Console.WriteLine("count:{0}", templateList.Count);
             Console.WriteLine("END");
             Input();
         }
-        public static void Smtps() { 
-            int totals = 0;
-            IList<SmtpList> smtpList = SmtpListHelper.SelectPageList(1, 50, out totals);
+        public static void Smtps() {
+            IList<SmtpList> smtpList = SmtpListHelper.SelectListByAll();
             foreach(var smtp in smtpList) Console.WriteLine("{0},{1},{2}", smtp.SmtpServer, smtp.SmtpPort, smtp.UserName);
-            Console.WriteLine("count:{0}", totals);
+            Console.WriteLine("count:{0}", smtpList.Count);
             Console.WriteLine("END");
             Input();
         }
         public static void Emails() {
-            int totals = 0;
-            IList<EmailList> emailList = EmailListHelper.SelectPageList(1, 50, out totals);
+            IList<EmailList> emailList = EmailListHelper.SelectListByAll();
             foreach(var email in emailList) Console.WriteLine(email.EmailAddress);
-            Console.WriteLine("count:{0}", totals);
+            Console.WriteLine("count:{0}", emailList.Count);
             Console.WriteLine("END");
             Input();
         }
-        public static void Send() { 
+        public static void Send() {
             MailerCenter.Start((msg) => {
                 msg = "[{0}]-{1}".FormatWith(DateTime.Now.ToDateTimeFFF(), msg);
                 Console.WriteLine(msg);
