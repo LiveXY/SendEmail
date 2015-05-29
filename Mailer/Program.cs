@@ -233,8 +233,8 @@ namespace Mailer {
 			WriteLog("发送邮件失败重试次数：{0}", sendSetting.SendRetryCount);
 			WriteLog("发送状态：{0}", sendSetting.Status == 0 ? "等待发送" : sendSetting.Status == 1 ? "正在发送" : "已发送完成");
 			WriteLog("-------------------------------------------------------------------------------");
-			WriteLog("可用SMTP数量：{0}".FormatWith(new SQL().From(EmailList._).Count(EmailList._EmailAddress).ToScalar().ToString()));
-			WriteLog("可用邮箱数量：{0}".FormatWith(new SQL().From(SmtpList._).Count(SmtpList._SmtpServer).ToScalar().ToString()));
+			WriteLog("可用邮箱数量：{0}".FormatWith(new SQL().From(EmailList._).Count(EmailList._EmailAddress).ToScalar().ToString()));
+			WriteLog("可用SMTP数量：{0}".FormatWith(new SQL().From(SmtpList._).Count(SmtpList._SmtpServer).ToScalar().ToString()));
 			WriteLog("END");
 			Input(first);
 		}
