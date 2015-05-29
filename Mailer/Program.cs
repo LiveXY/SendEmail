@@ -25,56 +25,52 @@ namespace Mailer {
 			Data.UsePool("ConnString");
 			if (args.Length == 0) Help(); else Parse(args.Join(" "), true);
 		}
-		public static void Input(bool first = false) {
-			if (first) {
-				Console.Write("按任意键退出！");
-				Console.ReadKey();
-				return;
-			}
+		public static void Input(bool exit = false) {
+			if (exit) return;
 			Console.Write("> ");
 			Parse(Console.ReadLine());
 		}
 		private static void WriteLog(string msg) { Console.WriteLine(msg); }
 		private static void WriteLog(string format, params object[] args) { Console.WriteLine(format, args); }
-		public static void Parse(string cmd, bool first = false) {
+		public static void Parse(string cmd, bool exit = false) {
 			string[] args = cmd.Split(' ');
 			cmd = args[0].Trim().ToLower();
 			switch (cmd) {
 				case "h":
-				case "help": Help(first); break;
+				case "help": Help(exit); break;
 				case "s":
-				case "send": Send(first); break;
+				case "send": Send(exit); break;
 				case "rs":
-				case "resend": Resend(first); break;
+				case "resend": Resend(exit); break;
 				case "ss":
-				case "smtps": Smtps(first); break;
+				case "smtps": Smtps(exit); break;
 				case "es":
-				case "emails": Emails(first); break;
+				case "emails": Emails(exit); break;
 				case "ts":
-				case "templates": Templates(first); break;
+				case "templates": Templates(exit); break;
 				case "c":
-				case "config": Config(first); break;
-				case "sc": SetConfig(args, first); break;
+				case "config": Config(exit); break;
+				case "sc": SetConfig(args, exit); break;
 				case "set":
-					if (args.Length == 1) { Input(first); break; }
-					if (args[1].Trim().ToLower() == "config") { SetConfig(args, first); break; }
-					Input(first); break;
+					if (args.Length == 1) { Input(exit); break; }
+					if (args[1].Trim().ToLower() == "config") { SetConfig(args, exit); break; }
+					Input(exit); break;
 				case "in":
 				case "import":
-					if (args.Length == 1) { Input(first); break; }
-					Import(args, first); break;
+					if (args.Length == 1) { Input(exit); break; }
+					Import(args, exit); break;
 				case "d":
 				case "delete":
-					if (args.Length == 1) { Input(first); break; }
-					Delete(args, first); break;
+					if (args.Length == 1) { Input(exit); break; }
+					Delete(args, exit); break;
 				case "cls":
-				case "clear": Console.Clear(); Input(first); break;
+				case "clear": Console.Clear(); Input(exit); break;
 				case "q":
 				case "quit": break;
-				default: Input(first); break;
+				default: Input(exit); break;
 			}
 		}
-		public static void Delete(string[] args, bool first = false){
+		public static void Delete(string[] args, bool exit = false){
 			if (args.Length == 2) args = (string.Join(" ", args) + " *").Split(" ");
 			if (args[1].Trim().ToLower() == "smtp") WriteLog("delete(d) smtp * 删除SMTP数据");
 			if (args[1].Trim().ToLower() == "email") WriteLog("delete(d) email * 删除邮箱数据");
@@ -103,17 +99,17 @@ namespace Mailer {
 				EmailListHelper.ClearCacheAll();
 			}
 			WriteLog("END");
-			Input(first);
+			Input(exit);
 		}
-		public static void Import(string[] args, bool first = false){
-			if (args.Length != 3) Input(first);
+		public static void Import(string[] args, bool exit = false){
+			if (args.Length != 3) Input(exit);
 			if (args[1].Trim().ToLower() == "smtp") WriteLog("import(in) smtp path 批量导入SMTP");
 			if (args[1].Trim().ToLower() == "email") WriteLog("import(in) email path 批量导入邮箱");
 			WriteLog("===============================================================================");
 			if (args[1].Trim().ToLower() == "smtp") importSmtpList(args[2]);
 			if (args[1].Trim().ToLower() == "email") importEmailList(args[2]);
 			WriteLog("END");
-			Input(first);
+			Input(exit);
 		}
 		private static void importSmtpList(string fileName) {
 			int totals = 0; int success = 0;
@@ -204,8 +200,8 @@ namespace Mailer {
 			EmailListHelper.ClearCacheAll();
 			WriteLog("导入Email列表完成：共 {0} 条记录，成功 {1} 条记录，失败 {2} 条记录！".FormatWith(totals, success, totals - success));
 		}
-		public static void SetConfig(string[] args, bool first = false) {
-			if (args.Length != 3) Input(first);
+		public static void SetConfig(string[] args, bool exit = false) {
+			if (args.Length != 3) Input(exit);
 			string cmd = args[1].Trim().ToLower();
 			int value = args[2].ToInt();
 			if (setDic.ContainsKey(cmd)) {
@@ -216,9 +212,9 @@ namespace Mailer {
 				if (result > 0) SendSettingHelper.ClearCacheSelectByID(1);
 			}
 			WriteLog("END");
-			Input(first);
+			Input(exit);
 		}
-		public static void Config(bool first = false) {
+		public static void Config(bool exit = false) {
 			WriteLog("config(c) 显示发送配置");
 			WriteLog("===============================================================================");
 			SendSetting sendSetting = SendSettingHelper.SelectByID(1);
@@ -236,9 +232,9 @@ namespace Mailer {
 			WriteLog("可用邮箱数量：{0}".FormatWith(new SQL().From(EmailList._).Count(EmailList._EmailAddress).ToScalar().ToString()));
 			WriteLog("可用SMTP数量：{0}".FormatWith(new SQL().From(SmtpList._).Count(SmtpList._SmtpServer).ToScalar().ToString()));
 			WriteLog("END");
-			Input(first);
+			Input(exit);
 		}
-		public static void Resend(bool first = false) {
+		public static void Resend(bool exit = false) {
 			WriteLog("resend(rs) 重新发送邮件");
 			WriteLog("===============================================================================");
 			SendSettingHelper.Update(new SendSetting() { SettingID = 1, Status = 0 });
@@ -264,25 +260,25 @@ namespace Mailer {
 			}, () => { WriteLog("END"); Console.Write("> "); });
 			Parse(Console.ReadLine());
 		}
-		public static void Templates(bool first = false) {
+		public static void Templates(bool exit = false) {
 			WriteLog("templates(ts) 显示模板列表");
 			WriteLog("===============================================================================");
 			IList<HtmlTemplate> templateList = HtmlTemplateHelper.SelectListByAll();
 			foreach(var t in templateList) WriteLog("{0}-{1}", t.TemplateID, t.Subject);
 			WriteLog("count:{0}", templateList.Count);
 			WriteLog("END");
-			Input(first);
+			Input(exit);
 		}
-		public static void Smtps(bool first = false) {
+		public static void Smtps(bool exit = false) {
 			WriteLog("smtps(ss) 显示SMTP列表");
 			WriteLog("===============================================================================");
 			IList<SmtpList> smtpList = SmtpListHelper.SelectListByAll();
 			foreach(var smtp in smtpList) WriteLog("{0},{1},{2}", smtp.SmtpServer, smtp.SmtpPort, smtp.UserName);
 			WriteLog("count:{0}", smtpList.Count);
 			WriteLog("END");
-			Input(first);
+			Input(exit);
 		}
-		public static void Emails(bool first = false) {
+		public static void Emails(bool exit = false) {
 			WriteLog("emails(es) 显示邮箱列表");
 			WriteLog("===============================================================================");
 			int count = new SQL().From(EmailList._).Count(EmailList._EmailAddress).ToScalar().ToString().ToInt();
@@ -295,18 +291,18 @@ namespace Mailer {
 				WriteLog("count:{0}", emailList.Count);
 			}
 			WriteLog("END");
-			Input(first);
+			Input(exit);
 		}
-		public static void Send(bool first = false) {
+		public static void Send(bool exit = false) {
 			WriteLog("send(s) 发送邮件");
 			WriteLog("===============================================================================");
 			MailerCenter.Start((msg) => {
 				msg = "[{0}]-{1}".FormatWith(DateTime.Now.ToDateTimeFFF(), msg);
 				WriteLog(msg);
-			}, () => { WriteLog("END"); Console.Write("> "); });
+			}, () => { WriteLog("END"); if (exit) System.Environment.Exit(0); Console.Write("> "); });
 			Parse(Console.ReadLine());
 		}
-		public static void Help(bool first = false) {
+		public static void Help(bool exit = false) {
 			int len = 25;
 			Console.Clear();
 			WriteLog("邮件群发操作指令：");
@@ -359,7 +355,7 @@ namespace Mailer {
 			Console.Write("quit(q)".PadRight(len, ' '));
 			WriteLog("退出");
 			WriteLog("");
-			Input(first);
+			Input(exit);
 		}
 	}
 }
