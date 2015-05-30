@@ -257,7 +257,7 @@ namespace Mailer {
 			MailerCenter.Start((msg) => {
 				msg = "[{0}]-{1}".FormatWith(DateTime.Now.ToDateTimeFFF(), msg);
 				WriteLog(msg);
-			}, () => { WriteLog("END"); Console.Write("> "); });
+			}, () => { WriteLog("END");if (exit) System.Environment.Exit(0); Console.Write("> "); });
 			Parse(Console.ReadLine());
 		}
 		public static void Templates(bool exit = false) {
