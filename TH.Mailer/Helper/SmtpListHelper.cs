@@ -1,4 +1,4 @@
-ï»¿//-------------------------------------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------------------------------------
 // All Rights Reserved , Copyright (C) 2013 , TH , Ltd.
 //-------------------------------------------------------------------------------------------------------------------------------------
 
@@ -17,324 +17,325 @@ using TH.Mailer.Entity;
 using Pub.Class;
 
 namespace TH.Mailer.Helper {
-    /// <summary>
-    /// æ“ä½œç±»
-    /// 
-    /// ä¿®æ”¹çºªå½•
-    ///     2013-06-03 ç‰ˆæœ¬ï¼š1.0 ç³»ç»Ÿè‡ªåŠ¨åˆ›å»ºæ­¤ç±»
-    /// 
-    /// </summary>
-    public partial class SmtpListHelper {
-        /// <summary>
-        /// ç¼“å­˜å¤šå°‘ç§’ x 5
-        /// </summary>
-        public static int cacheSeconds = 1440;
-        /// <summary>
-        /// æ·»åŠ è®°å½•
-        /// </summary>
-        /// <param name="smtpList">å®ä½“ç±»</param>
-        /// <param name="delCache">æ·»åŠ æˆåŠŸåæ¸…ç†çš„CACHE keyï¼Œæ”¯æŒæ­£åˆ™</param>
-        /// <param name="dbkey">å­˜åœ¨æ•°æ®åº“è¿æ¥æ± ä¸­çš„è¿æ¥keyï¼Œä¸ºç©ºæ—¶ä½¿ç”¨ConnStringè¿æ¥</param>
-        /// <returns>æ·»åŠ æ˜¯å¦æˆåŠŸ</returns>
-        public static bool Insert(SmtpList smtpList, string dbkey = "", string[] delCache = null) {
-            int obj = new SQL().Database(dbkey).Insert(SmtpList._)
-                .ValueP(SmtpList._SmtpServer, smtpList.SmtpServer)
-                .ValueP(SmtpList._SmtpPort, smtpList.SmtpPort)
-                .ValueP(SmtpList._UserName, smtpList.UserName)
-                .ValueP(SmtpList._SPassword, smtpList.SPassword)
-                .ValueP(SmtpList._SSL, smtpList.SSL)
-                .ValueP(SmtpList._Status, smtpList.Status)
-                .ValueP(SmtpList._Sends, smtpList.Sends)
-                .ValueP(SmtpList._SendFails, smtpList.SendFails)
-                .ValueP(SmtpList._CreateTime, smtpList.CreateTime)
-                .ToExec();
-            if (delCache.IsNull()) return obj == 1;
-            Cache2.Remove("TH.Mailer.SmtpListCache_", delCache);
-            return obj == 1;
-        }
-        /// <summary>
-        /// æ·»åŠ è®°å½•
-        /// </summary>
-        /// <param name="smtpList">å®ä½“ç±»</param>
-        /// <returns>æ·»åŠ æ˜¯å¦æˆåŠŸ</returns>
-        public static bool Insert(SmtpList smtpList, string dbkey) {
-            return Insert(smtpList, dbkey, null);
-        }
-        /// <summary>
-        /// ä¿®æ”¹è®°å½•
-        /// </summary>
-        /// <param name="smtpList">å®ä½“ç±»</param>
-        /// <param name="where">ä¿®æ”¹æ—¶é™„åŠ æ¡ä»¶ï¼Œç»Ÿä¸€çš„å‰é¢è¦åŠ é“¾æ¥ç¬¦ï¼ˆandã€orç­‰ç­‰ï¼‰</param>
-        /// <param name="delCache">ä¿®æ”¹æˆåŠŸåæ¸…ç†çš„CACHE keyï¼Œæ”¯æŒæ­£åˆ™</param>
-        /// <param name="dbkey">å­˜åœ¨æ•°æ®åº“è¿æ¥æ± ä¸­çš„è¿æ¥keyï¼Œä¸ºç©ºæ—¶ä½¿ç”¨ConnStringè¿æ¥</param>
-        /// <returns>ä¿®æ”¹æ˜¯å¦æˆåŠŸ</returns>
-        public static bool Update(SmtpList smtpList, string dbkey = "", Where where = null, string[] delCache = null) {
-            if (smtpList.SmtpServer.IsNullEmpty()  && smtpList.SmtpPort.IsNull()  && smtpList.UserName.IsNullEmpty()) return false;
-            int value = new SQL().Database(dbkey).Update(SmtpList._)
-                .SetP(SmtpList._SPassword, smtpList.SPassword)
-                .SetP(SmtpList._SSL, smtpList.SSL)
-                .SetP(SmtpList._Status, smtpList.Status)
-                .SetP(SmtpList._Sends, smtpList.Sends)
-                .SetP(SmtpList._SendFails, smtpList.SendFails)
-                .SetP(SmtpList._CreateTime, smtpList.CreateTime)
-                .Where(new Where()
-                    .AndP(SmtpList._SmtpServer, smtpList.SmtpServer, Operator.Equal, true)
-                    .AndP(SmtpList._SmtpPort, smtpList.SmtpPort, Operator.Equal, true)
-                    .AndP(SmtpList._UserName, smtpList.UserName, Operator.Equal, true)
-                ).Where(where).ToExec();
-            if (value <= 0) return false;
-            if (delCache.IsNull()) return true;
-            Cache2.Remove("TH.Mailer.SmtpListCache_", delCache);
-            return true;
-        }
-        /// <summary>
-        /// ä¿®æ”¹è®°å½•
-        /// </summary>
-        /// <param name="smtpList">å®ä½“ç±»</param>
-        /// <returns>ä¿®æ”¹æ˜¯å¦æˆåŠŸ</returns>
-        public static bool Update(SmtpList smtpList, string dbkey) {
-            return Update(smtpList, dbkey, null, null);
-        }
-         /// <summary>
-        /// åˆ é™¤è®°å½•
-        /// </summary>
-        /// <param name="smtpServer">SMTPæœåŠ¡å™¨</param>
-        /// <param name="smtpPort">SMTPç«¯å£</param>
-        /// <param name="userName">ç™»å½•ç”¨æˆ·å</param>
-        /// <param name="where">ä¿®æ”¹æ—¶é™„åŠ æ¡ä»¶ï¼Œç»Ÿä¸€çš„å‰é¢è¦åŠ é“¾æ¥ç¬¦ï¼ˆandã€orç­‰ç­‰ï¼‰</param>
-        /// <param name="delCache">åˆ é™¤æˆåŠŸåæ¸…ç†çš„CACHE keyï¼Œæ”¯æŒæ­£åˆ™</param>
-        /// <param name="dbkey">å­˜åœ¨æ•°æ®åº“è¿æ¥æ± ä¸­çš„è¿æ¥keyï¼Œä¸ºç©ºæ—¶ä½¿ç”¨ConnStringè¿æ¥</param>
-        /// <returns>åˆ é™¤æ˜¯å¦æˆåŠŸ</returns>
-        public static bool DeleteByID(string smtpServer, int? smtpPort, string userName,  string dbkey = "", Where where = null, string[] delCache = null) {
-            if (smtpServer.IsNullEmpty()  && smtpPort.IsNull()  && userName.IsNullEmpty()) return false;
-            int value = new SQL().Database(dbkey).Delete(SmtpList._)
-                .Where(new Where()
-                    .AndP(SmtpList._SmtpServer, smtpServer, Operator.Equal, true)
-                    .AndP(SmtpList._SmtpPort, smtpPort, Operator.Equal, true)
-                    .AndP(SmtpList._UserName, userName, Operator.Equal, true)
-                ).Where(where).ToExec();
-            if (value != 1) return false;
-            if (delCache.IsNull()) return true;
-            Cache2.Remove("TH.Mailer.SmtpListCache_", delCache);
-            return true;
-        }
-        /// <summary>
-        /// åˆ é™¤è®°å½•
-        /// </summary>
-        /// <param name="smtpServer">SMTPæœåŠ¡å™¨</param>
-        /// <param name="smtpPort">SMTPç«¯å£</param>
-        /// <param name="userName">ç™»å½•ç”¨æˆ·å</param>
-        /// <returns>åˆ é™¤æ˜¯å¦æˆåŠŸ</returns>
-        public static bool DeleteByID(string smtpServer, int? smtpPort, string userName, string dbkey) {
-            return DeleteByID(smtpServer, smtpPort, userName,  dbkey, null, null);
-        }
-        /// <summary>
-        /// åˆ é™¤è®°å½•
-        /// </summary>
-        /// <param name="smtpServer">SMTPæœåŠ¡å™¨</param>
-        /// <param name="smtpPort">SMTPç«¯å£</param>
-        /// <param name="userName">ç™»å½•ç”¨æˆ·å</param>
-        /// <param name="where">ä¿®æ”¹æ—¶é™„åŠ æ¡ä»¶ï¼Œç»Ÿä¸€çš„å‰é¢è¦åŠ é“¾æ¥ç¬¦ï¼ˆandã€orç­‰ç­‰ï¼‰</param>
-        /// <param name="delCache">åˆ é™¤æˆåŠŸåæ¸…ç†çš„CACHE keyï¼Œæ”¯æŒæ­£åˆ™</param>
-        /// <param name="dbkey">å­˜åœ¨æ•°æ®åº“è¿æ¥æ± ä¸­çš„è¿æ¥keyï¼Œä¸ºç©ºæ—¶ä½¿ç”¨ConnStringè¿æ¥</param>
-        /// <returns>åˆ é™¤æ˜¯å¦æˆåŠŸ</returns>
-        public static bool DeleteByID(string smtpServer, int smtpPort, string userName,  string dbkey = "", Where where = null, string[] delCache = null) {
-            return DeleteByID((string)smtpServer, (int?)smtpPort, (string)userName,  dbkey, where, delCache);
-        }
-        /// <summary>
-        /// åˆ é™¤è®°å½•
-        /// </summary>
-        /// <param name="smtpServer">SMTPæœåŠ¡å™¨</param>
-        /// <param name="smtpPort">SMTPç«¯å£</param>
-        /// <param name="userName">ç™»å½•ç”¨æˆ·å</param>
-        /// <returns>åˆ é™¤æ˜¯å¦æˆåŠŸ</returns>
-        public static bool DeleteByID(string smtpServer, int smtpPort, string userName, string dbkey) {
-            return DeleteByID((string)smtpServer, (int?)smtpPort, (string)userName,  dbkey, null, null);
-        }
-        /// <summary>
-        /// è®°å½•æ˜¯å¦å­˜åœ¨
-        /// </summary>
-        /// <param name="smtpServer">SMTPæœåŠ¡å™¨</param>
-        /// <param name="smtpPort">SMTPç«¯å£</param>
-        /// <param name="userName">ç™»å½•ç”¨æˆ·å</param>
-        /// <param name="where">é™„åŠ æ¡ä»¶ï¼Œç»Ÿä¸€çš„å‰é¢è¦åŠ é“¾æ¥ç¬¦ï¼ˆandã€orç­‰ç­‰ï¼‰</param>
-        /// <param name="dbkey">å­˜åœ¨æ•°æ®åº“è¿æ¥æ± ä¸­çš„è¿æ¥keyï¼Œä¸ºç©ºæ—¶ä½¿ç”¨ConnStringè¿æ¥</param>
-        /// <returns>è®°å½•æ˜¯å¦å­˜åœ¨</returns>
-        public static bool IsExistByID(string smtpServer, int smtpPort, string userName,  string dbkey = "", Where where = null) {
-            long value = new SQL().Database(dbkey).Count(SmtpList._SmtpServer).From(SmtpList._)
-                .Where(new Where()
-                    .AndP(SmtpList._SmtpServer, smtpServer, Operator.Equal)
-                    .AndP(SmtpList._SmtpPort, smtpPort, Operator.Equal)
-                    .AndP(SmtpList._UserName, userName, Operator.Equal)
-                ).Where(where).ToScalar().ToString().ToBigInt();
-            return value == 1;
-        }
-        /// <summary>
-        /// è®°å½•æ˜¯å¦å­˜åœ¨
-        /// </summary>
-        /// <param name="smtpServer">SMTPæœåŠ¡å™¨</param>
-        /// <param name="smtpPort">SMTPç«¯å£</param>
-        /// <param name="userName">ç™»å½•ç”¨æˆ·å</param>
-        /// <returns>è®°å½•æ˜¯å¦å­˜åœ¨</returns>
-        public static bool IsExistByID(string smtpServer, int smtpPort, string userName, string dbkey) {
-            return IsExistByID(smtpServer, smtpPort, userName,  dbkey, null);
-        }
-        /// <summary>
-        /// æŒ‰ä¸»é”®æŸ¥è¯¢ï¼Œè¿”å›æ•°æ®çš„å®ä½“ç±»
-        /// </summary>
-        /// <param name="smtpServer">SMTPæœåŠ¡å™¨</param>
-        /// <param name="smtpPort">SMTPç«¯å£</param>
-        /// <param name="userName">ç™»å½•ç”¨æˆ·å</param>
-        /// <param name="where">é™„åŠ æ¡ä»¶ï¼Œç»Ÿä¸€çš„å‰é¢è¦åŠ é“¾æ¥ç¬¦ï¼ˆandã€orç­‰ç­‰ï¼‰</param>
-        /// <param name="dbkey">å­˜åœ¨æ•°æ®åº“è¿æ¥æ± ä¸­çš„è¿æ¥keyï¼Œä¸ºç©ºæ—¶éšæœºå–è¿æ¥key</param>
-        /// <returns>è¿”å›å•æ¡è®°å½•çš„å®ä½“ç±»</returns>
-        public static SmtpList SelectByID(string smtpServer, int smtpPort, string userName,  string dbkey = "", Where where = null) {
-            string cacheNameKey = "TH.Mailer.SmtpListCache_SelectByID_{0}".FormatWith(smtpServer + "_" + smtpPort + "_" + userName + "_" +  "_" + where);
-            return Cache2.Get<SmtpList>(cacheNameKey, cacheSeconds, () => {
-                SmtpList obj = new SQL().Database(dbkey).From(SmtpList._)
-                    .Select(SmtpList._SmtpServer)
-                    .Select(SmtpList._SmtpPort)
-                    .Select(SmtpList._UserName)
-                    .Select(SmtpList._SPassword)
-                    .Select(SmtpList._SSL)
-                    .Select(SmtpList._Status)
-                    .Select(SmtpList._Sends)
-                    .Select(SmtpList._SendFails)
-                    .Select(SmtpList._CreateTime)
-                    .Where(new Where()
-                        .AndP(SmtpList._SmtpServer, smtpServer, Operator.Equal)
-                        .AndP(SmtpList._SmtpPort, smtpPort, Operator.Equal)
-                        .AndP(SmtpList._UserName, userName, Operator.Equal)
-                    ).Where(where).ToEntity<SmtpList>();
-                return obj;
-            });
-        }
-        /// <summary>
-        /// æŒ‰ä¸»é”®æŸ¥è¯¢ï¼Œè¿”å›æ•°æ®çš„å®ä½“ç±»
-        /// </summary>
-        /// <param name="smtpServer">SMTPæœåŠ¡å™¨</param>
-        /// <param name="smtpPort">SMTPç«¯å£</param>
-        /// <param name="userName">ç™»å½•ç”¨æˆ·å</param>
-        /// <returns>è¿”å›å•æ¡è®°å½•çš„å®ä½“ç±»</returns>
-        public static SmtpList SelectByID(string smtpServer, int smtpPort, string userName, string dbkey) {
-            return SelectByID(smtpServer, smtpPort, userName,  dbkey, null);
-        }
-        /// <summary>
-        /// æ¸…é™¤æŒ‰ä¸»é”®æŸ¥è¯¢çš„ç¼“å­˜
-        /// </summary>
-        public static void ClearCacheSelectByID(string smtpServer, int smtpPort, string userName,  Where where = null) {
-            string cacheName = "TH.Mailer.SmtpListCache_SelectByID_{0}";
-            string cacheNameKey = string.Format(cacheName, smtpServer + "_" + smtpPort + "_" + userName + "_" +  "_" + where);
-            Cache2.Remove(cacheNameKey);
-        }
-        /// <summary>
-        /// æŸ¥è¯¢æ•°æ®ï¼Œå¸¦åˆ†é¡µ
-        /// </summary>
-        /// <param name="pageIndex">å½“å‰ç¬¬å‡ é¡µï¼Œä»1å¼€å§‹</param>
-        /// <param name="pageSize">æ¯é¡µè®°å½•æ•°</param>
-        /// <param name="totalRecords">è¿”å›æ€»è®°å½•æ•°</param>
-        /// <param name="where">é™„åŠ æ¡ä»¶ï¼Œç»Ÿä¸€çš„å‰é¢è¦åŠ é“¾æ¥ç¬¦ï¼ˆandã€orç­‰ç­‰ï¼‰</param>
-        /// <param name="order">æ’åºå­—æ®µï¼Œä¸åŠ â€œorder byâ€</param>
-        /// <param name="fieldList">è®¾ç½®éœ€è¦è¿”å›çš„å­—æ®µ</param>
-        /// <param name="dbkey">å­˜åœ¨æ•°æ®åº“è¿æ¥æ± ä¸­çš„è¿æ¥keyï¼Œä¸ºç©ºæ—¶éšæœºå–è¿æ¥key</param>
-        /// <param name="pageEnum">ä½¿ç”¨å“ªç§åˆ†é¡µæ–¹å¼ï¼ˆnot_inã€max_topã€top_topã€row_numberã€mysqlã€oracleã€sqliteï¼‰</param>
-        /// <returns>è¿”å›å®ä½“è®°å½•é›†</returns>
-        public static IList<SmtpList> SelectPageList(int pageIndex, int pageSize, out int totalRecords, string dbkey = "", Where where = null, string order = "", string fieldList = "", PagerSQLEnum pageEnum = PagerSQLEnum.sqlite) {
-            totalRecords = 0;
-            string cacheNameKey = "TH.Mailer.SmtpListCache_SelectPageList_{0}_{1}_{2}_{3}_{4}".FormatWith(pageIndex, pageSize, where, order, fieldList);
-            string cacheRecordsKey = "TH.Mailer.SmtpListCache_RecordsSelectPageList_{0}_{1}_{2}_{3}_{4}".FormatWith(pageIndex, pageSize, where, order, fieldList);
-            IList<SmtpList> list = (IList<SmtpList>)Cache2.Get(cacheNameKey);
-            if (!list.IsNull()) { totalRecords = (int)Cache2.Get(cacheRecordsKey); return list; }
+	/// <summary>
+	/// ²Ù×÷Àà
+	///
+	/// ĞŞ¸Ä¼ÍÂ¼
+	///	 2013-06-03 °æ±¾£º1.0 ÏµÍ³×Ô¶¯´´½¨´ËÀà
+	///
+	/// </summary>
+	public partial class SmtpListHelper {
+		/// <summary>
+		/// »º´æ¶àÉÙÃë x 5
+		/// </summary>
+		public static int cacheSeconds = 1440;
+		/// <summary>
+		/// Ìí¼Ó¼ÇÂ¼
+		/// </summary>
+		/// <param name="smtpList">ÊµÌåÀà</param>
+		/// <param name="delCache">Ìí¼Ó³É¹¦ºóÇåÀíµÄCACHE key£¬Ö§³ÖÕıÔò</param>
+		/// <param name="dbkey">´æÔÚÊı¾İ¿âÁ¬½Ó³ØÖĞµÄÁ¬½Ókey£¬Îª¿ÕÊ±Ê¹ÓÃConnStringÁ¬½Ó</param>
+		/// <returns>Ìí¼ÓÊÇ·ñ³É¹¦</returns>
+		public static bool Insert(SmtpList smtpList, string dbkey = "", string[] delCache = null) {
+			int obj = new SQL().Database(dbkey).Insert(SmtpList._)
+				.ValueP(SmtpList._SmtpServer, smtpList.SmtpServer)
+				.ValueP(SmtpList._SmtpPort, smtpList.SmtpPort)
+				.ValueP(SmtpList._UserName, smtpList.UserName)
+				.ValueP(SmtpList._SPassword, smtpList.SPassword)
+				.ValueP(SmtpList._SSL, smtpList.SSL)
+				.ValueP(SmtpList._Status, smtpList.Status)
+				.ValueP(SmtpList._Sends, smtpList.Sends)
+				.ValueP(SmtpList._SendFails, smtpList.SendFails)
+				.ValueP(SmtpList._CreateTime, smtpList.CreateTime)
+				.ToExec();
+			if (delCache.IsNull()) return obj == 1;
+			Cache2.Remove("TH.Mailer.SmtpListCache_", delCache);
+			return obj == 1;
+		}
+		/// <summary>
+		/// Ìí¼Ó¼ÇÂ¼
+		/// </summary>
+		/// <param name="smtpList">ÊµÌåÀà</param>
+		/// <returns>Ìí¼ÓÊÇ·ñ³É¹¦</returns>
+		public static bool Insert(SmtpList smtpList, string dbkey) {
+			return Insert(smtpList, dbkey, null);
+		}
+		/// <summary>
+		/// ĞŞ¸Ä¼ÇÂ¼
+		/// </summary>
+		/// <param name="smtpList">ÊµÌåÀà</param>
+		/// <param name="where">ĞŞ¸ÄÊ±¸½¼ÓÌõ¼ş£¬Í³Ò»µÄÇ°ÃæÒª¼ÓÁ´½Ó·û£¨and¡¢orµÈµÈ£©</param>
+		/// <param name="delCache">ĞŞ¸Ä³É¹¦ºóÇåÀíµÄCACHE key£¬Ö§³ÖÕıÔò</param>
+		/// <param name="dbkey">´æÔÚÊı¾İ¿âÁ¬½Ó³ØÖĞµÄÁ¬½Ókey£¬Îª¿ÕÊ±Ê¹ÓÃConnStringÁ¬½Ó</param>
+		/// <returns>ĞŞ¸ÄÊÇ·ñ³É¹¦</returns>
+		public static bool Update(SmtpList smtpList, string dbkey = "", Where where = null, string[] delCache = null) {
+			if (smtpList.SmtpServer.IsNullEmpty()  && smtpList.SmtpPort.IsNull()  && smtpList.UserName.IsNullEmpty()) return false;
+			int value = new SQL().Database(dbkey).Update(SmtpList._)
+				.SetP(SmtpList._SPassword, smtpList.SPassword)
+				.SetP(SmtpList._SSL, smtpList.SSL)
+				.SetP(SmtpList._Status, smtpList.Status)
+				.SetP(SmtpList._Sends, smtpList.Sends)
+				.SetP(SmtpList._SendFails, smtpList.SendFails)
+				.SetP(SmtpList._CreateTime, smtpList.CreateTime)
+				.Where(new Where()
+					.AndP(SmtpList._SmtpServer, smtpList.SmtpServer, Operator.Equal, true)
+					.AndP(SmtpList._SmtpPort, smtpList.SmtpPort, Operator.Equal, true)
+					.AndP(SmtpList._UserName, smtpList.UserName, Operator.Equal, true)
+				).Where(where).ToExec();
+			if (value <= 0) return false;
+			if (delCache.IsNull()) return true;
+			Cache2.Remove("TH.Mailer.SmtpListCache_", delCache);
+			return true;
+		}
+		/// <summary>
+		/// ĞŞ¸Ä¼ÇÂ¼
+		/// </summary>
+		/// <param name="smtpList">ÊµÌåÀà</param>
+		/// <returns>ĞŞ¸ÄÊÇ·ñ³É¹¦</returns>
+		public static bool Update(SmtpList smtpList, string dbkey) {
+			return Update(smtpList, dbkey, null, null);
+		}
+ 		/// <summary>
+		/// É¾³ı¼ÇÂ¼
+		/// </summary>
+		/// <param name="smtpServer">SMTP·şÎñÆ÷</param>
+		/// <param name="smtpPort">SMTP¶Ë¿Ú</param>
+		/// <param name="userName">µÇÂ¼ÓÃ»§Ãû</param>
+		/// <param name="where">ĞŞ¸ÄÊ±¸½¼ÓÌõ¼ş£¬Í³Ò»µÄÇ°ÃæÒª¼ÓÁ´½Ó·û£¨and¡¢orµÈµÈ£©</param>
+		/// <param name="delCache">É¾³ı³É¹¦ºóÇåÀíµÄCACHE key£¬Ö§³ÖÕıÔò</param>
+		/// <param name="dbkey">´æÔÚÊı¾İ¿âÁ¬½Ó³ØÖĞµÄÁ¬½Ókey£¬Îª¿ÕÊ±Ê¹ÓÃConnStringÁ¬½Ó</param>
+		/// <returns>É¾³ıÊÇ·ñ³É¹¦</returns>
+		public static bool DeleteByID(string smtpServer, int? smtpPort, string userName,  string dbkey = "", Where where = null, string[] delCache = null) {
+			if (smtpServer.IsNullEmpty()  && smtpPort.IsNull()  && userName.IsNullEmpty()) return false;
+			int value = new SQL().Database(dbkey).Delete(SmtpList._)
+				.Where(new Where()
+					.AndP(SmtpList._SmtpServer, smtpServer, Operator.Equal, true)
+					.AndP(SmtpList._SmtpPort, smtpPort, Operator.Equal, true)
+					.AndP(SmtpList._UserName, userName, Operator.Equal, true)
+				).Where(where).ToExec();
+			if (value != 1) return false;
+			if (delCache.IsNull()) return true;
+			Cache2.Remove("TH.Mailer.SmtpListCache_", delCache);
+			return true;
+		}
+		/// <summary>
+		/// É¾³ı¼ÇÂ¼
+		/// </summary>
+		/// <param name="smtpServer">SMTP·şÎñÆ÷</param>
+		/// <param name="smtpPort">SMTP¶Ë¿Ú</param>
+		/// <param name="userName">µÇÂ¼ÓÃ»§Ãû</param>
+		/// <returns>É¾³ıÊÇ·ñ³É¹¦</returns>
+		public static bool DeleteByID(string smtpServer, int? smtpPort, string userName, string dbkey) {
+			return DeleteByID(smtpServer, smtpPort, userName,  dbkey, null, null);
+		}
+		/// <summary>
+		/// É¾³ı¼ÇÂ¼
+		/// </summary>
+		/// <param name="smtpServer">SMTP·şÎñÆ÷</param>
+		/// <param name="smtpPort">SMTP¶Ë¿Ú</param>
+		/// <param name="userName">µÇÂ¼ÓÃ»§Ãû</param>
+		/// <param name="where">ĞŞ¸ÄÊ±¸½¼ÓÌõ¼ş£¬Í³Ò»µÄÇ°ÃæÒª¼ÓÁ´½Ó·û£¨and¡¢orµÈµÈ£©</param>
+		/// <param name="delCache">É¾³ı³É¹¦ºóÇåÀíµÄCACHE key£¬Ö§³ÖÕıÔò</param>
+		/// <param name="dbkey">´æÔÚÊı¾İ¿âÁ¬½Ó³ØÖĞµÄÁ¬½Ókey£¬Îª¿ÕÊ±Ê¹ÓÃConnStringÁ¬½Ó</param>
+		/// <returns>É¾³ıÊÇ·ñ³É¹¦</returns>
+		public static bool DeleteByID(string smtpServer, int smtpPort, string userName,  string dbkey = "", Where where = null, string[] delCache = null) {
+			return DeleteByID((string)smtpServer, (int?)smtpPort, (string)userName,  dbkey, where, delCache);
+		}
+		/// <summary>
+		/// É¾³ı¼ÇÂ¼
+		/// </summary>
+		/// <param name="smtpServer">SMTP·şÎñÆ÷</param>
+		/// <param name="smtpPort">SMTP¶Ë¿Ú</param>
+		/// <param name="userName">µÇÂ¼ÓÃ»§Ãû</param>
+		/// <returns>É¾³ıÊÇ·ñ³É¹¦</returns>
+		public static bool DeleteByID(string smtpServer, int smtpPort, string userName, string dbkey) {
+			return DeleteByID((string)smtpServer, (int?)smtpPort, (string)userName,  dbkey, null, null);
+		}
+		/// <summary>
+		/// ¼ÇÂ¼ÊÇ·ñ´æÔÚ
+		/// </summary>
+		/// <param name="smtpServer">SMTP·şÎñÆ÷</param>
+		/// <param name="smtpPort">SMTP¶Ë¿Ú</param>
+		/// <param name="userName">µÇÂ¼ÓÃ»§Ãû</param>
+		/// <param name="where">¸½¼ÓÌõ¼ş£¬Í³Ò»µÄÇ°ÃæÒª¼ÓÁ´½Ó·û£¨and¡¢orµÈµÈ£©</param>
+		/// <param name="dbkey">´æÔÚÊı¾İ¿âÁ¬½Ó³ØÖĞµÄÁ¬½Ókey£¬Îª¿ÕÊ±Ê¹ÓÃConnStringÁ¬½Ó</param>
+		/// <returns>¼ÇÂ¼ÊÇ·ñ´æÔÚ</returns>
+		public static bool IsExistByID(string smtpServer, int smtpPort, string userName,  string dbkey = "", Where where = null) {
+			long value = new SQL().Database(dbkey).Count(SmtpList._SmtpServer).From(SmtpList._)
+				.Where(new Where()
+					.AndP(SmtpList._SmtpServer, smtpServer, Operator.Equal)
+					.AndP(SmtpList._SmtpPort, smtpPort, Operator.Equal)
+					.AndP(SmtpList._UserName, userName, Operator.Equal)
+				).Where(where).ToScalar().ToString().ToBigInt();
+			return value == 1;
+		}
+		/// <summary>
+		/// ¼ÇÂ¼ÊÇ·ñ´æÔÚ
+		/// </summary>
+		/// <param name="smtpServer">SMTP·şÎñÆ÷</param>
+		/// <param name="smtpPort">SMTP¶Ë¿Ú</param>
+		/// <param name="userName">µÇÂ¼ÓÃ»§Ãû</param>
+		/// <returns>¼ÇÂ¼ÊÇ·ñ´æÔÚ</returns>
+		public static bool IsExistByID(string smtpServer, int smtpPort, string userName, string dbkey) {
+			return IsExistByID(smtpServer, smtpPort, userName,  dbkey, null);
+		}
+		/// <summary>
+		/// °´Ö÷¼ü²éÑ¯£¬·µ»ØÊı¾İµÄÊµÌåÀà
+		/// </summary>
+		/// <param name="smtpServer">SMTP·şÎñÆ÷</param>
+		/// <param name="smtpPort">SMTP¶Ë¿Ú</param>
+		/// <param name="userName">µÇÂ¼ÓÃ»§Ãû</param>
+		/// <param name="where">¸½¼ÓÌõ¼ş£¬Í³Ò»µÄÇ°ÃæÒª¼ÓÁ´½Ó·û£¨and¡¢orµÈµÈ£©</param>
+		/// <param name="dbkey">´æÔÚÊı¾İ¿âÁ¬½Ó³ØÖĞµÄÁ¬½Ókey£¬Îª¿ÕÊ±Ëæ»úÈ¡Á¬½Ókey</param>
+		/// <returns>·µ»Øµ¥Ìõ¼ÇÂ¼µÄÊµÌåÀà</returns>
+		public static SmtpList SelectByID(string smtpServer, int smtpPort, string userName,  string dbkey = "", Where where = null) {
+			string cacheNameKey = "TH.Mailer.SmtpListCache_SelectByID_{0}".FormatWith(smtpServer + "_" + smtpPort + "_" + userName + "_" +  "_" + where);
+			return Cache2.Get<SmtpList>(cacheNameKey, cacheSeconds, () => {
+				SmtpList obj = new SQL().Database(dbkey).From(SmtpList._)
+					.Select(SmtpList._SmtpServer)
+					.Select(SmtpList._SmtpPort)
+					.Select(SmtpList._UserName)
+					.Select(SmtpList._SPassword)
+					.Select(SmtpList._SSL)
+					.Select(SmtpList._Status)
+					.Select(SmtpList._Sends)
+					.Select(SmtpList._SendFails)
+					.Select(SmtpList._CreateTime)
+					.Where(new Where()
+						.AndP(SmtpList._SmtpServer, smtpServer, Operator.Equal)
+						.AndP(SmtpList._SmtpPort, smtpPort, Operator.Equal)
+						.AndP(SmtpList._UserName, userName, Operator.Equal)
+					).Where(where).ToEntity<SmtpList>();
+				return obj;
+			});
+		}
+		/// <summary>
+		/// °´Ö÷¼ü²éÑ¯£¬·µ»ØÊı¾İµÄÊµÌåÀà
+		/// </summary>
+		/// <param name="smtpServer">SMTP·şÎñÆ÷</param>
+		/// <param name="smtpPort">SMTP¶Ë¿Ú</param>
+		/// <param name="userName">µÇÂ¼ÓÃ»§Ãû</param>
+		/// <returns>·µ»Øµ¥Ìõ¼ÇÂ¼µÄÊµÌåÀà</returns>
+		public static SmtpList SelectByID(string smtpServer, int smtpPort, string userName, string dbkey) {
+			return SelectByID(smtpServer, smtpPort, userName,  dbkey, null);
+		}
+		/// <summary>
+		/// Çå³ı°´Ö÷¼ü²éÑ¯µÄ»º´æ
+		/// </summary>
+		public static void ClearCacheSelectByID(string smtpServer, int smtpPort, string userName,  Where where = null) {
+			string cacheName = "TH.Mailer.SmtpListCache_SelectByID_{0}";
+			string cacheNameKey = string.Format(cacheName, smtpServer + "_" + smtpPort + "_" + userName + "_" +  "_" + where);
+			Cache2.Remove(cacheNameKey);
+		}
+		/// <summary>
+		/// ²éÑ¯Êı¾İ£¬´ø·ÖÒ³
+		/// </summary>
+		/// <param name="pageIndex">µ±Ç°µÚ¼¸Ò³£¬´Ó1¿ªÊ¼</param>
+		/// <param name="pageSize">Ã¿Ò³¼ÇÂ¼Êı</param>
+		/// <param name="totalRecords">·µ»Ø×Ü¼ÇÂ¼Êı</param>
+		/// <param name="where">¸½¼ÓÌõ¼ş£¬Í³Ò»µÄÇ°ÃæÒª¼ÓÁ´½Ó·û£¨and¡¢orµÈµÈ£©</param>
+		/// <param name="order">ÅÅĞò×Ö¶Î£¬²»¼Ó¡°order by¡±</param>
+		/// <param name="fieldList">ÉèÖÃĞèÒª·µ»ØµÄ×Ö¶Î</param>
+		/// <param name="dbkey">´æÔÚÊı¾İ¿âÁ¬½Ó³ØÖĞµÄÁ¬½Ókey£¬Îª¿ÕÊ±Ëæ»úÈ¡Á¬½Ókey</param>
+		/// <param name="pageEnum">Ê¹ÓÃÄÄÖÖ·ÖÒ³·½Ê½£¨not_in¡¢max_top¡¢top_top¡¢row_number¡¢mysql¡¢oracle¡¢sqlite£©</param>
+		/// <returns>·µ»ØÊµÌå¼ÇÂ¼¼¯</returns>
+		public static IList<SmtpList> SelectPageList(int pageIndex, int pageSize, out int totalRecords, string dbkey = "", Where where = null, string order = "", string fieldList = "", PagerSQLEnum pageEnum = PagerSQLEnum.sqlite) {
+			totalRecords = 0;
+			string cacheNameKey = "TH.Mailer.SmtpListCache_SelectPageList_{0}_{1}_{2}_{3}_{4}".FormatWith(pageIndex, pageSize, where, order, fieldList);
+			string cacheRecordsKey = "TH.Mailer.SmtpListCache_RecordsSelectPageList_{0}_{1}_{2}_{3}_{4}".FormatWith(pageIndex, pageSize, where, order, fieldList);
+			IList<SmtpList> list = (IList<SmtpList>)Cache2.Get(cacheNameKey);
+			if (!list.IsNull()) { totalRecords = (int)Cache2.Get(cacheRecordsKey); return list; }
 
-            using (PagerSQLHelper s = new PagerSQLHelper(pageEnum)) {
-                PagerSql sql = s.GetSQL(pageIndex, pageSize, SmtpList._, SmtpList._SmtpServer, fieldList.IfNullOrEmpty("[SmtpServer],[SmtpPort],[UserName],[SPassword],[SSL],[Status],[Sends],[SendFails],[CreateTime],"), where, "", order);
-                DataSet ds = Data.Pool(dbkey).GetDataSet(sql.DataSql + ";" + sql.CountSql);
-                if (ds.IsNull()) return list;
-                list = ds.Tables[0].ToList<SmtpList>();
-                totalRecords = ds.Tables[1].Rows[0][0].ToString().ToInt();
-                ds.Dispose(); ds = null;
-            }
-            Cache2.Insert(cacheNameKey, list, cacheSeconds);
-            Cache2.Insert(cacheRecordsKey, totalRecords, cacheSeconds);
-            return list;
-        }
-        /// <summary>
-        /// æŸ¥è¯¢è®°å½•ï¼Œå¸¦åˆ†é¡µ
-        /// </summary>
-        /// <param name="pageIndex">å½“å‰ç¬¬å‡ é¡µï¼Œä»1å¼€å§‹</param>
-        /// <param name="pageSize">æ¯é¡µè®°å½•æ•°</param>
-        /// <param name="totalRecords">è¿”å›æ€»è®°å½•æ•°</param>
-        /// <returns>è¿”å›å®ä½“è®°å½•é›†</returns>
-        public static IList<SmtpList> SelectPageList(int pageIndex, int pageSize, out int totalRecords, string dbkey) {
-            return SelectPageList(pageIndex, pageSize, out totalRecords, dbkey, null, "", "", PagerSQLEnum.sqlite);
-        }
-        /// <summary>
-        /// æ¸…é™¤æŸ¥è¯¢è®°å½•ï¼Œå¸¦åˆ†é¡µçš„ç¼“å­˜
-        /// </summary>
-        public static void ClearCacheSelectPageList() {
-            string cacheNameKey = "TH.Mailer.SmtpListCache_SelectPageList_(.+?)";
-            string cacheRecordsKey = "TH.Mailer.SmtpListCache_RecordsSelectPageList_(.+?)";
-            Cache2.RemoveByPattern(cacheNameKey);
-            Cache2.RemoveByPattern(cacheRecordsKey);
-        }
-        /// <summary>
-        /// æŸ¥è¯¢æ‰€æœ‰è®°å½•
-        /// </summary>
-        /// <param name="where">é™„åŠ æ¡ä»¶ï¼Œç»Ÿä¸€çš„å‰é¢è¦åŠ é“¾æ¥ç¬¦ï¼ˆandã€orç­‰ç­‰ï¼‰</param>
-        /// <param name="order">æ’åºå­—æ®µï¼Œä¸åŠ â€œorder byâ€</param>
-        /// <param name="fieldList">è®¾ç½®éœ€è¦è¿”å›çš„å­—æ®µ</param>
-        /// <param name="dbkey">å­˜åœ¨æ•°æ®åº“è¿æ¥æ± ä¸­çš„è¿æ¥keyï¼Œä¸ºç©ºæ—¶éšæœºå–è¿æ¥key</param>
-        /// <returns>è¿”å›å®ä½“è®°å½•é›†</returns>
-        public static IList<SmtpList> SelectListByAll(string dbkey = "", Where where = null, string order = "", string fieldList = "") {
-            string cacheNameKey = "TH.Mailer.SmtpListCache_SelectListByAll_{0}_{1}_{2}".FormatWith(where, order, fieldList);
-            return Cache2.Get<IList<SmtpList>>(cacheNameKey, cacheSeconds, () => {
-                IList<SmtpList> list = new List<SmtpList>();
-                if (fieldList.IsNullEmpty()) {
-                    list = new SQL().Database(dbkey).From(SmtpList._)
-                        .Select(SmtpList._SmtpServer)
-                        .Select(SmtpList._SmtpPort)
-                        .Select(SmtpList._UserName)
-                        .Select(SmtpList._SPassword)
-                        .Select(SmtpList._SSL)
-                        .Select(SmtpList._Status)
-                        .Select(SmtpList._Sends)
-                        .Select(SmtpList._SendFails)
-                        .Select(SmtpList._CreateTime)
-                        .Where(where).Order(order).ToList<SmtpList>();
-                } else {
-                    list = new SQL().Database(dbkey).From(SmtpList._).Select(fieldList).Where(where).Order(order).ToList<SmtpList>();
-                }
-                return list;
-            });
-        }
-        /// <summary>
-        /// æŸ¥è¯¢æ‰€æœ‰è®°å½•
-        /// </summary>
-        /// <returns>è¿”å›å®ä½“è®°å½•é›†</returns>
-        public static IList<SmtpList> SelectListByAll(string dbkey) {
-            return SelectListByAll(dbkey, null, "", "");
-        }
-        /// <summary>
-        /// åˆ é™¤æ‰€æœ‰è®°å½•
-        /// </summary>
-        /// <param name="dbkey">å­˜åœ¨æ•°æ®åº“è¿æ¥æ± ä¸­çš„è¿æ¥keyï¼Œä¸ºç©ºæ—¶éšæœºå–è¿æ¥key</param>
-        /// <returns>è¿”å›å®ä½“è®°å½•é›†</returns>
-        public static bool RemoveAll(string dbkey = "") {
-            return (new SQL().Database(dbkey).Delete(SmtpList._).ToExec()) > 0;
-        }
-        /// <summary>
-        /// æ¸…é™¤æŸ¥è¯¢æ‰€æœ‰è®°å½•çš„ç¼“å­˜
-        /// </summary>
-        public static void ClearCacheSelectListByAll() {
-            //Cache2.Remove("TH.Mailer.SmtpListCache_SelectListByAll___");
-            Cache2.RemoveByPattern("TH.Mailer.SmtpListCache_SelectListByAll_(.+?)");
-        }
-        /// <summary>
-        /// æ¸…é™¤æ‰€æœ‰ç¼“å­˜
-        /// </summary>
-        public static void ClearCacheAll() {
-            Cache2.RemoveByPattern("TH.Mailer.SmtpListCache_(.+?)");
-        }
-    }
+			using (PagerSQLHelper s = new PagerSQLHelper(pageEnum)) {
+				PagerSql sql = s.GetSQL(pageIndex, pageSize, SmtpList._, SmtpList._SmtpServer, fieldList.IfNullOrEmpty("[SmtpServer],[SmtpPort],[UserName],[SPassword],[SSL],[Status],[Sends],[SendFails],[CreateTime],"), where, "", order);
+				IDataReader dr = Data.Pool(dbkey).GetDbDataReader(sql.DataSql + ";" + sql.CountSql);
+				if (dr.IsNull()) return list;
+				list = dr.ToList<SmtpList>(false);
+				bool result = dr.NextResult();
+				if (result) { dr.Read(); totalRecords = dr[0].ToString().ToInt(); }
+				dr.Close (); dr.Dispose(); dr = null;
+			}
+			Cache2.Insert(cacheNameKey, list, cacheSeconds);
+			Cache2.Insert(cacheRecordsKey, totalRecords, cacheSeconds);
+			return list;
+		}
+		/// <summary>
+		/// ²éÑ¯¼ÇÂ¼£¬´ø·ÖÒ³
+		/// </summary>
+		/// <param name="pageIndex">µ±Ç°µÚ¼¸Ò³£¬´Ó1¿ªÊ¼</param>
+		/// <param name="pageSize">Ã¿Ò³¼ÇÂ¼Êı</param>
+		/// <param name="totalRecords">·µ»Ø×Ü¼ÇÂ¼Êı</param>
+		/// <returns>·µ»ØÊµÌå¼ÇÂ¼¼¯</returns>
+		public static IList<SmtpList> SelectPageList(int pageIndex, int pageSize, out int totalRecords, string dbkey) {
+			return SelectPageList(pageIndex, pageSize, out totalRecords, dbkey, null, "", "", PagerSQLEnum.sqlite);
+		}
+		/// <summary>
+		/// Çå³ı²éÑ¯¼ÇÂ¼£¬´ø·ÖÒ³µÄ»º´æ
+		/// </summary>
+		public static void ClearCacheSelectPageList() {
+			string cacheNameKey = "TH.Mailer.SmtpListCache_SelectPageList_(.+?)";
+			string cacheRecordsKey = "TH.Mailer.SmtpListCache_RecordsSelectPageList_(.+?)";
+			Cache2.RemoveByPattern(cacheNameKey);
+			Cache2.RemoveByPattern(cacheRecordsKey);
+		}
+		/// <summary>
+		/// ²éÑ¯ËùÓĞ¼ÇÂ¼
+		/// </summary>
+		/// <param name="where">¸½¼ÓÌõ¼ş£¬Í³Ò»µÄÇ°ÃæÒª¼ÓÁ´½Ó·û£¨and¡¢orµÈµÈ£©</param>
+		/// <param name="order">ÅÅĞò×Ö¶Î£¬²»¼Ó¡°order by¡±</param>
+		/// <param name="fieldList">ÉèÖÃĞèÒª·µ»ØµÄ×Ö¶Î</param>
+		/// <param name="dbkey">´æÔÚÊı¾İ¿âÁ¬½Ó³ØÖĞµÄÁ¬½Ókey£¬Îª¿ÕÊ±Ëæ»úÈ¡Á¬½Ókey</param>
+		/// <returns>·µ»ØÊµÌå¼ÇÂ¼¼¯</returns>
+		public static IList<SmtpList> SelectListByAll(string dbkey = "", Where where = null, string order = "", string fieldList = "") {
+			string cacheNameKey = "TH.Mailer.SmtpListCache_SelectListByAll_{0}_{1}_{2}".FormatWith(where, order, fieldList);
+			return Cache2.Get<IList<SmtpList>>(cacheNameKey, cacheSeconds, () => {
+				IList<SmtpList> list = new List<SmtpList>();
+				if (fieldList.IsNullEmpty()) {
+					list = new SQL().Database(dbkey).From(SmtpList._)
+						.Select(SmtpList._SmtpServer)
+						.Select(SmtpList._SmtpPort)
+						.Select(SmtpList._UserName)
+						.Select(SmtpList._SPassword)
+						.Select(SmtpList._SSL)
+						.Select(SmtpList._Status)
+						.Select(SmtpList._Sends)
+						.Select(SmtpList._SendFails)
+						.Select(SmtpList._CreateTime)
+						.Where(where).Order(order).ToList<SmtpList>();
+				} else {
+					list = new SQL().Database(dbkey).From(SmtpList._).Select(fieldList).Where(where).Order(order).ToList<SmtpList>();
+				}
+				return list;
+			});
+		}
+		/// <summary>
+		/// ²éÑ¯ËùÓĞ¼ÇÂ¼
+		/// </summary>
+		/// <returns>·µ»ØÊµÌå¼ÇÂ¼¼¯</returns>
+		public static IList<SmtpList> SelectListByAll(string dbkey) {
+			return SelectListByAll(dbkey, null, "", "");
+		}
+		/// <summary>
+		/// É¾³ıËùÓĞ¼ÇÂ¼
+		/// </summary>
+		/// <param name="dbkey">´æÔÚÊı¾İ¿âÁ¬½Ó³ØÖĞµÄÁ¬½Ókey£¬Îª¿ÕÊ±Ëæ»úÈ¡Á¬½Ókey</param>
+		/// <returns>·µ»ØÊµÌå¼ÇÂ¼¼¯</returns>
+		public static bool RemoveAll(string dbkey = "") {
+			return (new SQL().Database(dbkey).Delete(SmtpList._).ToExec()) > 0;
+		}
+		/// <summary>
+		/// Çå³ı²éÑ¯ËùÓĞ¼ÇÂ¼µÄ»º´æ
+		/// </summary>
+		public static void ClearCacheSelectListByAll() {
+			//Cache2.Remove("TH.Mailer.SmtpListCache_SelectListByAll___");
+			Cache2.RemoveByPattern("TH.Mailer.SmtpListCache_SelectListByAll_(.+?)");
+		}
+		/// <summary>
+		/// Çå³ıËùÓĞ»º´æ
+		/// </summary>
+		public static void ClearCacheAll() {
+			Cache2.RemoveByPattern("TH.Mailer.SmtpListCache_(.+?)");
+		}
+	}
 }
 

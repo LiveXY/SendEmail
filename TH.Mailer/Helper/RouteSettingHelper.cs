@@ -1,4 +1,4 @@
-ï»¿//-------------------------------------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------------------------------------
 // All Rights Reserved , Copyright (C) 2013 , TH , Ltd.
 //-------------------------------------------------------------------------------------------------------------------------------------
 
@@ -17,175 +17,175 @@ using TH.Mailer.Entity;
 using Pub.Class;
 
 namespace TH.Mailer.Helper {
-    /// <summary>
-    /// è·¯ç”±æ“ä½œç±»
-    /// 
-    /// ä¿®æ”¹çºªå½•
-    ///     2013-06-03 ç‰ˆæœ¬ï¼š1.0 ç³»ç»Ÿè‡ªåŠ¨åˆ›å»ºæ­¤ç±»
-    /// 
-    /// </summary>
-    public partial class RouteSettingHelper {
-        /// <summary>
-        /// è·¯ç”±ç¼“å­˜å¤šå°‘ç§’ x 5
-        /// </summary>
-        public static int cacheSeconds = 1440;
-        /// <summary>
-        /// è·¯ç”±æ·»åŠ è®°å½•
-        /// </summary>
-        /// <param name="routeSetting">è·¯ç”±å®ä½“ç±»</param>
-        /// <param name="delCache">æ·»åŠ æˆåŠŸåæ¸…ç†çš„CACHE keyï¼Œæ”¯æŒæ­£åˆ™</param>
-        /// <param name="dbkey">å­˜åœ¨æ•°æ®åº“è¿æ¥æ± ä¸­çš„è¿æ¥keyï¼Œä¸ºç©ºæ—¶ä½¿ç”¨ConnStringè¿æ¥</param>
-        /// <returns>æ·»åŠ æ˜¯å¦æˆåŠŸ</returns>
-        public static bool Insert(RouteSetting routeSetting, string dbkey = "", string[] delCache = null) {
-            int obj = new SQL().Database(dbkey).Insert(RouteSetting._)
-                .ValueP(RouteSetting._RouteID, routeSetting.RouteID)
-                .ValueP(RouteSetting._RouteIP, routeSetting.RouteIP)
-                .ValueP(RouteSetting._UserName, routeSetting.UserName)
-                .ValueP(RouteSetting._RPassword, routeSetting.RPassword)
-                .ValueP(RouteSetting._RouteConnect, routeSetting.RouteConnect)
-                .ValueP(RouteSetting._RouteDisConnect, routeSetting.RouteDisConnect)
-                .ValueP(RouteSetting._RouteMethod, routeSetting.RouteMethod)
-                .ToExec();
-            if (delCache.IsNull()) return obj == 1;
-            Cache2.Remove("TH.Mailer.RouteSettingCache_", delCache);
-            return obj == 1;
-        }
-        /// <summary>
-        /// è·¯ç”±æ·»åŠ è®°å½•
-        /// </summary>
-        /// <param name="routeSetting">è·¯ç”±å®ä½“ç±»</param>
-        /// <returns>æ·»åŠ æ˜¯å¦æˆåŠŸ</returns>
-        public static bool Insert(RouteSetting routeSetting, string dbkey) {
-            return Insert(routeSetting, dbkey, null);
-        }
-        /// <summary>
-        /// è·¯ç”±ä¿®æ”¹è®°å½•
-        /// </summary>
-        /// <param name="routeSetting">è·¯ç”±å®ä½“ç±»</param>
-        /// <param name="where">ä¿®æ”¹æ—¶é™„åŠ æ¡ä»¶ï¼Œç»Ÿä¸€çš„å‰é¢è¦åŠ é“¾æ¥ç¬¦ï¼ˆandã€orç­‰ç­‰ï¼‰</param>
-        /// <param name="delCache">ä¿®æ”¹æˆåŠŸåæ¸…ç†çš„CACHE keyï¼Œæ”¯æŒæ­£åˆ™</param>
-        /// <param name="dbkey">å­˜åœ¨æ•°æ®åº“è¿æ¥æ± ä¸­çš„è¿æ¥keyï¼Œä¸ºç©ºæ—¶ä½¿ç”¨ConnStringè¿æ¥</param>
-        /// <returns>ä¿®æ”¹æ˜¯å¦æˆåŠŸ</returns>
-        public static bool Update(RouteSetting routeSetting, string dbkey = "", Where where = null, string[] delCache = null) {
-            if (routeSetting.RouteID.IsNull()) return false;
-            int value = new SQL().Database(dbkey).Update(RouteSetting._)
-                .SetP(RouteSetting._RouteIP, routeSetting.RouteIP)
-                .SetP(RouteSetting._UserName, routeSetting.UserName)
-                .SetP(RouteSetting._RPassword, routeSetting.RPassword)
-                .SetP(RouteSetting._RouteConnect, routeSetting.RouteConnect)
-                .SetP(RouteSetting._RouteDisConnect, routeSetting.RouteDisConnect)
-                .SetP(RouteSetting._RouteMethod, routeSetting.RouteMethod)
-                .Where(new Where()
-                    .AndP(RouteSetting._RouteID, routeSetting.RouteID, Operator.Equal, true)
-                ).Where(where).ToExec();
-            if (value <= 0) return false;
-            if (delCache.IsNull()) return true;
-            Cache2.Remove("TH.Mailer.RouteSettingCache_", delCache);
-            return true;
-        }
-        /// <summary>
-        /// è·¯ç”±ä¿®æ”¹è®°å½•
-        /// </summary>
-        /// <param name="routeSetting">è·¯ç”±å®ä½“ç±»</param>
-        /// <returns>ä¿®æ”¹æ˜¯å¦æˆåŠŸ</returns>
-        public static bool Update(RouteSetting routeSetting, string dbkey) {
-            return Update(routeSetting, dbkey, null, null);
-        }
-        /// <summary>
-        /// è·¯ç”±ä¿®æ”¹å¤šæ¡è®°å½•
-        /// </summary>
-        /// <param name="routeIDList">è·¯ç”±ç¼–å·åˆ—è¡¨ï¼Œç”¨â€œ,â€å·åˆ†éš”</param>
-        /// <param name="routeSetting">è·¯ç”±å®ä½“ç±»</param>
-        /// <param name="where">ä¿®æ”¹æ—¶é™„åŠ æ¡ä»¶ï¼Œç»Ÿä¸€çš„å‰é¢è¦åŠ é“¾æ¥ç¬¦ï¼ˆandã€orç­‰ç­‰ï¼‰</param>
-        /// <param name="delCache">ä¿®æ”¹æˆåŠŸåæ¸…ç†çš„CACHE keyï¼Œæ”¯æŒæ­£åˆ™</param>
-        /// <param name="dbkey">å­˜åœ¨æ•°æ®åº“è¿æ¥æ± ä¸­çš„è¿æ¥keyï¼Œä¸ºç©ºæ—¶ä½¿ç”¨ConnStringè¿æ¥</param>
-        /// <returns>ä¿®æ”¹æ˜¯å¦æˆåŠŸ</returns>
-        public static bool UpdateByIDList(IEnumerable<int> routeIDList,  RouteSetting routeSetting, string dbkey = "", Where where = null, string[] delCache = null) {
-            int value = new SQL().Database(dbkey).Update(RouteSetting._)
-                .SetP(RouteSetting._RouteIP, routeSetting.RouteIP)
-                .SetP(RouteSetting._UserName, routeSetting.UserName)
-                .SetP(RouteSetting._RPassword, routeSetting.RPassword)
-                .SetP(RouteSetting._RouteConnect, routeSetting.RouteConnect)
-                .SetP(RouteSetting._RouteDisConnect, routeSetting.RouteDisConnect)
-                .SetP(RouteSetting._RouteMethod, routeSetting.RouteMethod)
-                .Where(new Where()
-                    .And(RouteSetting._RouteID, "(" + routeIDList .Join(",") + ")", Operator.In)
-                ).Where(where).ToExec();
-            if (value <= 0) return false;
-            if (delCache.IsNull()) return true;
-            Cache2.Remove("TH.Mailer.RouteSettingCache_", delCache);
-            return true;
-        }
-        /// <summary>
-        /// è·¯ç”±ä¿®æ”¹å¤šæ¡è®°å½•
-        /// </summary>
-        /// <param name="routeIDList">è·¯ç”±ç¼–å·åˆ—è¡¨ï¼Œç”¨â€œ,â€å·åˆ†éš”</param>
-        /// <param name="routeSetting">è·¯ç”±å®ä½“ç±»</param>
-        /// <returns>ä¿®æ”¹æ˜¯å¦æˆåŠŸ</returns>
-        public static bool UpdateByIDList(IEnumerable<int> routeIDList,  RouteSetting routeSetting, string dbkey) {
-            return UpdateByIDList(routeIDList,  routeSetting, dbkey, null, null);
-        }
-        /// <summary>
-        /// è·¯ç”±æŒ‰ä¸»é”®æŸ¥è¯¢ï¼Œè¿”å›æ•°æ®çš„å®ä½“ç±»
-        /// </summary>
-        /// <param name="routeID">è·¯ç”±ç¼–å·</param>
-        /// <param name="where">é™„åŠ æ¡ä»¶ï¼Œç»Ÿä¸€çš„å‰é¢è¦åŠ é“¾æ¥ç¬¦ï¼ˆandã€orç­‰ç­‰ï¼‰</param>
-        /// <param name="dbkey">å­˜åœ¨æ•°æ®åº“è¿æ¥æ± ä¸­çš„è¿æ¥keyï¼Œä¸ºç©ºæ—¶éšæœºå–è¿æ¥key</param>
-        /// <returns>è¿”å›å•æ¡è®°å½•çš„å®ä½“ç±»</returns>
-        public static RouteSetting SelectByID(int routeID,  string dbkey = "", Where where = null) {
-            string cacheNameKey = "TH.Mailer.RouteSettingCache_SelectByID_{0}".FormatWith(routeID + "_" +  "_" + where);
-            return Cache2.Get<RouteSetting>(cacheNameKey, cacheSeconds, () => {
-                RouteSetting obj = new SQL().Database(dbkey).From(RouteSetting._)
-                    .Select(RouteSetting._RouteID)
-                    .Select(RouteSetting._RouteIP)
-                    .Select(RouteSetting._UserName)
-                    .Select(RouteSetting._RPassword)
-                    .Select(RouteSetting._RouteConnect)
-                    .Select(RouteSetting._RouteDisConnect)
-                    .Select(RouteSetting._RouteMethod)
-                    .Where(new Where()
-                        .AndP(RouteSetting._RouteID, routeID, Operator.Equal)
-                    ).Where(where).ToEntity<RouteSetting>();
-                return obj;
-            });
-        }
-        /// <summary>
-        /// è·¯ç”±æŒ‰ä¸»é”®æŸ¥è¯¢ï¼Œè¿”å›æ•°æ®çš„å®ä½“ç±»
-        /// </summary>
-        /// <param name="routeID">è·¯ç”±ç¼–å·</param>
-        /// <returns>è¿”å›å•æ¡è®°å½•çš„å®ä½“ç±»</returns>
-        public static RouteSetting SelectByID(int routeID, string dbkey) {
-            return SelectByID(routeID,  dbkey, null);
-        }
-        /// <summary>
-        /// æ¸…é™¤è·¯ç”±æŒ‰ä¸»é”®æŸ¥è¯¢çš„ç¼“å­˜
-        /// </summary>
-        public static void ClearCacheSelectByID(int routeID,  Where where = null) {
-            string cacheName = "TH.Mailer.RouteSettingCache_SelectByID_{0}";
-            string cacheNameKey = string.Format(cacheName, routeID + "_" +  "_" + where);
-            Cache2.Remove(cacheNameKey);
-        }
-        /// <summary>
-        /// è·¯ç”±åˆ é™¤æ‰€æœ‰è®°å½•
-        /// </summary>
-        /// <param name="dbkey">å­˜åœ¨æ•°æ®åº“è¿æ¥æ± ä¸­çš„è¿æ¥keyï¼Œä¸ºç©ºæ—¶éšæœºå–è¿æ¥key</param>
-        /// <returns>è¿”å›å®ä½“è®°å½•é›†</returns>
-        public static bool RemoveAll(string dbkey = "") {
-            return (new SQL().Database(dbkey).Delete(RouteSetting._).ToExec()) > 0;
-        }
-        /// <summary>
-        /// æ¸…é™¤è·¯ç”±æŸ¥è¯¢æ‰€æœ‰è®°å½•çš„ç¼“å­˜
-        /// </summary>
-        public static void ClearCacheSelectListByAll() {
-            //Cache2.Remove("TH.Mailer.RouteSettingCache_SelectListByAll___");
-            Cache2.RemoveByPattern("TH.Mailer.RouteSettingCache_SelectListByAll_(.+?)");
-        }
-        /// <summary>
-        /// æ¸…é™¤è·¯ç”±æ‰€æœ‰ç¼“å­˜
-        /// </summary>
-        public static void ClearCacheAll() {
-            Cache2.RemoveByPattern("TH.Mailer.RouteSettingCache_(.+?)");
-        }
-    }
+	/// <summary>
+	/// Â·ÓÉ²Ù×÷Àà
+	///
+	/// ĞŞ¸Ä¼ÍÂ¼
+	///	 2013-06-03 °æ±¾£º1.0 ÏµÍ³×Ô¶¯´´½¨´ËÀà
+	///
+	/// </summary>
+	public partial class RouteSettingHelper {
+		/// <summary>
+		/// Â·ÓÉ»º´æ¶àÉÙÃë x 5
+		/// </summary>
+		public static int cacheSeconds = 1440;
+		/// <summary>
+		/// Â·ÓÉÌí¼Ó¼ÇÂ¼
+		/// </summary>
+		/// <param name="routeSetting">Â·ÓÉÊµÌåÀà</param>
+		/// <param name="delCache">Ìí¼Ó³É¹¦ºóÇåÀíµÄCACHE key£¬Ö§³ÖÕıÔò</param>
+		/// <param name="dbkey">´æÔÚÊı¾İ¿âÁ¬½Ó³ØÖĞµÄÁ¬½Ókey£¬Îª¿ÕÊ±Ê¹ÓÃConnStringÁ¬½Ó</param>
+		/// <returns>Ìí¼ÓÊÇ·ñ³É¹¦</returns>
+		public static bool Insert(RouteSetting routeSetting, string dbkey = "", string[] delCache = null) {
+			int obj = new SQL().Database(dbkey).Insert(RouteSetting._)
+				.ValueP(RouteSetting._RouteID, routeSetting.RouteID)
+				.ValueP(RouteSetting._RouteIP, routeSetting.RouteIP)
+				.ValueP(RouteSetting._UserName, routeSetting.UserName)
+				.ValueP(RouteSetting._RPassword, routeSetting.RPassword)
+				.ValueP(RouteSetting._RouteConnect, routeSetting.RouteConnect)
+				.ValueP(RouteSetting._RouteDisConnect, routeSetting.RouteDisConnect)
+				.ValueP(RouteSetting._RouteMethod, routeSetting.RouteMethod)
+				.ToExec();
+			if (delCache.IsNull()) return obj == 1;
+			Cache2.Remove("TH.Mailer.RouteSettingCache_", delCache);
+			return obj == 1;
+		}
+		/// <summary>
+		/// Â·ÓÉÌí¼Ó¼ÇÂ¼
+		/// </summary>
+		/// <param name="routeSetting">Â·ÓÉÊµÌåÀà</param>
+		/// <returns>Ìí¼ÓÊÇ·ñ³É¹¦</returns>
+		public static bool Insert(RouteSetting routeSetting, string dbkey) {
+			return Insert(routeSetting, dbkey, null);
+		}
+		/// <summary>
+		/// Â·ÓÉĞŞ¸Ä¼ÇÂ¼
+		/// </summary>
+		/// <param name="routeSetting">Â·ÓÉÊµÌåÀà</param>
+		/// <param name="where">ĞŞ¸ÄÊ±¸½¼ÓÌõ¼ş£¬Í³Ò»µÄÇ°ÃæÒª¼ÓÁ´½Ó·û£¨and¡¢orµÈµÈ£©</param>
+		/// <param name="delCache">ĞŞ¸Ä³É¹¦ºóÇåÀíµÄCACHE key£¬Ö§³ÖÕıÔò</param>
+		/// <param name="dbkey">´æÔÚÊı¾İ¿âÁ¬½Ó³ØÖĞµÄÁ¬½Ókey£¬Îª¿ÕÊ±Ê¹ÓÃConnStringÁ¬½Ó</param>
+		/// <returns>ĞŞ¸ÄÊÇ·ñ³É¹¦</returns>
+		public static bool Update(RouteSetting routeSetting, string dbkey = "", Where where = null, string[] delCache = null) {
+			if (routeSetting.RouteID.IsNull()) return false;
+			int value = new SQL().Database(dbkey).Update(RouteSetting._)
+				.SetP(RouteSetting._RouteIP, routeSetting.RouteIP)
+				.SetP(RouteSetting._UserName, routeSetting.UserName)
+				.SetP(RouteSetting._RPassword, routeSetting.RPassword)
+				.SetP(RouteSetting._RouteConnect, routeSetting.RouteConnect)
+				.SetP(RouteSetting._RouteDisConnect, routeSetting.RouteDisConnect)
+				.SetP(RouteSetting._RouteMethod, routeSetting.RouteMethod)
+				.Where(new Where()
+					.AndP(RouteSetting._RouteID, routeSetting.RouteID, Operator.Equal, true)
+				).Where(where).ToExec();
+			if (value <= 0) return false;
+			if (delCache.IsNull()) return true;
+			Cache2.Remove("TH.Mailer.RouteSettingCache_", delCache);
+			return true;
+		}
+		/// <summary>
+		/// Â·ÓÉĞŞ¸Ä¼ÇÂ¼
+		/// </summary>
+		/// <param name="routeSetting">Â·ÓÉÊµÌåÀà</param>
+		/// <returns>ĞŞ¸ÄÊÇ·ñ³É¹¦</returns>
+		public static bool Update(RouteSetting routeSetting, string dbkey) {
+			return Update(routeSetting, dbkey, null, null);
+		}
+		/// <summary>
+		/// Â·ÓÉĞŞ¸Ä¶àÌõ¼ÇÂ¼
+		/// </summary>
+		/// <param name="routeIDList">Â·ÓÉ±àºÅÁĞ±í£¬ÓÃ¡°,¡±ºÅ·Ö¸ô</param>
+		/// <param name="routeSetting">Â·ÓÉÊµÌåÀà</param>
+		/// <param name="where">ĞŞ¸ÄÊ±¸½¼ÓÌõ¼ş£¬Í³Ò»µÄÇ°ÃæÒª¼ÓÁ´½Ó·û£¨and¡¢orµÈµÈ£©</param>
+		/// <param name="delCache">ĞŞ¸Ä³É¹¦ºóÇåÀíµÄCACHE key£¬Ö§³ÖÕıÔò</param>
+		/// <param name="dbkey">´æÔÚÊı¾İ¿âÁ¬½Ó³ØÖĞµÄÁ¬½Ókey£¬Îª¿ÕÊ±Ê¹ÓÃConnStringÁ¬½Ó</param>
+		/// <returns>ĞŞ¸ÄÊÇ·ñ³É¹¦</returns>
+		public static bool UpdateByIDList(IEnumerable<int> routeIDList,  RouteSetting routeSetting, string dbkey = "", Where where = null, string[] delCache = null) {
+			int value = new SQL().Database(dbkey).Update(RouteSetting._)
+				.SetP(RouteSetting._RouteIP, routeSetting.RouteIP)
+				.SetP(RouteSetting._UserName, routeSetting.UserName)
+				.SetP(RouteSetting._RPassword, routeSetting.RPassword)
+				.SetP(RouteSetting._RouteConnect, routeSetting.RouteConnect)
+				.SetP(RouteSetting._RouteDisConnect, routeSetting.RouteDisConnect)
+				.SetP(RouteSetting._RouteMethod, routeSetting.RouteMethod)
+				.Where(new Where()
+					.And(RouteSetting._RouteID, "(" + routeIDList .Join(",") + ")", Operator.In)
+				).Where(where).ToExec();
+			if (value <= 0) return false;
+			if (delCache.IsNull()) return true;
+			Cache2.Remove("TH.Mailer.RouteSettingCache_", delCache);
+			return true;
+		}
+		/// <summary>
+		/// Â·ÓÉĞŞ¸Ä¶àÌõ¼ÇÂ¼
+		/// </summary>
+		/// <param name="routeIDList">Â·ÓÉ±àºÅÁĞ±í£¬ÓÃ¡°,¡±ºÅ·Ö¸ô</param>
+		/// <param name="routeSetting">Â·ÓÉÊµÌåÀà</param>
+		/// <returns>ĞŞ¸ÄÊÇ·ñ³É¹¦</returns>
+		public static bool UpdateByIDList(IEnumerable<int> routeIDList,  RouteSetting routeSetting, string dbkey) {
+			return UpdateByIDList(routeIDList,  routeSetting, dbkey, null, null);
+		}
+		/// <summary>
+		/// Â·ÓÉ°´Ö÷¼ü²éÑ¯£¬·µ»ØÊı¾İµÄÊµÌåÀà
+		/// </summary>
+		/// <param name="routeID">Â·ÓÉ±àºÅ</param>
+		/// <param name="where">¸½¼ÓÌõ¼ş£¬Í³Ò»µÄÇ°ÃæÒª¼ÓÁ´½Ó·û£¨and¡¢orµÈµÈ£©</param>
+		/// <param name="dbkey">´æÔÚÊı¾İ¿âÁ¬½Ó³ØÖĞµÄÁ¬½Ókey£¬Îª¿ÕÊ±Ëæ»úÈ¡Á¬½Ókey</param>
+		/// <returns>·µ»Øµ¥Ìõ¼ÇÂ¼µÄÊµÌåÀà</returns>
+		public static RouteSetting SelectByID(int routeID,  string dbkey = "", Where where = null) {
+			string cacheNameKey = "TH.Mailer.RouteSettingCache_SelectByID_{0}".FormatWith(routeID + "_" +  "_" + where);
+			return Cache2.Get<RouteSetting>(cacheNameKey, cacheSeconds, () => {
+				RouteSetting obj = new SQL().Database(dbkey).From(RouteSetting._)
+					.Select(RouteSetting._RouteID)
+					.Select(RouteSetting._RouteIP)
+					.Select(RouteSetting._UserName)
+					.Select(RouteSetting._RPassword)
+					.Select(RouteSetting._RouteConnect)
+					.Select(RouteSetting._RouteDisConnect)
+					.Select(RouteSetting._RouteMethod)
+					.Where(new Where()
+						.AndP(RouteSetting._RouteID, routeID, Operator.Equal)
+					).Where(where).ToEntity<RouteSetting>();
+				return obj;
+			});
+		}
+		/// <summary>
+		/// Â·ÓÉ°´Ö÷¼ü²éÑ¯£¬·µ»ØÊı¾İµÄÊµÌåÀà
+		/// </summary>
+		/// <param name="routeID">Â·ÓÉ±àºÅ</param>
+		/// <returns>·µ»Øµ¥Ìõ¼ÇÂ¼µÄÊµÌåÀà</returns>
+		public static RouteSetting SelectByID(int routeID, string dbkey) {
+			return SelectByID(routeID,  dbkey, null);
+		}
+		/// <summary>
+		/// Çå³ıÂ·ÓÉ°´Ö÷¼ü²éÑ¯µÄ»º´æ
+		/// </summary>
+		public static void ClearCacheSelectByID(int routeID,  Where where = null) {
+			string cacheName = "TH.Mailer.RouteSettingCache_SelectByID_{0}";
+			string cacheNameKey = string.Format(cacheName, routeID + "_" +  "_" + where);
+			Cache2.Remove(cacheNameKey);
+		}
+		/// <summary>
+		/// Â·ÓÉÉ¾³ıËùÓĞ¼ÇÂ¼
+		/// </summary>
+		/// <param name="dbkey">´æÔÚÊı¾İ¿âÁ¬½Ó³ØÖĞµÄÁ¬½Ókey£¬Îª¿ÕÊ±Ëæ»úÈ¡Á¬½Ókey</param>
+		/// <returns>·µ»ØÊµÌå¼ÇÂ¼¼¯</returns>
+		public static bool RemoveAll(string dbkey = "") {
+			return (new SQL().Database(dbkey).Delete(RouteSetting._).ToExec()) > 0;
+		}
+		/// <summary>
+		/// Çå³ıÂ·ÓÉ²éÑ¯ËùÓĞ¼ÇÂ¼µÄ»º´æ
+		/// </summary>
+		public static void ClearCacheSelectListByAll() {
+			//Cache2.Remove("TH.Mailer.RouteSettingCache_SelectListByAll___");
+			Cache2.RemoveByPattern("TH.Mailer.RouteSettingCache_SelectListByAll_(.+?)");
+		}
+		/// <summary>
+		/// Çå³ıÂ·ÓÉËùÓĞ»º´æ
+		/// </summary>
+		public static void ClearCacheAll() {
+			Cache2.RemoveByPattern("TH.Mailer.RouteSettingCache_(.+?)");
+		}
+	}
 }
 

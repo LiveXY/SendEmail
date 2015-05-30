@@ -1,4 +1,4 @@
-ï»¿//-------------------------------------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------------------------------------
 // All Rights Reserved , Copyright (C) 2013 , TH , Ltd.
 //-------------------------------------------------------------------------------------------------------------------------------------
 
@@ -8,76 +8,76 @@ using System.Text;
 using Pub.Class;
 
 namespace TH.Mailer.Entity {
-    /// <summary>
-    /// è·å–IPé…ç½®å®ä½“ç±»
-    /// 
-    /// ä¿®æ”¹çºªå½•
-    ///     2013-06-03 ç‰ˆæœ¬ï¼š1.0 ç³»ç»Ÿè‡ªåŠ¨åˆ›å»ºæ­¤ç±»
-    /// 
-    /// </summary>
-    [Serializable]
-    [EntityInfo("è·å–IPé…ç½®")]
-    public partial class IpSetting {
-        /// <summary>
-        /// è·å–IPé…ç½®
-        /// </summary>
-        public static readonly string _ = "IpSetting";
+	/// <summary>
+	/// »ñÈ¡IPÅäÖÃÊµÌåÀà
+	///
+	/// ĞŞ¸Ä¼ÍÂ¼
+	///	 2013-06-03 °æ±¾£º1.0 ÏµÍ³×Ô¶¯´´½¨´ËÀà
+	///
+	/// </summary>
+	[Serializable]
+	[EntityInfo("»ñÈ¡IPÅäÖÃ")]
+	public partial class IpSetting {
+		/// <summary>
+		/// »ñÈ¡IPÅäÖÃ
+		/// </summary>
+		public static readonly string _ = "IpSetting";
 
-        /// <summary>
-        /// è·å–IPé…ç½®ç¼–å·
-        /// </summary>
-        public static readonly string _IPCID = "IPCID";
-        private Int64? iPCID = null;
-        /// <summary>
-        /// è·å–IPé…ç½®ç¼–å·
-        /// </summary>
-        [EntityInfo("è·å–IPé…ç½®ç¼–å·")]
-        public new Int64? IPCID { get { return iPCID; } set { iPCID = value; } }
+		/// <summary>
+		/// »ñÈ¡IPÅäÖÃ±àºÅ
+		/// </summary>
+		public static readonly string _IPCID = "IPCID";
+		private Int64? iPCID = null;
+		/// <summary>
+		/// »ñÈ¡IPÅäÖÃ±àºÅ
+		/// </summary>
+		[EntityInfo("»ñÈ¡IPÅäÖÃ±àºÅ")]
+		public new Int64? IPCID { get { return iPCID; } set { iPCID = value; } }
 
-        /// <summary>
-        /// ç½‘å€åç§°
-        /// </summary>
-        public static readonly string _WebName = "WebName";
-        private string webName = null;
-        /// <summary>
-        /// ç½‘å€åç§°
-        /// </summary>
-        [EntityInfo("ç½‘å€åç§°")]
-        public new string WebName { get { return webName; } set { webName = value; } }
+		/// <summary>
+		/// ÍøÖ·Ãû³Æ
+		/// </summary>
+		public static readonly string _WebName = "WebName";
+		private string webName = null;
+		/// <summary>
+		/// ÍøÖ·Ãû³Æ
+		/// </summary>
+		[EntityInfo("ÍøÖ·Ãû³Æ")]
+		public new string WebName { get { return webName; } set { webName = value; } }
 
-        /// <summary>
-        /// è·å–IPçš„ç½‘å€
-        /// </summary>
-        public static readonly string _IPUrl = "IPUrl";
-        private string iPUrl = null;
-        /// <summary>
-        /// è·å–IPçš„ç½‘å€
-        /// </summary>
-        [EntityInfo("è·å–IPçš„ç½‘å€")]
-        public new string IPUrl { get { return iPUrl; } set { iPUrl = value; } }
+		/// <summary>
+		/// »ñÈ¡IPµÄÍøÖ·
+		/// </summary>
+		public static readonly string _IPUrl = "IPUrl";
+		private string iPUrl = null;
+		/// <summary>
+		/// »ñÈ¡IPµÄÍøÖ·
+		/// </summary>
+		[EntityInfo("»ñÈ¡IPµÄÍøÖ·")]
+		public new string IPUrl { get { return iPUrl; } set { iPUrl = value; } }
 
-        /// <summary>
-        /// è·å–IPçš„æ­£åˆ™
-        /// </summary>
-        public static readonly string _IPRegex = "IPRegex";
-        private string iPRegex = null;
-        /// <summary>
-        /// è·å–IPçš„æ­£åˆ™
-        /// </summary>
-        [EntityInfo("è·å–IPçš„æ­£åˆ™")]
-        public new string IPRegex { get { return iPRegex; } set { iPRegex = value; } }
+		/// <summary>
+		/// »ñÈ¡IPµÄÕıÔò
+		/// </summary>
+		public static readonly string _IPRegex = "IPRegex";
+		private string iPRegex = null;
+		/// <summary>
+		/// »ñÈ¡IPµÄÕıÔò
+		/// </summary>
+		[EntityInfo("»ñÈ¡IPµÄÕıÔò")]
+		public new string IPRegex { get { return iPRegex; } set { iPRegex = value; } }
 
-        /// <summary>
-        /// ä½¿ç”¨ç¼–ç 
-        /// </summary>
-        public static readonly string _DataEncode = "DataEncode";
-        private string dataEncode = null;
-        /// <summary>
-        /// ä½¿ç”¨ç¼–ç 
-        /// </summary>
-        [EntityInfo("ä½¿ç”¨ç¼–ç ")]
-        public new string DataEncode { get { return dataEncode; } set { dataEncode = value; } }
-    }
+		/// <summary>
+		/// Ê¹ÓÃ±àÂë
+		/// </summary>
+		public static readonly string _DataEncode = "DataEncode";
+		private string dataEncode = null;
+		/// <summary>
+		/// Ê¹ÓÃ±àÂë
+		/// </summary>
+		[EntityInfo("Ê¹ÓÃ±àÂë")]
+		public new string DataEncode { get { return dataEncode; } set { dataEncode = value; } }
+	}
 }
 
 

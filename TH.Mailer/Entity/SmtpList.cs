@@ -1,4 +1,4 @@
-ï»¿//-------------------------------------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------------------------------------
 // All Rights Reserved , Copyright (C) 2013 , TH , Ltd.
 //-------------------------------------------------------------------------------------------------------------------------------------
 
@@ -8,120 +8,120 @@ using System.Text;
 using Pub.Class;
 
 namespace TH.Mailer.Entity {
-    /// <summary>
-    /// å®ä½“ç±»
-    /// 
-    /// ä¿®æ”¹çºªå½•
-    ///     2013-06-03 ç‰ˆæœ¬ï¼š1.0 ç³»ç»Ÿè‡ªåŠ¨åˆ›å»ºæ­¤ç±»
-    /// 
-    /// </summary>
-    [Serializable]
-    [EntityInfo("")]
-    public partial class SmtpList {
-        /// <summary>
-        /// 
-        /// </summary>
-        public static readonly string _ = "SmtpList";
+	/// <summary>
+	/// ÊµÌåÀà
+	///
+	/// ĞŞ¸Ä¼ÍÂ¼
+	///	 2013-06-03 °æ±¾£º1.0 ÏµÍ³×Ô¶¯´´½¨´ËÀà
+	///
+	/// </summary>
+	[Serializable]
+	[EntityInfo("")]
+	public partial class SmtpList {
+		/// <summary>
+		/// 
+		/// </summary>
+		public static readonly string _ = "SmtpList";
 
-        /// <summary>
-        /// SMTPæœåŠ¡å™¨
-        /// </summary>
-        public static readonly string _SmtpServer = "SmtpServer";
-        private string smtpServer = null;
-        /// <summary>
-        /// SMTPæœåŠ¡å™¨
-        /// </summary>
-        [EntityInfo("SMTPæœåŠ¡å™¨")]
-        public new string SmtpServer { get { return smtpServer; } set { smtpServer = value; } }
+		/// <summary>
+		/// SMTP·şÎñÆ÷
+		/// </summary>
+		public static readonly string _SmtpServer = "SmtpServer";
+		private string smtpServer = null;
+		/// <summary>
+		/// SMTP·şÎñÆ÷
+		/// </summary>
+		[EntityInfo("SMTP·şÎñÆ÷")]
+		public new string SmtpServer { get { return smtpServer; } set { smtpServer = value; } }
 
-        /// <summary>
-        /// SMTPç«¯å£
-        /// </summary>
-        public static readonly string _SmtpPort = "SmtpPort";
-        private int? smtpPort = null;
-        /// <summary>
-        /// SMTPç«¯å£
-        /// </summary>
-        [EntityInfo("SMTPç«¯å£")]
-        public new int? SmtpPort { get { return smtpPort; } set { smtpPort = value; } }
+		/// <summary>
+		/// SMTP¶Ë¿Ú
+		/// </summary>
+		public static readonly string _SmtpPort = "SmtpPort";
+		private int? smtpPort = null;
+		/// <summary>
+		/// SMTP¶Ë¿Ú
+		/// </summary>
+		[EntityInfo("SMTP¶Ë¿Ú")]
+		public new int? SmtpPort { get { return smtpPort; } set { smtpPort = value; } }
 
-        /// <summary>
-        /// ç™»å½•ç”¨æˆ·å
-        /// </summary>
-        public static readonly string _UserName = "UserName";
-        private string userName = null;
-        /// <summary>
-        /// ç™»å½•ç”¨æˆ·å
-        /// </summary>
-        [EntityInfo("ç™»å½•ç”¨æˆ·å")]
-        public new string UserName { get { return userName; } set { userName = value; } }
+		/// <summary>
+		/// µÇÂ¼ÓÃ»§Ãû
+		/// </summary>
+		public static readonly string _UserName = "UserName";
+		private string userName = null;
+		/// <summary>
+		/// µÇÂ¼ÓÃ»§Ãû
+		/// </summary>
+		[EntityInfo("µÇÂ¼ÓÃ»§Ãû")]
+		public new string UserName { get { return userName; } set { userName = value; } }
 
-        /// <summary>
-        /// ç™»å½•å¯†ç 
-        /// </summary>
-        public static readonly string _SPassword = "SPassword";
-        private string sPassword = null;
-        /// <summary>
-        /// ç™»å½•å¯†ç 
-        /// </summary>
-        [EntityInfo("ç™»å½•å¯†ç ")]
-        public new string SPassword { get { return sPassword; } set { sPassword = value; } }
+		/// <summary>
+		/// µÇÂ¼ÃÜÂë
+		/// </summary>
+		public static readonly string _SPassword = "SPassword";
+		private string sPassword = null;
+		/// <summary>
+		/// µÇÂ¼ÃÜÂë
+		/// </summary>
+		[EntityInfo("µÇÂ¼ÃÜÂë")]
+		public new string SPassword { get { return sPassword; } set { sPassword = value; } }
 
-        /// <summary>
-        /// æ˜¯å¦æ”¯æŒSSL
-        /// </summary>
-        public static readonly string _SSL = "SSL";
-        private bool? sSL = null;
-        /// <summary>
-        /// æ˜¯å¦æ”¯æŒSSL
-        /// </summary>
-        [EntityInfo("æ˜¯å¦æ”¯æŒSSL")]
-        public new bool? SSL { get { return sSL; } set { sSL = value; } }
+		/// <summary>
+		/// ÊÇ·ñÖ§³ÖSSL
+		/// </summary>
+		public static readonly string _SSL = "SSL";
+		private bool? sSL = null;
+		/// <summary>
+		/// ÊÇ·ñÖ§³ÖSSL
+		/// </summary>
+		[EntityInfo("ÊÇ·ñÖ§³ÖSSL")]
+		public new bool? SSL { get { return sSL; } set { sSL = value; } }
 
-        /// <summary>
-        /// çŠ¶æ€ 0å¯ç”¨ 1ä¸å¯ç”¨
-        /// </summary>
-        public static readonly string _Status = "Status";
-        private int? status = null;
-        /// <summary>
-        /// çŠ¶æ€ 0å¯ç”¨ 1ä¸å¯ç”¨
-        /// </summary>
-        [EntityInfo("çŠ¶æ€ 0å¯ç”¨ 1ä¸å¯ç”¨")]
-        public new int? Status { get { return status; } set { status = value; } }
+		/// <summary>
+		/// ×´Ì¬ 0¿ÉÓÃ 1²»¿ÉÓÃ
+		/// </summary>
+		public static readonly string _Status = "Status";
+		private int? status = null;
+		/// <summary>
+		/// ×´Ì¬ 0¿ÉÓÃ 1²»¿ÉÓÃ
+		/// </summary>
+		[EntityInfo("×´Ì¬ 0¿ÉÓÃ 1²»¿ÉÓÃ")]
+		public new int? Status { get { return status; } set { status = value; } }
 
-        /// <summary>
-        /// å‘é€æ¬¡æ•°
-        /// </summary>
-        public static readonly string _Sends = "Sends";
-        private int? sends = null;
-        /// <summary>
-        /// å‘é€æ¬¡æ•°
-        /// </summary>
-        [EntityInfo("å‘é€æ¬¡æ•°")]
-        public new int? Sends { get { return sends; } set { sends = value; } }
+		/// <summary>
+		/// ·¢ËÍ´ÎÊı
+		/// </summary>
+		public static readonly string _Sends = "Sends";
+		private int? sends = null;
+		/// <summary>
+		/// ·¢ËÍ´ÎÊı
+		/// </summary>
+		[EntityInfo("·¢ËÍ´ÎÊı")]
+		public new int? Sends { get { return sends; } set { sends = value; } }
 
-        /// <summary>
-        /// å‘é€å¤±è´¥æ¬¡æ•°
-        /// </summary>
-        public static readonly string _SendFails = "SendFails";
-        private int? sendFails = null;
-        /// <summary>
-        /// å‘é€å¤±è´¥æ¬¡æ•°
-        /// </summary>
-        [EntityInfo("å‘é€å¤±è´¥æ¬¡æ•°")]
-        public new int? SendFails { get { return sendFails; } set { sendFails = value; } }
+		/// <summary>
+		/// ·¢ËÍÊ§°Ü´ÎÊı
+		/// </summary>
+		public static readonly string _SendFails = "SendFails";
+		private int? sendFails = null;
+		/// <summary>
+		/// ·¢ËÍÊ§°Ü´ÎÊı
+		/// </summary>
+		[EntityInfo("·¢ËÍÊ§°Ü´ÎÊı")]
+		public new int? SendFails { get { return sendFails; } set { sendFails = value; } }
 
-        /// <summary>
-        /// åˆ›å»ºæ—¶é—´
-        /// </summary>
-        public static readonly string _CreateTime = "CreateTime";
-        private DateTime? createTime = null;
-        /// <summary>
-        /// åˆ›å»ºæ—¶é—´
-        /// </summary>
-        [EntityInfo("åˆ›å»ºæ—¶é—´")]
-        public new DateTime? CreateTime { get { return createTime; } set { createTime = value; } }
-    }
+		/// <summary>
+		/// ´´½¨Ê±¼ä
+		/// </summary>
+		public static readonly string _CreateTime = "CreateTime";
+		private DateTime? createTime = null;
+		/// <summary>
+		/// ´´½¨Ê±¼ä
+		/// </summary>
+		[EntityInfo("´´½¨Ê±¼ä")]
+		public new DateTime? CreateTime { get { return createTime; } set { createTime = value; } }
+	}
 }
 
 

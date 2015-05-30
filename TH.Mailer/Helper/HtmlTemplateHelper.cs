@@ -1,4 +1,4 @@
-ï»¿//-------------------------------------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------------------------------------
 // All Rights Reserved , Copyright (C) 2013 , TH , Ltd.
 //-------------------------------------------------------------------------------------------------------------------------------------
 
@@ -17,249 +17,249 @@ using TH.Mailer.Entity;
 using Pub.Class;
 
 namespace TH.Mailer.Helper {
-    /// <summary>
-    /// é‚®ä»¶æ¨¡ç‰ˆæ“ä½œç±»
-    /// 
-    /// ä¿®æ”¹çºªå½•
-    ///     2013-06-03 ç‰ˆæœ¬ï¼š1.0 ç³»ç»Ÿè‡ªåŠ¨åˆ›å»ºæ­¤ç±»
-    /// 
-    /// </summary>
-    public partial class HtmlTemplateHelper {
-        /// <summary>
-        /// é‚®ä»¶æ¨¡ç‰ˆç¼“å­˜å¤šå°‘ç§’ x 5
-        /// </summary>
-        public static int cacheSeconds = 1440;
-        /// <summary>
-        /// é‚®ä»¶æ¨¡ç‰ˆæ·»åŠ è®°å½•
-        /// </summary>
-        /// <param name="htmlTemplate">é‚®ä»¶æ¨¡ç‰ˆå®ä½“ç±»</param>
-        /// <param name="delCache">æ·»åŠ æˆåŠŸåæ¸…ç†çš„CACHE keyï¼Œæ”¯æŒæ­£åˆ™</param>
-        /// <param name="dbkey">å­˜åœ¨æ•°æ®åº“è¿æ¥æ± ä¸­çš„è¿æ¥keyï¼Œä¸ºç©ºæ—¶ä½¿ç”¨ConnStringè¿æ¥</param>
-        /// <returns>è¿”å›æ·»åŠ æˆåŠŸåçš„ID</returns>
-        public static Int64 Insert(HtmlTemplate htmlTemplate, string dbkey = "", string[] delCache = null) {
-            object obj = new SQL().Database(dbkey).Insert(HtmlTemplate._)
-                .ValueP(HtmlTemplate._TemplateID, htmlTemplate.TemplateID)
-                .ValueP(HtmlTemplate._Subject, htmlTemplate.Subject)
-                .ValueP(HtmlTemplate._Body, htmlTemplate.Body)
-                .ValueP(HtmlTemplate._ShowName, htmlTemplate.ShowName)
-                .ValueP(HtmlTemplate._IsHTML, htmlTemplate.IsHTML)
-                .ValueP(HtmlTemplate._Status, htmlTemplate.Status)
-                .ValueP(HtmlTemplate._CreateTime, htmlTemplate.CreateTime)
-                .ToExec();
-            if (obj.ToInt() != 1) return 0;
-            obj = new SQL().Database(dbkey).From(HtmlTemplate._).Max("TemplateID").ToScalar();
-            if (obj.IsAllNull()) return 0;
-            Int64 value = obj.ToString().ToBigInt();
-            if (delCache.IsNull()) return value;
-            Cache2.Remove("TH.Mailer.HtmlTemplateCache_", delCache);
-            return value;
-        }
-        /// <summary>
-        /// é‚®ä»¶æ¨¡ç‰ˆæ·»åŠ è®°å½•
-        /// </summary>
-        /// <param name="htmlTemplate">é‚®ä»¶æ¨¡ç‰ˆå®ä½“ç±»</param>
-        /// <returns>è¿”å›æ·»åŠ æˆåŠŸåçš„ID</returns>
-        public static Int64 Insert(HtmlTemplate htmlTemplate, string dbkey) {
-            return Insert(htmlTemplate, dbkey, null);
-        }
-        /// <summary>
-        /// é‚®ä»¶æ¨¡ç‰ˆä¿®æ”¹è®°å½•
-        /// </summary>
-        /// <param name="htmlTemplate">é‚®ä»¶æ¨¡ç‰ˆå®ä½“ç±»</param>
-        /// <param name="where">ä¿®æ”¹æ—¶é™„åŠ æ¡ä»¶ï¼Œç»Ÿä¸€çš„å‰é¢è¦åŠ é“¾æ¥ç¬¦ï¼ˆandã€orç­‰ç­‰ï¼‰</param>
-        /// <param name="delCache">ä¿®æ”¹æˆåŠŸåæ¸…ç†çš„CACHE keyï¼Œæ”¯æŒæ­£åˆ™</param>
-        /// <param name="dbkey">å­˜åœ¨æ•°æ®åº“è¿æ¥æ± ä¸­çš„è¿æ¥keyï¼Œä¸ºç©ºæ—¶ä½¿ç”¨ConnStringè¿æ¥</param>
-        /// <returns>ä¿®æ”¹æ˜¯å¦æˆåŠŸ</returns>
-        public static bool Update(HtmlTemplate htmlTemplate, string dbkey = "", Where where = null, string[] delCache = null) {
-            if (htmlTemplate.TemplateID.IsNull()) return false;
-            int value = new SQL().Database(dbkey).Update(HtmlTemplate._)
-                .SetP(HtmlTemplate._Subject, htmlTemplate.Subject)
-                .SetP(HtmlTemplate._Body, htmlTemplate.Body)
-                .SetP(HtmlTemplate._ShowName, htmlTemplate.ShowName)
-                .SetP(HtmlTemplate._IsHTML, htmlTemplate.IsHTML)
-                .SetP(HtmlTemplate._Status, htmlTemplate.Status)
-                .SetP(HtmlTemplate._CreateTime, htmlTemplate.CreateTime)
-                .Where(new Where()
-                    .AndP(HtmlTemplate._TemplateID, htmlTemplate.TemplateID, Operator.Equal, true)
-                ).Where(where).ToExec();
-            if (value <= 0) return false;
-            if (delCache.IsNull()) return true;
-            Cache2.Remove("TH.Mailer.HtmlTemplateCache_", delCache);
-            return true;
-        }
-        /// <summary>
-        /// é‚®ä»¶æ¨¡ç‰ˆä¿®æ”¹è®°å½•
-        /// </summary>
-        /// <param name="htmlTemplate">é‚®ä»¶æ¨¡ç‰ˆå®ä½“ç±»</param>
-        /// <returns>ä¿®æ”¹æ˜¯å¦æˆåŠŸ</returns>
-        public static bool Update(HtmlTemplate htmlTemplate, string dbkey) {
-            return Update(htmlTemplate, dbkey, null, null);
-        }
-        /// <summary>
-        /// é‚®ä»¶æ¨¡ç‰ˆä¿®æ”¹å¤šæ¡è®°å½•
-        /// </summary>
-        /// <param name="templateIDList">é‚®ä»¶æ¨¡ç‰ˆç¼–å·åˆ—è¡¨ï¼Œç”¨â€œ,â€å·åˆ†éš”</param>
-        /// <param name="htmlTemplate">é‚®ä»¶æ¨¡ç‰ˆå®ä½“ç±»</param>
-        /// <param name="where">ä¿®æ”¹æ—¶é™„åŠ æ¡ä»¶ï¼Œç»Ÿä¸€çš„å‰é¢è¦åŠ é“¾æ¥ç¬¦ï¼ˆandã€orç­‰ç­‰ï¼‰</param>
-        /// <param name="delCache">ä¿®æ”¹æˆåŠŸåæ¸…ç†çš„CACHE keyï¼Œæ”¯æŒæ­£åˆ™</param>
-        /// <param name="dbkey">å­˜åœ¨æ•°æ®åº“è¿æ¥æ± ä¸­çš„è¿æ¥keyï¼Œä¸ºç©ºæ—¶ä½¿ç”¨ConnStringè¿æ¥</param>
-        /// <returns>ä¿®æ”¹æ˜¯å¦æˆåŠŸ</returns>
-        public static bool UpdateByIDList(IEnumerable<Int64> templateIDList,  HtmlTemplate htmlTemplate, string dbkey = "", Where where = null, string[] delCache = null) {
-            int value = new SQL().Database(dbkey).Update(HtmlTemplate._)
-                .SetP(HtmlTemplate._Subject, htmlTemplate.Subject)
-                .SetP(HtmlTemplate._Body, htmlTemplate.Body)
-                .SetP(HtmlTemplate._ShowName, htmlTemplate.ShowName)
-                .SetP(HtmlTemplate._IsHTML, htmlTemplate.IsHTML)
-                .SetP(HtmlTemplate._Status, htmlTemplate.Status)
-                .SetP(HtmlTemplate._CreateTime, htmlTemplate.CreateTime)
-                .Where(new Where()
-                    .And(HtmlTemplate._TemplateID, "(" + templateIDList .Join(",") + ")", Operator.In)
-                ).Where(where).ToExec();
-            if (value <= 0) return false;
-            if (delCache.IsNull()) return true;
-            Cache2.Remove("TH.Mailer.HtmlTemplateCache_", delCache);
-            return true;
-        }
-        /// <summary>
-        /// é‚®ä»¶æ¨¡ç‰ˆä¿®æ”¹å¤šæ¡è®°å½•
-        /// </summary>
-        /// <param name="templateIDList">é‚®ä»¶æ¨¡ç‰ˆç¼–å·åˆ—è¡¨ï¼Œç”¨â€œ,â€å·åˆ†éš”</param>
-        /// <param name="htmlTemplate">é‚®ä»¶æ¨¡ç‰ˆå®ä½“ç±»</param>
-        /// <returns>ä¿®æ”¹æ˜¯å¦æˆåŠŸ</returns>
-        public static bool UpdateByIDList(IEnumerable<Int64> templateIDList,  HtmlTemplate htmlTemplate, string dbkey) {
-            return UpdateByIDList(templateIDList,  htmlTemplate, dbkey, null, null);
-        }
-         /// <summary>
-        /// é‚®ä»¶æ¨¡ç‰ˆåˆ é™¤è®°å½•
-        /// </summary>
-        /// <param name="templateID">é‚®ä»¶æ¨¡ç‰ˆç¼–å·</param>
-        /// <param name="where">ä¿®æ”¹æ—¶é™„åŠ æ¡ä»¶ï¼Œç»Ÿä¸€çš„å‰é¢è¦åŠ é“¾æ¥ç¬¦ï¼ˆandã€orç­‰ç­‰ï¼‰</param>
-        /// <param name="delCache">åˆ é™¤æˆåŠŸåæ¸…ç†çš„CACHE keyï¼Œæ”¯æŒæ­£åˆ™</param>
-        /// <param name="dbkey">å­˜åœ¨æ•°æ®åº“è¿æ¥æ± ä¸­çš„è¿æ¥keyï¼Œä¸ºç©ºæ—¶ä½¿ç”¨ConnStringè¿æ¥</param>
-        /// <returns>åˆ é™¤æ˜¯å¦æˆåŠŸ</returns>
-        public static bool DeleteByID(Int64? templateID,  string dbkey = "", Where where = null, string[] delCache = null) {
-            if (templateID.IsNull()) return false;
-            int value = new SQL().Database(dbkey).Delete(HtmlTemplate._)
-                .Where(new Where()
-                    .AndP(HtmlTemplate._TemplateID, templateID, Operator.Equal, true)
-                ).Where(where).ToExec();
-            if (value != 1) return false;
-            if (delCache.IsNull()) return true;
-            Cache2.Remove("TH.Mailer.HtmlTemplateCache_", delCache);
-            return true;
-        }
-        /// <summary>
-        /// é‚®ä»¶æ¨¡ç‰ˆåˆ é™¤è®°å½•
-        /// </summary>
-        /// <param name="templateID">é‚®ä»¶æ¨¡ç‰ˆç¼–å·</param>
-        /// <returns>åˆ é™¤æ˜¯å¦æˆåŠŸ</returns>
-        public static bool DeleteByID(Int64? templateID, string dbkey) {
-            return DeleteByID(templateID,  dbkey, null, null);
-        }
-        /// <summary>
-        /// é‚®ä»¶æ¨¡ç‰ˆåˆ é™¤è®°å½•
-        /// </summary>
-        /// <param name="templateID">é‚®ä»¶æ¨¡ç‰ˆç¼–å·</param>
-        /// <param name="where">ä¿®æ”¹æ—¶é™„åŠ æ¡ä»¶ï¼Œç»Ÿä¸€çš„å‰é¢è¦åŠ é“¾æ¥ç¬¦ï¼ˆandã€orç­‰ç­‰ï¼‰</param>
-        /// <param name="delCache">åˆ é™¤æˆåŠŸåæ¸…ç†çš„CACHE keyï¼Œæ”¯æŒæ­£åˆ™</param>
-        /// <param name="dbkey">å­˜åœ¨æ•°æ®åº“è¿æ¥æ± ä¸­çš„è¿æ¥keyï¼Œä¸ºç©ºæ—¶ä½¿ç”¨ConnStringè¿æ¥</param>
-        /// <returns>åˆ é™¤æ˜¯å¦æˆåŠŸ</returns>
-        public static bool DeleteByID(Int64 templateID,  string dbkey = "", Where where = null, string[] delCache = null) {
-            return DeleteByID((Int64?)templateID,  dbkey, where, delCache);
-        }
-        /// <summary>
-        /// é‚®ä»¶æ¨¡ç‰ˆåˆ é™¤è®°å½•
-        /// </summary>
-        /// <param name="templateID">é‚®ä»¶æ¨¡ç‰ˆç¼–å·</param>
-        /// <returns>åˆ é™¤æ˜¯å¦æˆåŠŸ</returns>
-        public static bool DeleteByID(Int64 templateID, string dbkey) {
-            return DeleteByID((Int64?)templateID,  dbkey, null, null);
-        }
-        /// <summary>
-        /// é‚®ä»¶æ¨¡ç‰ˆåˆ é™¤å¤šæ¡è®°å½•
-        /// </summary>
-        /// <param name="templateIDList">é‚®ä»¶æ¨¡ç‰ˆç¼–å·åˆ—è¡¨ï¼Œç”¨â€œ,â€å·åˆ†éš”</param>
-        /// <param name="where">åˆ é™¤æ—¶é™„åŠ æ¡ä»¶ï¼Œç»Ÿä¸€çš„å‰é¢è¦åŠ é“¾æ¥ç¬¦ï¼ˆandã€orç­‰ç­‰ï¼‰</param>
-        /// <param name="delCache">ä¿®æ”¹æˆåŠŸåæ¸…ç†çš„CACHE keyï¼Œæ”¯æŒæ­£åˆ™</param>
-        /// <param name="dbkey">å­˜åœ¨æ•°æ®åº“è¿æ¥æ± ä¸­çš„è¿æ¥keyï¼Œä¸ºç©ºæ—¶ä½¿ç”¨ConnStringè¿æ¥</param>
-        /// <returns>åˆ é™¤æ˜¯å¦æˆåŠŸ</returns>
-        public static bool DeleteByIDList(IEnumerable<Int64> templateIDList,  string dbkey = "", Where where = null, string[] delCache = null) {
-            int value = new SQL().Database(dbkey).Delete(HtmlTemplate._)
-                .Where(new Where()
-                    .And(HtmlTemplate._TemplateID, "(" + templateIDList .Join(",") + ")", Operator.In)
-                ).Where(where).ToExec();
-            if (value <= 0) return false;
-            if (delCache.IsNull()) return true;
-            Cache2.Remove("TH.Mailer.HtmlTemplateCache_", delCache);
-            return true;
-        }
-        /// <summary>
-        /// é‚®ä»¶æ¨¡ç‰ˆåˆ é™¤å¤šæ¡è®°å½•
-        /// </summary>
-        /// <param name="templateIDList">é‚®ä»¶æ¨¡ç‰ˆç¼–å·åˆ—è¡¨ï¼Œç”¨â€œ,â€å·åˆ†éš”</param>
-        /// <param name="where">åˆ é™¤æ—¶é™„åŠ æ¡ä»¶ï¼Œç»Ÿä¸€çš„å‰é¢è¦åŠ é“¾æ¥ç¬¦ï¼ˆandã€orç­‰ç­‰ï¼‰</param>
-        /// <param name="delCache">ä¿®æ”¹æˆåŠŸåæ¸…ç†çš„CACHE keyï¼Œæ”¯æŒæ­£åˆ™</param>
-        /// <param name="dbkey">å­˜åœ¨æ•°æ®åº“è¿æ¥æ± ä¸­çš„è¿æ¥keyï¼Œä¸ºç©ºæ—¶ä½¿ç”¨ConnStringè¿æ¥</param>
-        /// <returns>åˆ é™¤æ˜¯å¦æˆåŠŸ</returns>
-        public static bool DeleteByIDList(IEnumerable<Int64> templateIDList, string dbkey) {
-            return DeleteByIDList(templateIDList,  dbkey, null, null);
-        }
-        /// <summary>
-        /// é‚®ä»¶æ¨¡ç‰ˆæŸ¥è¯¢æ‰€æœ‰è®°å½•
-        /// </summary>
-        /// <param name="where">é™„åŠ æ¡ä»¶ï¼Œç»Ÿä¸€çš„å‰é¢è¦åŠ é“¾æ¥ç¬¦ï¼ˆandã€orç­‰ç­‰ï¼‰</param>
-        /// <param name="order">æ’åºå­—æ®µï¼Œä¸åŠ â€œorder byâ€</param>
-        /// <param name="fieldList">è®¾ç½®éœ€è¦è¿”å›çš„å­—æ®µ</param>
-        /// <param name="dbkey">å­˜åœ¨æ•°æ®åº“è¿æ¥æ± ä¸­çš„è¿æ¥keyï¼Œä¸ºç©ºæ—¶éšæœºå–è¿æ¥key</param>
-        /// <returns>è¿”å›å®ä½“è®°å½•é›†</returns>
-        public static IList<HtmlTemplate> SelectListByAll(string dbkey = "", Where where = null, string order = "", string fieldList = "") {
-            string cacheNameKey = "TH.Mailer.HtmlTemplateCache_SelectListByAll_{0}_{1}_{2}".FormatWith(where, order, fieldList);
-            return Cache2.Get<IList<HtmlTemplate>>(cacheNameKey, cacheSeconds, () => {
-                IList<HtmlTemplate> list = new List<HtmlTemplate>();
-                if (fieldList.IsNullEmpty()) {
-                    list = new SQL().Database(dbkey).From(HtmlTemplate._)
-                        .Select(HtmlTemplate._TemplateID)
-                        .Select(HtmlTemplate._Subject)
-                        .Select(HtmlTemplate._Body)
-                        .Select(HtmlTemplate._ShowName)
-                        .Select(HtmlTemplate._IsHTML)
-                        .Select(HtmlTemplate._Status)
-                        .Select(HtmlTemplate._CreateTime)
-                        .Where(where).Order(order).ToList<HtmlTemplate>();
-                } else {
-                    list = new SQL().Database(dbkey).From(HtmlTemplate._).Select(fieldList).Where(where).Order(order).ToList<HtmlTemplate>();
-                }
-                return list;
-            });
-        }
-        /// <summary>
-        /// é‚®ä»¶æ¨¡ç‰ˆæŸ¥è¯¢æ‰€æœ‰è®°å½•
-        /// </summary>
-        /// <returns>è¿”å›å®ä½“è®°å½•é›†</returns>
-        public static IList<HtmlTemplate> SelectListByAll(string dbkey) {
-            return SelectListByAll(dbkey, null, "", "");
-        }
-        /// <summary>
-        /// é‚®ä»¶æ¨¡ç‰ˆåˆ é™¤æ‰€æœ‰è®°å½•
-        /// </summary>
-        /// <param name="dbkey">å­˜åœ¨æ•°æ®åº“è¿æ¥æ± ä¸­çš„è¿æ¥keyï¼Œä¸ºç©ºæ—¶éšæœºå–è¿æ¥key</param>
-        /// <returns>è¿”å›å®ä½“è®°å½•é›†</returns>
-        public static bool RemoveAll(string dbkey = "") {
-            return (new SQL().Database(dbkey).Delete(HtmlTemplate._).ToExec()) > 0;
-        }
-        /// <summary>
-        /// æ¸…é™¤é‚®ä»¶æ¨¡ç‰ˆæŸ¥è¯¢æ‰€æœ‰è®°å½•çš„ç¼“å­˜
-        /// </summary>
-        public static void ClearCacheSelectListByAll() {
-            //Cache2.Remove("TH.Mailer.HtmlTemplateCache_SelectListByAll___");
-            Cache2.RemoveByPattern("TH.Mailer.HtmlTemplateCache_SelectListByAll_(.+?)");
-        }
-        /// <summary>
-        /// æ¸…é™¤é‚®ä»¶æ¨¡ç‰ˆæ‰€æœ‰ç¼“å­˜
-        /// </summary>
-        public static void ClearCacheAll() {
-            Cache2.RemoveByPattern("TH.Mailer.HtmlTemplateCache_(.+?)");
-        }
-    }
+	/// <summary>
+	/// ÓÊ¼şÄ£°æ²Ù×÷Àà
+	///
+	/// ĞŞ¸Ä¼ÍÂ¼
+	///	 2013-06-03 °æ±¾£º1.0 ÏµÍ³×Ô¶¯´´½¨´ËÀà
+	///
+	/// </summary>
+	public partial class HtmlTemplateHelper {
+		/// <summary>
+		/// ÓÊ¼şÄ£°æ»º´æ¶àÉÙÃë x 5
+		/// </summary>
+		public static int cacheSeconds = 1440;
+		/// <summary>
+		/// ÓÊ¼şÄ£°æÌí¼Ó¼ÇÂ¼
+		/// </summary>
+		/// <param name="htmlTemplate">ÓÊ¼şÄ£°æÊµÌåÀà</param>
+		/// <param name="delCache">Ìí¼Ó³É¹¦ºóÇåÀíµÄCACHE key£¬Ö§³ÖÕıÔò</param>
+		/// <param name="dbkey">´æÔÚÊı¾İ¿âÁ¬½Ó³ØÖĞµÄÁ¬½Ókey£¬Îª¿ÕÊ±Ê¹ÓÃConnStringÁ¬½Ó</param>
+		/// <returns>·µ»ØÌí¼Ó³É¹¦ºóµÄID</returns>
+		public static Int64 Insert(HtmlTemplate htmlTemplate, string dbkey = "", string[] delCache = null) {
+			object obj = new SQL().Database(dbkey).Insert(HtmlTemplate._)
+				.ValueP(HtmlTemplate._TemplateID, htmlTemplate.TemplateID)
+				.ValueP(HtmlTemplate._Subject, htmlTemplate.Subject)
+				.ValueP(HtmlTemplate._Body, htmlTemplate.Body)
+				.ValueP(HtmlTemplate._ShowName, htmlTemplate.ShowName)
+				.ValueP(HtmlTemplate._IsHTML, htmlTemplate.IsHTML)
+				.ValueP(HtmlTemplate._Status, htmlTemplate.Status)
+				.ValueP(HtmlTemplate._CreateTime, htmlTemplate.CreateTime)
+				.ToExec();
+			if (obj.ToInt() != 1) return 0;
+			obj = new SQL().Database(dbkey).From(HtmlTemplate._).Max("TemplateID").ToScalar();
+			if (obj.IsAllNull()) return 0;
+			Int64 value = obj.ToString().ToBigInt();
+			if (delCache.IsNull()) return value;
+			Cache2.Remove("TH.Mailer.HtmlTemplateCache_", delCache);
+			return value;
+		}
+		/// <summary>
+		/// ÓÊ¼şÄ£°æÌí¼Ó¼ÇÂ¼
+		/// </summary>
+		/// <param name="htmlTemplate">ÓÊ¼şÄ£°æÊµÌåÀà</param>
+		/// <returns>·µ»ØÌí¼Ó³É¹¦ºóµÄID</returns>
+		public static Int64 Insert(HtmlTemplate htmlTemplate, string dbkey) {
+			return Insert(htmlTemplate, dbkey, null);
+		}
+		/// <summary>
+		/// ÓÊ¼şÄ£°æĞŞ¸Ä¼ÇÂ¼
+		/// </summary>
+		/// <param name="htmlTemplate">ÓÊ¼şÄ£°æÊµÌåÀà</param>
+		/// <param name="where">ĞŞ¸ÄÊ±¸½¼ÓÌõ¼ş£¬Í³Ò»µÄÇ°ÃæÒª¼ÓÁ´½Ó·û£¨and¡¢orµÈµÈ£©</param>
+		/// <param name="delCache">ĞŞ¸Ä³É¹¦ºóÇåÀíµÄCACHE key£¬Ö§³ÖÕıÔò</param>
+		/// <param name="dbkey">´æÔÚÊı¾İ¿âÁ¬½Ó³ØÖĞµÄÁ¬½Ókey£¬Îª¿ÕÊ±Ê¹ÓÃConnStringÁ¬½Ó</param>
+		/// <returns>ĞŞ¸ÄÊÇ·ñ³É¹¦</returns>
+		public static bool Update(HtmlTemplate htmlTemplate, string dbkey = "", Where where = null, string[] delCache = null) {
+			if (htmlTemplate.TemplateID.IsNull()) return false;
+			int value = new SQL().Database(dbkey).Update(HtmlTemplate._)
+				.SetP(HtmlTemplate._Subject, htmlTemplate.Subject)
+				.SetP(HtmlTemplate._Body, htmlTemplate.Body)
+				.SetP(HtmlTemplate._ShowName, htmlTemplate.ShowName)
+				.SetP(HtmlTemplate._IsHTML, htmlTemplate.IsHTML)
+				.SetP(HtmlTemplate._Status, htmlTemplate.Status)
+				.SetP(HtmlTemplate._CreateTime, htmlTemplate.CreateTime)
+				.Where(new Where()
+					.AndP(HtmlTemplate._TemplateID, htmlTemplate.TemplateID, Operator.Equal, true)
+				).Where(where).ToExec();
+			if (value <= 0) return false;
+			if (delCache.IsNull()) return true;
+			Cache2.Remove("TH.Mailer.HtmlTemplateCache_", delCache);
+			return true;
+		}
+		/// <summary>
+		/// ÓÊ¼şÄ£°æĞŞ¸Ä¼ÇÂ¼
+		/// </summary>
+		/// <param name="htmlTemplate">ÓÊ¼şÄ£°æÊµÌåÀà</param>
+		/// <returns>ĞŞ¸ÄÊÇ·ñ³É¹¦</returns>
+		public static bool Update(HtmlTemplate htmlTemplate, string dbkey) {
+			return Update(htmlTemplate, dbkey, null, null);
+		}
+		/// <summary>
+		/// ÓÊ¼şÄ£°æĞŞ¸Ä¶àÌõ¼ÇÂ¼
+		/// </summary>
+		/// <param name="templateIDList">ÓÊ¼şÄ£°æ±àºÅÁĞ±í£¬ÓÃ¡°,¡±ºÅ·Ö¸ô</param>
+		/// <param name="htmlTemplate">ÓÊ¼şÄ£°æÊµÌåÀà</param>
+		/// <param name="where">ĞŞ¸ÄÊ±¸½¼ÓÌõ¼ş£¬Í³Ò»µÄÇ°ÃæÒª¼ÓÁ´½Ó·û£¨and¡¢orµÈµÈ£©</param>
+		/// <param name="delCache">ĞŞ¸Ä³É¹¦ºóÇåÀíµÄCACHE key£¬Ö§³ÖÕıÔò</param>
+		/// <param name="dbkey">´æÔÚÊı¾İ¿âÁ¬½Ó³ØÖĞµÄÁ¬½Ókey£¬Îª¿ÕÊ±Ê¹ÓÃConnStringÁ¬½Ó</param>
+		/// <returns>ĞŞ¸ÄÊÇ·ñ³É¹¦</returns>
+		public static bool UpdateByIDList(IEnumerable<Int64> templateIDList,  HtmlTemplate htmlTemplate, string dbkey = "", Where where = null, string[] delCache = null) {
+			int value = new SQL().Database(dbkey).Update(HtmlTemplate._)
+				.SetP(HtmlTemplate._Subject, htmlTemplate.Subject)
+				.SetP(HtmlTemplate._Body, htmlTemplate.Body)
+				.SetP(HtmlTemplate._ShowName, htmlTemplate.ShowName)
+				.SetP(HtmlTemplate._IsHTML, htmlTemplate.IsHTML)
+				.SetP(HtmlTemplate._Status, htmlTemplate.Status)
+				.SetP(HtmlTemplate._CreateTime, htmlTemplate.CreateTime)
+				.Where(new Where()
+					.And(HtmlTemplate._TemplateID, "(" + templateIDList .Join(",") + ")", Operator.In)
+				).Where(where).ToExec();
+			if (value <= 0) return false;
+			if (delCache.IsNull()) return true;
+			Cache2.Remove("TH.Mailer.HtmlTemplateCache_", delCache);
+			return true;
+		}
+		/// <summary>
+		/// ÓÊ¼şÄ£°æĞŞ¸Ä¶àÌõ¼ÇÂ¼
+		/// </summary>
+		/// <param name="templateIDList">ÓÊ¼şÄ£°æ±àºÅÁĞ±í£¬ÓÃ¡°,¡±ºÅ·Ö¸ô</param>
+		/// <param name="htmlTemplate">ÓÊ¼şÄ£°æÊµÌåÀà</param>
+		/// <returns>ĞŞ¸ÄÊÇ·ñ³É¹¦</returns>
+		public static bool UpdateByIDList(IEnumerable<Int64> templateIDList,  HtmlTemplate htmlTemplate, string dbkey) {
+			return UpdateByIDList(templateIDList,  htmlTemplate, dbkey, null, null);
+		}
+ 		/// <summary>
+		/// ÓÊ¼şÄ£°æÉ¾³ı¼ÇÂ¼
+		/// </summary>
+		/// <param name="templateID">ÓÊ¼şÄ£°æ±àºÅ</param>
+		/// <param name="where">ĞŞ¸ÄÊ±¸½¼ÓÌõ¼ş£¬Í³Ò»µÄÇ°ÃæÒª¼ÓÁ´½Ó·û£¨and¡¢orµÈµÈ£©</param>
+		/// <param name="delCache">É¾³ı³É¹¦ºóÇåÀíµÄCACHE key£¬Ö§³ÖÕıÔò</param>
+		/// <param name="dbkey">´æÔÚÊı¾İ¿âÁ¬½Ó³ØÖĞµÄÁ¬½Ókey£¬Îª¿ÕÊ±Ê¹ÓÃConnStringÁ¬½Ó</param>
+		/// <returns>É¾³ıÊÇ·ñ³É¹¦</returns>
+		public static bool DeleteByID(Int64? templateID,  string dbkey = "", Where where = null, string[] delCache = null) {
+			if (templateID.IsNull()) return false;
+			int value = new SQL().Database(dbkey).Delete(HtmlTemplate._)
+				.Where(new Where()
+					.AndP(HtmlTemplate._TemplateID, templateID, Operator.Equal, true)
+				).Where(where).ToExec();
+			if (value != 1) return false;
+			if (delCache.IsNull()) return true;
+			Cache2.Remove("TH.Mailer.HtmlTemplateCache_", delCache);
+			return true;
+		}
+		/// <summary>
+		/// ÓÊ¼şÄ£°æÉ¾³ı¼ÇÂ¼
+		/// </summary>
+		/// <param name="templateID">ÓÊ¼şÄ£°æ±àºÅ</param>
+		/// <returns>É¾³ıÊÇ·ñ³É¹¦</returns>
+		public static bool DeleteByID(Int64? templateID, string dbkey) {
+			return DeleteByID(templateID,  dbkey, null, null);
+		}
+		/// <summary>
+		/// ÓÊ¼şÄ£°æÉ¾³ı¼ÇÂ¼
+		/// </summary>
+		/// <param name="templateID">ÓÊ¼şÄ£°æ±àºÅ</param>
+		/// <param name="where">ĞŞ¸ÄÊ±¸½¼ÓÌõ¼ş£¬Í³Ò»µÄÇ°ÃæÒª¼ÓÁ´½Ó·û£¨and¡¢orµÈµÈ£©</param>
+		/// <param name="delCache">É¾³ı³É¹¦ºóÇåÀíµÄCACHE key£¬Ö§³ÖÕıÔò</param>
+		/// <param name="dbkey">´æÔÚÊı¾İ¿âÁ¬½Ó³ØÖĞµÄÁ¬½Ókey£¬Îª¿ÕÊ±Ê¹ÓÃConnStringÁ¬½Ó</param>
+		/// <returns>É¾³ıÊÇ·ñ³É¹¦</returns>
+		public static bool DeleteByID(Int64 templateID,  string dbkey = "", Where where = null, string[] delCache = null) {
+			return DeleteByID((Int64?)templateID,  dbkey, where, delCache);
+		}
+		/// <summary>
+		/// ÓÊ¼şÄ£°æÉ¾³ı¼ÇÂ¼
+		/// </summary>
+		/// <param name="templateID">ÓÊ¼şÄ£°æ±àºÅ</param>
+		/// <returns>É¾³ıÊÇ·ñ³É¹¦</returns>
+		public static bool DeleteByID(Int64 templateID, string dbkey) {
+			return DeleteByID((Int64?)templateID,  dbkey, null, null);
+		}
+		/// <summary>
+		/// ÓÊ¼şÄ£°æÉ¾³ı¶àÌõ¼ÇÂ¼
+		/// </summary>
+		/// <param name="templateIDList">ÓÊ¼şÄ£°æ±àºÅÁĞ±í£¬ÓÃ¡°,¡±ºÅ·Ö¸ô</param>
+		/// <param name="where">É¾³ıÊ±¸½¼ÓÌõ¼ş£¬Í³Ò»µÄÇ°ÃæÒª¼ÓÁ´½Ó·û£¨and¡¢orµÈµÈ£©</param>
+		/// <param name="delCache">ĞŞ¸Ä³É¹¦ºóÇåÀíµÄCACHE key£¬Ö§³ÖÕıÔò</param>
+		/// <param name="dbkey">´æÔÚÊı¾İ¿âÁ¬½Ó³ØÖĞµÄÁ¬½Ókey£¬Îª¿ÕÊ±Ê¹ÓÃConnStringÁ¬½Ó</param>
+		/// <returns>É¾³ıÊÇ·ñ³É¹¦</returns>
+		public static bool DeleteByIDList(IEnumerable<Int64> templateIDList,  string dbkey = "", Where where = null, string[] delCache = null) {
+			int value = new SQL().Database(dbkey).Delete(HtmlTemplate._)
+				.Where(new Where()
+					.And(HtmlTemplate._TemplateID, "(" + templateIDList .Join(",") + ")", Operator.In)
+				).Where(where).ToExec();
+			if (value <= 0) return false;
+			if (delCache.IsNull()) return true;
+			Cache2.Remove("TH.Mailer.HtmlTemplateCache_", delCache);
+			return true;
+		}
+		/// <summary>
+		/// ÓÊ¼şÄ£°æÉ¾³ı¶àÌõ¼ÇÂ¼
+		/// </summary>
+		/// <param name="templateIDList">ÓÊ¼şÄ£°æ±àºÅÁĞ±í£¬ÓÃ¡°,¡±ºÅ·Ö¸ô</param>
+		/// <param name="where">É¾³ıÊ±¸½¼ÓÌõ¼ş£¬Í³Ò»µÄÇ°ÃæÒª¼ÓÁ´½Ó·û£¨and¡¢orµÈµÈ£©</param>
+		/// <param name="delCache">ĞŞ¸Ä³É¹¦ºóÇåÀíµÄCACHE key£¬Ö§³ÖÕıÔò</param>
+		/// <param name="dbkey">´æÔÚÊı¾İ¿âÁ¬½Ó³ØÖĞµÄÁ¬½Ókey£¬Îª¿ÕÊ±Ê¹ÓÃConnStringÁ¬½Ó</param>
+		/// <returns>É¾³ıÊÇ·ñ³É¹¦</returns>
+		public static bool DeleteByIDList(IEnumerable<Int64> templateIDList, string dbkey) {
+			return DeleteByIDList(templateIDList,  dbkey, null, null);
+		}
+		/// <summary>
+		/// ÓÊ¼şÄ£°æ²éÑ¯ËùÓĞ¼ÇÂ¼
+		/// </summary>
+		/// <param name="where">¸½¼ÓÌõ¼ş£¬Í³Ò»µÄÇ°ÃæÒª¼ÓÁ´½Ó·û£¨and¡¢orµÈµÈ£©</param>
+		/// <param name="order">ÅÅĞò×Ö¶Î£¬²»¼Ó¡°order by¡±</param>
+		/// <param name="fieldList">ÉèÖÃĞèÒª·µ»ØµÄ×Ö¶Î</param>
+		/// <param name="dbkey">´æÔÚÊı¾İ¿âÁ¬½Ó³ØÖĞµÄÁ¬½Ókey£¬Îª¿ÕÊ±Ëæ»úÈ¡Á¬½Ókey</param>
+		/// <returns>·µ»ØÊµÌå¼ÇÂ¼¼¯</returns>
+		public static IList<HtmlTemplate> SelectListByAll(string dbkey = "", Where where = null, string order = "", string fieldList = "") {
+			string cacheNameKey = "TH.Mailer.HtmlTemplateCache_SelectListByAll_{0}_{1}_{2}".FormatWith(where, order, fieldList);
+			return Cache2.Get<IList<HtmlTemplate>>(cacheNameKey, cacheSeconds, () => {
+				IList<HtmlTemplate> list = new List<HtmlTemplate>();
+				if (fieldList.IsNullEmpty()) {
+					list = new SQL().Database(dbkey).From(HtmlTemplate._)
+						.Select(HtmlTemplate._TemplateID)
+						.Select(HtmlTemplate._Subject)
+						.Select(HtmlTemplate._Body)
+						.Select(HtmlTemplate._ShowName)
+						.Select(HtmlTemplate._IsHTML)
+						.Select(HtmlTemplate._Status)
+						.Select(HtmlTemplate._CreateTime)
+						.Where(where).Order(order).ToList<HtmlTemplate>();
+				} else {
+					list = new SQL().Database(dbkey).From(HtmlTemplate._).Select(fieldList).Where(where).Order(order).ToList<HtmlTemplate>();
+				}
+				return list;
+			});
+		}
+		/// <summary>
+		/// ÓÊ¼şÄ£°æ²éÑ¯ËùÓĞ¼ÇÂ¼
+		/// </summary>
+		/// <returns>·µ»ØÊµÌå¼ÇÂ¼¼¯</returns>
+		public static IList<HtmlTemplate> SelectListByAll(string dbkey) {
+			return SelectListByAll(dbkey, null, "", "");
+		}
+		/// <summary>
+		/// ÓÊ¼şÄ£°æÉ¾³ıËùÓĞ¼ÇÂ¼
+		/// </summary>
+		/// <param name="dbkey">´æÔÚÊı¾İ¿âÁ¬½Ó³ØÖĞµÄÁ¬½Ókey£¬Îª¿ÕÊ±Ëæ»úÈ¡Á¬½Ókey</param>
+		/// <returns>·µ»ØÊµÌå¼ÇÂ¼¼¯</returns>
+		public static bool RemoveAll(string dbkey = "") {
+			return (new SQL().Database(dbkey).Delete(HtmlTemplate._).ToExec()) > 0;
+		}
+		/// <summary>
+		/// Çå³ıÓÊ¼şÄ£°æ²éÑ¯ËùÓĞ¼ÇÂ¼µÄ»º´æ
+		/// </summary>
+		public static void ClearCacheSelectListByAll() {
+			//Cache2.Remove("TH.Mailer.HtmlTemplateCache_SelectListByAll___");
+			Cache2.RemoveByPattern("TH.Mailer.HtmlTemplateCache_SelectListByAll_(.+?)");
+		}
+		/// <summary>
+		/// Çå³ıÓÊ¼şÄ£°æËùÓĞ»º´æ
+		/// </summary>
+		public static void ClearCacheAll() {
+			Cache2.RemoveByPattern("TH.Mailer.HtmlTemplateCache_(.+?)");
+		}
+	}
 }
 

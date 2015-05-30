@@ -1,4 +1,4 @@
-ï»¿//-------------------------------------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------------------------------------
 // All Rights Reserved , Copyright (C) 2013 , TH , Ltd.
 //-------------------------------------------------------------------------------------------------------------------------------------
 
@@ -8,208 +8,208 @@ using System.Text;
 using Pub.Class;
 
 namespace TH.Mailer.Entity {
-    /// <summary>
-    /// å®ä½“ç±»
-    /// 
-    /// ä¿®æ”¹çºªå½•
-    ///     2013-06-03 ç‰ˆæœ¬ï¼š1.0 ç³»ç»Ÿè‡ªåŠ¨åˆ›å»ºæ­¤ç±»
-    /// 
-    /// </summary>
-    [Serializable]
-    [EntityInfo("")]
-    public partial class EmailList {
-        /// <summary>
-        /// 
-        /// </summary>
-        public static readonly string _ = "EmailList";
+	/// <summary>
+	/// ÊµÌåÀà
+	///
+	/// ĞŞ¸Ä¼ÍÂ¼
+	///	 2013-06-03 °æ±¾£º1.0 ÏµÍ³×Ô¶¯´´½¨´ËÀà
+	///
+	/// </summary>
+	[Serializable]
+	[EntityInfo("")]
+	public partial class EmailList {
+		/// <summary>
+		/// 
+		/// </summary>
+		public static readonly string _ = "EmailList";
 
-        /// <summary>
-        /// å‘é€çš„Email
-        /// </summary>
-        public static readonly string _EmailAddress = "EmailAddress";
-        private string emailAddress = null;
-        /// <summary>
-        /// å‘é€çš„Email
-        /// </summary>
-        [EntityInfo("å‘é€çš„Email")]
-        public new string EmailAddress { get { return emailAddress; } set { emailAddress = value; } }
+		/// <summary>
+		/// ·¢ËÍµÄEmail
+		/// </summary>
+		public static readonly string _EmailAddress = "EmailAddress";
+		private string emailAddress = null;
+		/// <summary>
+		/// ·¢ËÍµÄEmail
+		/// </summary>
+		[EntityInfo("·¢ËÍµÄEmail")]
+		public new string EmailAddress { get { return emailAddress; } set { emailAddress = value; } }
 
-        /// <summary>
-        /// æ”¶ä»¶äººæ˜µç§°
-        /// </summary>
-        public static readonly string _NickName = "NickName";
-        private string nickName = null;
-        /// <summary>
-        /// æ”¶ä»¶äººæ˜µç§°
-        /// </summary>
-        [EntityInfo("æ”¶ä»¶äººæ˜µç§°")]
-        public new string NickName { get { return nickName; } set { nickName = value; } }
+		/// <summary>
+		/// ÊÕ¼şÈËêÇ³Æ
+		/// </summary>
+		public static readonly string _NickName = "NickName";
+		private string nickName = null;
+		/// <summary>
+		/// ÊÕ¼şÈËêÇ³Æ
+		/// </summary>
+		[EntityInfo("ÊÕ¼şÈËêÇ³Æ")]
+		public new string NickName { get { return nickName; } set { nickName = value; } }
 
-        /// <summary>
-        /// çŠ¶æ€ 0ç­‰å¾…å‘é€ 1å‘é€æˆåŠŸ 2å‘é€å¤±è´¥
-        /// </summary>
-        public static readonly string _LastSendStatus = "LastSendStatus";
-        private int? lastSendStatus = null;
-        /// <summary>
-        /// çŠ¶æ€ 0ç­‰å¾…å‘é€ 1å‘é€æˆåŠŸ 2å‘é€å¤±è´¥
-        /// </summary>
-        [EntityInfo("çŠ¶æ€ 0ç­‰å¾…å‘é€ 1å‘é€æˆåŠŸ 2å‘é€å¤±è´¥")]
-        public new int? LastSendStatus { get { return lastSendStatus; } set { lastSendStatus = value; } }
+		/// <summary>
+		/// ×´Ì¬ 0µÈ´ı·¢ËÍ 1·¢ËÍ³É¹¦ 2·¢ËÍÊ§°Ü
+		/// </summary>
+		public static readonly string _LastSendStatus = "LastSendStatus";
+		private int? lastSendStatus = null;
+		/// <summary>
+		/// ×´Ì¬ 0µÈ´ı·¢ËÍ 1·¢ËÍ³É¹¦ 2·¢ËÍÊ§°Ü
+		/// </summary>
+		[EntityInfo("×´Ì¬ 0µÈ´ı·¢ËÍ 1·¢ËÍ³É¹¦ 2·¢ËÍÊ§°Ü")]
+		public new int? LastSendStatus { get { return lastSendStatus; } set { lastSendStatus = value; } }
 
-        /// <summary>
-        /// æœ€åä¸€æ¬¡å‡ºé”™æ—¥å¿—
-        /// </summary>
-        public static readonly string _LastSendError = "LastSendError";
-        private string lastSendError = null;
-        /// <summary>
-        /// æœ€åä¸€æ¬¡å‡ºé”™æ—¥å¿—
-        /// </summary>
-        [EntityInfo("æœ€åä¸€æ¬¡å‡ºé”™æ—¥å¿—")]
-        public new string LastSendError { get { return lastSendError; } set { lastSendError = value; } }
+		/// <summary>
+		/// ×îºóÒ»´Î³ö´íÈÕÖ¾
+		/// </summary>
+		public static readonly string _LastSendError = "LastSendError";
+		private string lastSendError = null;
+		/// <summary>
+		/// ×îºóÒ»´Î³ö´íÈÕÖ¾
+		/// </summary>
+		[EntityInfo("×îºóÒ»´Î³ö´íÈÕÖ¾")]
+		public new string LastSendError { get { return lastSendError; } set { lastSendError = value; } }
 
-        /// <summary>
-        /// æœ€åä¸€æ¬¡å‘é€æ—¶é—´
-        /// </summary>
-        public static readonly string _LastSendTime = "LastSendTime";
-        private DateTime? lastSendTime = null;
-        /// <summary>
-        /// æœ€åä¸€æ¬¡å‘é€æ—¶é—´
-        /// </summary>
-        [EntityInfo("æœ€åä¸€æ¬¡å‘é€æ—¶é—´")]
-        public new DateTime? LastSendTime { get { return lastSendTime; } set { lastSendTime = value; } }
+		/// <summary>
+		/// ×îºóÒ»´Î·¢ËÍÊ±¼ä
+		/// </summary>
+		public static readonly string _LastSendTime = "LastSendTime";
+		private DateTime? lastSendTime = null;
+		/// <summary>
+		/// ×îºóÒ»´Î·¢ËÍÊ±¼ä
+		/// </summary>
+		[EntityInfo("×îºóÒ»´Î·¢ËÍÊ±¼ä")]
+		public new DateTime? LastSendTime { get { return lastSendTime; } set { lastSendTime = value; } }
 
-        /// <summary>
-        /// æœ€åä¸€æ¬¡ä½¿ç”¨SMTP
-        /// </summary>
-        public static readonly string _LastSendSmtp = "LastSendSmtp";
-        private string lastSendSmtp = null;
-        /// <summary>
-        /// æœ€åä¸€æ¬¡ä½¿ç”¨SMTP
-        /// </summary>
-        [EntityInfo("æœ€åä¸€æ¬¡ä½¿ç”¨SMTP")]
-        public new string LastSendSmtp { get { return lastSendSmtp; } set { lastSendSmtp = value; } }
+		/// <summary>
+		/// ×îºóÒ»´ÎÊ¹ÓÃSMTP
+		/// </summary>
+		public static readonly string _LastSendSmtp = "LastSendSmtp";
+		private string lastSendSmtp = null;
+		/// <summary>
+		/// ×îºóÒ»´ÎÊ¹ÓÃSMTP
+		/// </summary>
+		[EntityInfo("×îºóÒ»´ÎÊ¹ÓÃSMTP")]
+		public new string LastSendSmtp { get { return lastSendSmtp; } set { lastSendSmtp = value; } }
 
-        /// <summary>
-        /// å‘é€æ¬¡æ•°
-        /// </summary>
-        public static readonly string _SendCount = "SendCount";
-        private int? sendCount = null;
-        /// <summary>
-        /// å‘é€æ¬¡æ•°
-        /// </summary>
-        [EntityInfo("å‘é€æ¬¡æ•°")]
-        public new int? SendCount { get { return sendCount; } set { sendCount = value; } }
+		/// <summary>
+		/// ·¢ËÍ´ÎÊı
+		/// </summary>
+		public static readonly string _SendCount = "SendCount";
+		private int? sendCount = null;
+		/// <summary>
+		/// ·¢ËÍ´ÎÊı
+		/// </summary>
+		[EntityInfo("·¢ËÍ´ÎÊı")]
+		public new int? SendCount { get { return sendCount; } set { sendCount = value; } }
 
-        /// <summary>
-        /// åˆ›å»ºæ—¶é—´
-        /// </summary>
-        public static readonly string _CreateTime = "CreateTime";
-        private DateTime? createTime = null;
-        /// <summary>
-        /// åˆ›å»ºæ—¶é—´
-        /// </summary>
-        [EntityInfo("åˆ›å»ºæ—¶é—´")]
-        public new DateTime? CreateTime { get { return createTime; } set { createTime = value; } }
+		/// <summary>
+		/// ´´½¨Ê±¼ä
+		/// </summary>
+		public static readonly string _CreateTime = "CreateTime";
+		private DateTime? createTime = null;
+		/// <summary>
+		/// ´´½¨Ê±¼ä
+		/// </summary>
+		[EntityInfo("´´½¨Ê±¼ä")]
+		public new DateTime? CreateTime { get { return createTime; } set { createTime = value; } }
 
-        /// <summary>
-        /// ex0
-        /// </summary>
-        public static readonly string _ex0 = "ex0";
-        private string __ex0 = null;
-        /// <summary>
-        /// ex0
-        /// </summary>
-        [EntityInfo("ex0")]
-        public new string ex0 { get { return __ex0; } set { __ex0 = value; } }
+		/// <summary>
+		/// ex0
+		/// </summary>
+		public static readonly string _ex0 = "ex0";
+		private string __ex0 = null;
+		/// <summary>
+		/// ex0
+		/// </summary>
+		[EntityInfo("ex0")]
+		public new string ex0 { get { return __ex0; } set { __ex0 = value; } }
 
-        /// <summary>
-        /// ex1
-        /// </summary>
-        public static readonly string _ex1 = "ex1";
-        private string __ex1 = null;
-        /// <summary>
-        /// ex1
-        /// </summary>
-        [EntityInfo("ex1")]
-        public new string ex1 { get { return __ex1; } set { __ex1 = value; } }
+		/// <summary>
+		/// ex1
+		/// </summary>
+		public static readonly string _ex1 = "ex1";
+		private string __ex1 = null;
+		/// <summary>
+		/// ex1
+		/// </summary>
+		[EntityInfo("ex1")]
+		public new string ex1 { get { return __ex1; } set { __ex1 = value; } }
 
-        /// <summary>
-        /// ex2
-        /// </summary>
-        public static readonly string _ex2 = "ex2";
-        private string __ex2 = null;
-        /// <summary>
-        /// ex2
-        /// </summary>
-        [EntityInfo("ex2")]
-        public new string ex2 { get { return __ex2; } set { __ex2 = value; } }
+		/// <summary>
+		/// ex2
+		/// </summary>
+		public static readonly string _ex2 = "ex2";
+		private string __ex2 = null;
+		/// <summary>
+		/// ex2
+		/// </summary>
+		[EntityInfo("ex2")]
+		public new string ex2 { get { return __ex2; } set { __ex2 = value; } }
 
-        /// <summary>
-        /// ex3
-        /// </summary>
-        public static readonly string _ex3 = "ex3";
-        private string __ex3 = null;
-        /// <summary>
-        /// ex3
-        /// </summary>
-        [EntityInfo("ex3")]
-        public new string ex3 { get { return __ex3; } set { __ex3 = value; } }
+		/// <summary>
+		/// ex3
+		/// </summary>
+		public static readonly string _ex3 = "ex3";
+		private string __ex3 = null;
+		/// <summary>
+		/// ex3
+		/// </summary>
+		[EntityInfo("ex3")]
+		public new string ex3 { get { return __ex3; } set { __ex3 = value; } }
 
-        /// <summary>
-        /// ex4
-        /// </summary>
-        public static readonly string _ex4 = "ex4";
-        private string __ex4 = null;
-        /// <summary>
-        /// ex4
-        /// </summary>
-        [EntityInfo("ex4")]
-        public new string ex4 { get { return __ex4; } set { __ex4 = value; } }
+		/// <summary>
+		/// ex4
+		/// </summary>
+		public static readonly string _ex4 = "ex4";
+		private string __ex4 = null;
+		/// <summary>
+		/// ex4
+		/// </summary>
+		[EntityInfo("ex4")]
+		public new string ex4 { get { return __ex4; } set { __ex4 = value; } }
 
-        /// <summary>
-        /// ex5
-        /// </summary>
-        public static readonly string _ex5 = "ex5";
-        private string __ex5 = null;
-        /// <summary>
-        /// ex5
-        /// </summary>
-        [EntityInfo("ex5")]
-        public new string ex5 { get { return __ex5; } set { __ex5 = value; } }
+		/// <summary>
+		/// ex5
+		/// </summary>
+		public static readonly string _ex5 = "ex5";
+		private string __ex5 = null;
+		/// <summary>
+		/// ex5
+		/// </summary>
+		[EntityInfo("ex5")]
+		public new string ex5 { get { return __ex5; } set { __ex5 = value; } }
 
-        /// <summary>
-        /// ex6
-        /// </summary>
-        public static readonly string _ex6 = "ex6";
-        private string __ex6 = null;
-        /// <summary>
-        /// ex6
-        /// </summary>
-        [EntityInfo("ex6")]
-        public new string ex6 { get { return __ex6; } set { __ex6 = value; } }
+		/// <summary>
+		/// ex6
+		/// </summary>
+		public static readonly string _ex6 = "ex6";
+		private string __ex6 = null;
+		/// <summary>
+		/// ex6
+		/// </summary>
+		[EntityInfo("ex6")]
+		public new string ex6 { get { return __ex6; } set { __ex6 = value; } }
 
-        /// <summary>
-        /// ex7
-        /// </summary>
-        public static readonly string _ex7 = "ex7";
-        private string __ex7 = null;
-        /// <summary>
-        /// ex7
-        /// </summary>
-        [EntityInfo("ex7")]
-        public new string ex7 { get { return __ex7; } set { __ex7 = value; } }
+		/// <summary>
+		/// ex7
+		/// </summary>
+		public static readonly string _ex7 = "ex7";
+		private string __ex7 = null;
+		/// <summary>
+		/// ex7
+		/// </summary>
+		[EntityInfo("ex7")]
+		public new string ex7 { get { return __ex7; } set { __ex7 = value; } }
 
-        /// <summary>
-        /// ex8
-        /// </summary>
-        public static readonly string _ex8 = "ex8";
-        private string __ex8 = null;
-        /// <summary>
-        /// ex8
-        /// </summary>
-        [EntityInfo("ex8")]
-        public new string ex8 { get { return __ex8; } set { __ex8 = value; } }
-    }
+		/// <summary>
+		/// ex8
+		/// </summary>
+		public static readonly string _ex8 = "ex8";
+		private string __ex8 = null;
+		/// <summary>
+		/// ex8
+		/// </summary>
+		[EntityInfo("ex8")]
+		public new string ex8 { get { return __ex8; } set { __ex8 = value; } }
+	}
 }
 
 

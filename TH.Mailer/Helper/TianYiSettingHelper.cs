@@ -1,4 +1,4 @@
-ï»¿//-------------------------------------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------------------------------------
 // All Rights Reserved , Copyright (C) 2013 , TH , Ltd.
 //-------------------------------------------------------------------------------------------------------------------------------------
 
@@ -17,280 +17,281 @@ using TH.Mailer.Entity;
 using Pub.Class;
 
 namespace TH.Mailer.Helper {
-    /// <summary>
-    /// å¤©ç¿¼è¿æ¥è®¾ç½®æ“ä½œç±»
-    /// 
-    /// ä¿®æ”¹çºªå½•
-    ///     2013-06-03 ç‰ˆæœ¬ï¼š1.0 ç³»ç»Ÿè‡ªåŠ¨åˆ›å»ºæ­¤ç±»
-    /// 
-    /// </summary>
-    public partial class TianYiSettingHelper {
-        /// <summary>
-        /// å¤©ç¿¼è¿æ¥è®¾ç½®ç¼“å­˜å¤šå°‘ç§’ x 5
-        /// </summary>
-        public static int cacheSeconds = 1440;
-        /// <summary>
-        /// å¤©ç¿¼è¿æ¥è®¾ç½®æ·»åŠ è®°å½•
-        /// </summary>
-        /// <param name="tianYiSetting">å¤©ç¿¼è¿æ¥è®¾ç½®å®ä½“ç±»</param>
-        /// <param name="delCache">æ·»åŠ æˆåŠŸåæ¸…ç†çš„CACHE keyï¼Œæ”¯æŒæ­£åˆ™</param>
-        /// <param name="dbkey">å­˜åœ¨æ•°æ®åº“è¿æ¥æ± ä¸­çš„è¿æ¥keyï¼Œä¸ºç©ºæ—¶ä½¿ç”¨ConnStringè¿æ¥</param>
-        /// <returns>æ·»åŠ æ˜¯å¦æˆåŠŸ</returns>
-        public static bool Insert(TianYiSetting tianYiSetting, string dbkey = "", string[] delCache = null) {
-            int obj = new SQL().Database(dbkey).Insert(TianYiSetting._)
-                .ValueP(TianYiSetting._TianYiID, tianYiSetting.TianYiID)
-                .ValueP(TianYiSetting._TianYiExePath, tianYiSetting.TianYiExePath)
-                .ToExec();
-            if (delCache.IsNull()) return obj == 1;
-            Cache2.Remove("TH.Mailer.TianYiSettingCache_", delCache);
-            return obj == 1;
-        }
-        /// <summary>
-        /// å¤©ç¿¼è¿æ¥è®¾ç½®æ·»åŠ è®°å½•
-        /// </summary>
-        /// <param name="tianYiSetting">å¤©ç¿¼è¿æ¥è®¾ç½®å®ä½“ç±»</param>
-        /// <returns>æ·»åŠ æ˜¯å¦æˆåŠŸ</returns>
-        public static bool Insert(TianYiSetting tianYiSetting, string dbkey) {
-            return Insert(tianYiSetting, dbkey, null);
-        }
-        /// <summary>
-        /// å¤©ç¿¼è¿æ¥è®¾ç½®ä¿®æ”¹è®°å½•
-        /// </summary>
-        /// <param name="tianYiSetting">å¤©ç¿¼è¿æ¥è®¾ç½®å®ä½“ç±»</param>
-        /// <param name="where">ä¿®æ”¹æ—¶é™„åŠ æ¡ä»¶ï¼Œç»Ÿä¸€çš„å‰é¢è¦åŠ é“¾æ¥ç¬¦ï¼ˆandã€orç­‰ç­‰ï¼‰</param>
-        /// <param name="delCache">ä¿®æ”¹æˆåŠŸåæ¸…ç†çš„CACHE keyï¼Œæ”¯æŒæ­£åˆ™</param>
-        /// <param name="dbkey">å­˜åœ¨æ•°æ®åº“è¿æ¥æ± ä¸­çš„è¿æ¥keyï¼Œä¸ºç©ºæ—¶ä½¿ç”¨ConnStringè¿æ¥</param>
-        /// <returns>ä¿®æ”¹æ˜¯å¦æˆåŠŸ</returns>
-        public static bool Update(TianYiSetting tianYiSetting, string dbkey = "", Where where = null, string[] delCache = null) {
-            if (tianYiSetting.TianYiID.IsNull()) return false;
-            int value = new SQL().Database(dbkey).Update(TianYiSetting._)
-                .SetP(TianYiSetting._TianYiExePath, tianYiSetting.TianYiExePath)
-                .Where(new Where()
-                    .AndP(TianYiSetting._TianYiID, tianYiSetting.TianYiID, Operator.Equal, true)
-                ).Where(where).ToExec();
-            if (value <= 0) return false;
-            if (delCache.IsNull()) return true;
-            Cache2.Remove("TH.Mailer.TianYiSettingCache_", delCache);
-            return true;
-        }
-        /// <summary>
-        /// å¤©ç¿¼è¿æ¥è®¾ç½®ä¿®æ”¹è®°å½•
-        /// </summary>
-        /// <param name="tianYiSetting">å¤©ç¿¼è¿æ¥è®¾ç½®å®ä½“ç±»</param>
-        /// <returns>ä¿®æ”¹æ˜¯å¦æˆåŠŸ</returns>
-        public static bool Update(TianYiSetting tianYiSetting, string dbkey) {
-            return Update(tianYiSetting, dbkey, null, null);
-        }
-        /// <summary>
-        /// å¤©ç¿¼è¿æ¥è®¾ç½®ä¿®æ”¹å¤šæ¡è®°å½•
-        /// </summary>
-        /// <param name="tianYiIDList">å¤©ç¿¼è¿æ¥è®¾ç½®ç¼–å·åˆ—è¡¨ï¼Œç”¨â€œ,â€å·åˆ†éš”</param>
-        /// <param name="tianYiSetting">å¤©ç¿¼è¿æ¥è®¾ç½®å®ä½“ç±»</param>
-        /// <param name="where">ä¿®æ”¹æ—¶é™„åŠ æ¡ä»¶ï¼Œç»Ÿä¸€çš„å‰é¢è¦åŠ é“¾æ¥ç¬¦ï¼ˆandã€orç­‰ç­‰ï¼‰</param>
-        /// <param name="delCache">ä¿®æ”¹æˆåŠŸåæ¸…ç†çš„CACHE keyï¼Œæ”¯æŒæ­£åˆ™</param>
-        /// <param name="dbkey">å­˜åœ¨æ•°æ®åº“è¿æ¥æ± ä¸­çš„è¿æ¥keyï¼Œä¸ºç©ºæ—¶ä½¿ç”¨ConnStringè¿æ¥</param>
-        /// <returns>ä¿®æ”¹æ˜¯å¦æˆåŠŸ</returns>
-        public static bool UpdateByIDList(IEnumerable<int> tianYiIDList,  TianYiSetting tianYiSetting, string dbkey = "", Where where = null, string[] delCache = null) {
-            int value = new SQL().Database(dbkey).Update(TianYiSetting._)
-                .SetP(TianYiSetting._TianYiExePath, tianYiSetting.TianYiExePath)
-                .Where(new Where()
-                    .And(TianYiSetting._TianYiID, "(" + tianYiIDList .Join(",") + ")", Operator.In)
-                ).Where(where).ToExec();
-            if (value <= 0) return false;
-            if (delCache.IsNull()) return true;
-            Cache2.Remove("TH.Mailer.TianYiSettingCache_", delCache);
-            return true;
-        }
-        /// <summary>
-        /// å¤©ç¿¼è¿æ¥è®¾ç½®ä¿®æ”¹å¤šæ¡è®°å½•
-        /// </summary>
-        /// <param name="tianYiIDList">å¤©ç¿¼è¿æ¥è®¾ç½®ç¼–å·åˆ—è¡¨ï¼Œç”¨â€œ,â€å·åˆ†éš”</param>
-        /// <param name="tianYiSetting">å¤©ç¿¼è¿æ¥è®¾ç½®å®ä½“ç±»</param>
-        /// <returns>ä¿®æ”¹æ˜¯å¦æˆåŠŸ</returns>
-        public static bool UpdateByIDList(IEnumerable<int> tianYiIDList,  TianYiSetting tianYiSetting, string dbkey) {
-            return UpdateByIDList(tianYiIDList,  tianYiSetting, dbkey, null, null);
-        }
-         /// <summary>
-        /// å¤©ç¿¼è¿æ¥è®¾ç½®åˆ é™¤è®°å½•
-        /// </summary>
-        /// <param name="tianYiID">å¤©ç¿¼è¿æ¥è®¾ç½®ç¼–å·</param>
-        /// <param name="where">ä¿®æ”¹æ—¶é™„åŠ æ¡ä»¶ï¼Œç»Ÿä¸€çš„å‰é¢è¦åŠ é“¾æ¥ç¬¦ï¼ˆandã€orç­‰ç­‰ï¼‰</param>
-        /// <param name="delCache">åˆ é™¤æˆåŠŸåæ¸…ç†çš„CACHE keyï¼Œæ”¯æŒæ­£åˆ™</param>
-        /// <param name="dbkey">å­˜åœ¨æ•°æ®åº“è¿æ¥æ± ä¸­çš„è¿æ¥keyï¼Œä¸ºç©ºæ—¶ä½¿ç”¨ConnStringè¿æ¥</param>
-        /// <returns>åˆ é™¤æ˜¯å¦æˆåŠŸ</returns>
-        public static bool DeleteByID(int? tianYiID,  string dbkey = "", Where where = null, string[] delCache = null) {
-            if (tianYiID.IsNull()) return false;
-            int value = new SQL().Database(dbkey).Delete(TianYiSetting._)
-                .Where(new Where()
-                    .AndP(TianYiSetting._TianYiID, tianYiID, Operator.Equal, true)
-                ).Where(where).ToExec();
-            if (value != 1) return false;
-            if (delCache.IsNull()) return true;
-            Cache2.Remove("TH.Mailer.TianYiSettingCache_", delCache);
-            return true;
-        }
-        /// <summary>
-        /// å¤©ç¿¼è¿æ¥è®¾ç½®åˆ é™¤è®°å½•
-        /// </summary>
-        /// <param name="tianYiID">å¤©ç¿¼è¿æ¥è®¾ç½®ç¼–å·</param>
-        /// <returns>åˆ é™¤æ˜¯å¦æˆåŠŸ</returns>
-        public static bool DeleteByID(int? tianYiID, string dbkey) {
-            return DeleteByID(tianYiID,  dbkey, null, null);
-        }
-        /// <summary>
-        /// å¤©ç¿¼è¿æ¥è®¾ç½®åˆ é™¤è®°å½•
-        /// </summary>
-        /// <param name="tianYiID">å¤©ç¿¼è¿æ¥è®¾ç½®ç¼–å·</param>
-        /// <param name="where">ä¿®æ”¹æ—¶é™„åŠ æ¡ä»¶ï¼Œç»Ÿä¸€çš„å‰é¢è¦åŠ é“¾æ¥ç¬¦ï¼ˆandã€orç­‰ç­‰ï¼‰</param>
-        /// <param name="delCache">åˆ é™¤æˆåŠŸåæ¸…ç†çš„CACHE keyï¼Œæ”¯æŒæ­£åˆ™</param>
-        /// <param name="dbkey">å­˜åœ¨æ•°æ®åº“è¿æ¥æ± ä¸­çš„è¿æ¥keyï¼Œä¸ºç©ºæ—¶ä½¿ç”¨ConnStringè¿æ¥</param>
-        /// <returns>åˆ é™¤æ˜¯å¦æˆåŠŸ</returns>
-        public static bool DeleteByID(int tianYiID,  string dbkey = "", Where where = null, string[] delCache = null) {
-            return DeleteByID((int?)tianYiID,  dbkey, where, delCache);
-        }
-        /// <summary>
-        /// å¤©ç¿¼è¿æ¥è®¾ç½®åˆ é™¤è®°å½•
-        /// </summary>
-        /// <param name="tianYiID">å¤©ç¿¼è¿æ¥è®¾ç½®ç¼–å·</param>
-        /// <returns>åˆ é™¤æ˜¯å¦æˆåŠŸ</returns>
-        public static bool DeleteByID(int tianYiID, string dbkey) {
-            return DeleteByID((int?)tianYiID,  dbkey, null, null);
-        }
-        /// <summary>
-        /// å¤©ç¿¼è¿æ¥è®¾ç½®åˆ é™¤å¤šæ¡è®°å½•
-        /// </summary>
-        /// <param name="tianYiIDList">å¤©ç¿¼è¿æ¥è®¾ç½®ç¼–å·åˆ—è¡¨ï¼Œç”¨â€œ,â€å·åˆ†éš”</param>
-        /// <param name="where">åˆ é™¤æ—¶é™„åŠ æ¡ä»¶ï¼Œç»Ÿä¸€çš„å‰é¢è¦åŠ é“¾æ¥ç¬¦ï¼ˆandã€orç­‰ç­‰ï¼‰</param>
-        /// <param name="delCache">ä¿®æ”¹æˆåŠŸåæ¸…ç†çš„CACHE keyï¼Œæ”¯æŒæ­£åˆ™</param>
-        /// <param name="dbkey">å­˜åœ¨æ•°æ®åº“è¿æ¥æ± ä¸­çš„è¿æ¥keyï¼Œä¸ºç©ºæ—¶ä½¿ç”¨ConnStringè¿æ¥</param>
-        /// <returns>åˆ é™¤æ˜¯å¦æˆåŠŸ</returns>
-        public static bool DeleteByIDList(IEnumerable<int> tianYiIDList,  string dbkey = "", Where where = null, string[] delCache = null) {
-            int value = new SQL().Database(dbkey).Delete(TianYiSetting._)
-                .Where(new Where()
-                    .And(TianYiSetting._TianYiID, "(" + tianYiIDList .Join(",") + ")", Operator.In)
-                ).Where(where).ToExec();
-            if (value <= 0) return false;
-            if (delCache.IsNull()) return true;
-            Cache2.Remove("TH.Mailer.TianYiSettingCache_", delCache);
-            return true;
-        }
-        /// <summary>
-        /// å¤©ç¿¼è¿æ¥è®¾ç½®åˆ é™¤å¤šæ¡è®°å½•
-        /// </summary>
-        /// <param name="tianYiIDList">å¤©ç¿¼è¿æ¥è®¾ç½®ç¼–å·åˆ—è¡¨ï¼Œç”¨â€œ,â€å·åˆ†éš”</param>
-        /// <param name="where">åˆ é™¤æ—¶é™„åŠ æ¡ä»¶ï¼Œç»Ÿä¸€çš„å‰é¢è¦åŠ é“¾æ¥ç¬¦ï¼ˆandã€orç­‰ç­‰ï¼‰</param>
-        /// <param name="delCache">ä¿®æ”¹æˆåŠŸåæ¸…ç†çš„CACHE keyï¼Œæ”¯æŒæ­£åˆ™</param>
-        /// <param name="dbkey">å­˜åœ¨æ•°æ®åº“è¿æ¥æ± ä¸­çš„è¿æ¥keyï¼Œä¸ºç©ºæ—¶ä½¿ç”¨ConnStringè¿æ¥</param>
-        /// <returns>åˆ é™¤æ˜¯å¦æˆåŠŸ</returns>
-        public static bool DeleteByIDList(IEnumerable<int> tianYiIDList, string dbkey) {
-            return DeleteByIDList(tianYiIDList,  dbkey, null, null);
-        }
-        /// <summary>
-        /// å¤©ç¿¼è¿æ¥è®¾ç½®æŒ‰ä¸»é”®æŸ¥è¯¢ï¼Œè¿”å›æ•°æ®çš„å®ä½“ç±»
-        /// </summary>
-        /// <param name="tianYiID">å¤©ç¿¼è¿æ¥è®¾ç½®ç¼–å·</param>
-        /// <param name="where">é™„åŠ æ¡ä»¶ï¼Œç»Ÿä¸€çš„å‰é¢è¦åŠ é“¾æ¥ç¬¦ï¼ˆandã€orç­‰ç­‰ï¼‰</param>
-        /// <param name="dbkey">å­˜åœ¨æ•°æ®åº“è¿æ¥æ± ä¸­çš„è¿æ¥keyï¼Œä¸ºç©ºæ—¶éšæœºå–è¿æ¥key</param>
-        /// <returns>è¿”å›å•æ¡è®°å½•çš„å®ä½“ç±»</returns>
-        public static TianYiSetting SelectByID(int tianYiID,  string dbkey = "", Where where = null) {
-            string cacheNameKey = "TH.Mailer.TianYiSettingCache_SelectByID_{0}".FormatWith(tianYiID + "_" +  "_" + where);
-            return Cache2.Get<TianYiSetting>(cacheNameKey, cacheSeconds, () => {
-                TianYiSetting obj = new SQL().Database(dbkey).From(TianYiSetting._)
-                    .Select(TianYiSetting._TianYiID)
-                    .Select(TianYiSetting._TianYiExePath)
-                    .Where(new Where()
-                        .AndP(TianYiSetting._TianYiID, tianYiID, Operator.Equal)
-                    ).Where(where).ToEntity<TianYiSetting>();
-                return obj;
-            });
-        }
-        /// <summary>
-        /// å¤©ç¿¼è¿æ¥è®¾ç½®æŒ‰ä¸»é”®æŸ¥è¯¢ï¼Œè¿”å›æ•°æ®çš„å®ä½“ç±»
-        /// </summary>
-        /// <param name="tianYiID">å¤©ç¿¼è¿æ¥è®¾ç½®ç¼–å·</param>
-        /// <returns>è¿”å›å•æ¡è®°å½•çš„å®ä½“ç±»</returns>
-        public static TianYiSetting SelectByID(int tianYiID, string dbkey) {
-            return SelectByID(tianYiID,  dbkey, null);
-        }
-        /// <summary>
-        /// æ¸…é™¤å¤©ç¿¼è¿æ¥è®¾ç½®æŒ‰ä¸»é”®æŸ¥è¯¢çš„ç¼“å­˜
-        /// </summary>
-        public static void ClearCacheSelectByID(int tianYiID,  Where where = null) {
-            string cacheName = "TH.Mailer.TianYiSettingCache_SelectByID_{0}";
-            string cacheNameKey = string.Format(cacheName, tianYiID + "_" +  "_" + where);
-            Cache2.Remove(cacheNameKey);
-        }
-        /// <summary>
-        /// å¤©ç¿¼è¿æ¥è®¾ç½®æŸ¥è¯¢æ•°æ®ï¼Œå¸¦åˆ†é¡µ
-        /// </summary>
-        /// <param name="pageIndex">å½“å‰ç¬¬å‡ é¡µï¼Œä»1å¼€å§‹</param>
-        /// <param name="pageSize">æ¯é¡µè®°å½•æ•°</param>
-        /// <param name="totalRecords">è¿”å›æ€»è®°å½•æ•°</param>
-        /// <param name="where">é™„åŠ æ¡ä»¶ï¼Œç»Ÿä¸€çš„å‰é¢è¦åŠ é“¾æ¥ç¬¦ï¼ˆandã€orç­‰ç­‰ï¼‰</param>
-        /// <param name="order">æ’åºå­—æ®µï¼Œä¸åŠ â€œorder byâ€</param>
-        /// <param name="fieldList">è®¾ç½®éœ€è¦è¿”å›çš„å­—æ®µ</param>
-        /// <param name="dbkey">å­˜åœ¨æ•°æ®åº“è¿æ¥æ± ä¸­çš„è¿æ¥keyï¼Œä¸ºç©ºæ—¶éšæœºå–è¿æ¥key</param>
-        /// <param name="pageEnum">ä½¿ç”¨å“ªç§åˆ†é¡µæ–¹å¼ï¼ˆnot_inã€max_topã€top_topã€row_numberã€mysqlã€oracleã€sqliteï¼‰</param>
-        /// <returns>è¿”å›å®ä½“è®°å½•é›†</returns>
-        public static IList<TianYiSetting> SelectPageList(int pageIndex, int pageSize, out int totalRecords, string dbkey = "", Where where = null, string order = "", string fieldList = "", PagerSQLEnum pageEnum = PagerSQLEnum.sqlite) {
-            totalRecords = 0;
-            string cacheNameKey = "TH.Mailer.TianYiSettingCache_SelectPageList_{0}_{1}_{2}_{3}_{4}".FormatWith(pageIndex, pageSize, where, order, fieldList);
-            string cacheRecordsKey = "TH.Mailer.TianYiSettingCache_RecordsSelectPageList_{0}_{1}_{2}_{3}_{4}".FormatWith(pageIndex, pageSize, where, order, fieldList);
-            IList<TianYiSetting> list = (IList<TianYiSetting>)Cache2.Get(cacheNameKey);
-            if (!list.IsNull()) { totalRecords = (int)Cache2.Get(cacheRecordsKey); return list; }
+	/// <summary>
+	/// ÌìÒíÁ¬½ÓÉèÖÃ²Ù×÷Àà
+	///
+	/// ĞŞ¸Ä¼ÍÂ¼
+	///	 2013-06-03 °æ±¾£º1.0 ÏµÍ³×Ô¶¯´´½¨´ËÀà
+	///
+	/// </summary>
+	public partial class TianYiSettingHelper {
+		/// <summary>
+		/// ÌìÒíÁ¬½ÓÉèÖÃ»º´æ¶àÉÙÃë x 5
+		/// </summary>
+		public static int cacheSeconds = 1440;
+		/// <summary>
+		/// ÌìÒíÁ¬½ÓÉèÖÃÌí¼Ó¼ÇÂ¼
+		/// </summary>
+		/// <param name="tianYiSetting">ÌìÒíÁ¬½ÓÉèÖÃÊµÌåÀà</param>
+		/// <param name="delCache">Ìí¼Ó³É¹¦ºóÇåÀíµÄCACHE key£¬Ö§³ÖÕıÔò</param>
+		/// <param name="dbkey">´æÔÚÊı¾İ¿âÁ¬½Ó³ØÖĞµÄÁ¬½Ókey£¬Îª¿ÕÊ±Ê¹ÓÃConnStringÁ¬½Ó</param>
+		/// <returns>Ìí¼ÓÊÇ·ñ³É¹¦</returns>
+		public static bool Insert(TianYiSetting tianYiSetting, string dbkey = "", string[] delCache = null) {
+			int obj = new SQL().Database(dbkey).Insert(TianYiSetting._)
+				.ValueP(TianYiSetting._TianYiID, tianYiSetting.TianYiID)
+				.ValueP(TianYiSetting._TianYiExePath, tianYiSetting.TianYiExePath)
+				.ToExec();
+			if (delCache.IsNull()) return obj == 1;
+			Cache2.Remove("TH.Mailer.TianYiSettingCache_", delCache);
+			return obj == 1;
+		}
+		/// <summary>
+		/// ÌìÒíÁ¬½ÓÉèÖÃÌí¼Ó¼ÇÂ¼
+		/// </summary>
+		/// <param name="tianYiSetting">ÌìÒíÁ¬½ÓÉèÖÃÊµÌåÀà</param>
+		/// <returns>Ìí¼ÓÊÇ·ñ³É¹¦</returns>
+		public static bool Insert(TianYiSetting tianYiSetting, string dbkey) {
+			return Insert(tianYiSetting, dbkey, null);
+		}
+		/// <summary>
+		/// ÌìÒíÁ¬½ÓÉèÖÃĞŞ¸Ä¼ÇÂ¼
+		/// </summary>
+		/// <param name="tianYiSetting">ÌìÒíÁ¬½ÓÉèÖÃÊµÌåÀà</param>
+		/// <param name="where">ĞŞ¸ÄÊ±¸½¼ÓÌõ¼ş£¬Í³Ò»µÄÇ°ÃæÒª¼ÓÁ´½Ó·û£¨and¡¢orµÈµÈ£©</param>
+		/// <param name="delCache">ĞŞ¸Ä³É¹¦ºóÇåÀíµÄCACHE key£¬Ö§³ÖÕıÔò</param>
+		/// <param name="dbkey">´æÔÚÊı¾İ¿âÁ¬½Ó³ØÖĞµÄÁ¬½Ókey£¬Îª¿ÕÊ±Ê¹ÓÃConnStringÁ¬½Ó</param>
+		/// <returns>ĞŞ¸ÄÊÇ·ñ³É¹¦</returns>
+		public static bool Update(TianYiSetting tianYiSetting, string dbkey = "", Where where = null, string[] delCache = null) {
+			if (tianYiSetting.TianYiID.IsNull()) return false;
+			int value = new SQL().Database(dbkey).Update(TianYiSetting._)
+				.SetP(TianYiSetting._TianYiExePath, tianYiSetting.TianYiExePath)
+				.Where(new Where()
+					.AndP(TianYiSetting._TianYiID, tianYiSetting.TianYiID, Operator.Equal, true)
+				).Where(where).ToExec();
+			if (value <= 0) return false;
+			if (delCache.IsNull()) return true;
+			Cache2.Remove("TH.Mailer.TianYiSettingCache_", delCache);
+			return true;
+		}
+		/// <summary>
+		/// ÌìÒíÁ¬½ÓÉèÖÃĞŞ¸Ä¼ÇÂ¼
+		/// </summary>
+		/// <param name="tianYiSetting">ÌìÒíÁ¬½ÓÉèÖÃÊµÌåÀà</param>
+		/// <returns>ĞŞ¸ÄÊÇ·ñ³É¹¦</returns>
+		public static bool Update(TianYiSetting tianYiSetting, string dbkey) {
+			return Update(tianYiSetting, dbkey, null, null);
+		}
+		/// <summary>
+		/// ÌìÒíÁ¬½ÓÉèÖÃĞŞ¸Ä¶àÌõ¼ÇÂ¼
+		/// </summary>
+		/// <param name="tianYiIDList">ÌìÒíÁ¬½ÓÉèÖÃ±àºÅÁĞ±í£¬ÓÃ¡°,¡±ºÅ·Ö¸ô</param>
+		/// <param name="tianYiSetting">ÌìÒíÁ¬½ÓÉèÖÃÊµÌåÀà</param>
+		/// <param name="where">ĞŞ¸ÄÊ±¸½¼ÓÌõ¼ş£¬Í³Ò»µÄÇ°ÃæÒª¼ÓÁ´½Ó·û£¨and¡¢orµÈµÈ£©</param>
+		/// <param name="delCache">ĞŞ¸Ä³É¹¦ºóÇåÀíµÄCACHE key£¬Ö§³ÖÕıÔò</param>
+		/// <param name="dbkey">´æÔÚÊı¾İ¿âÁ¬½Ó³ØÖĞµÄÁ¬½Ókey£¬Îª¿ÕÊ±Ê¹ÓÃConnStringÁ¬½Ó</param>
+		/// <returns>ĞŞ¸ÄÊÇ·ñ³É¹¦</returns>
+		public static bool UpdateByIDList(IEnumerable<int> tianYiIDList,  TianYiSetting tianYiSetting, string dbkey = "", Where where = null, string[] delCache = null) {
+			int value = new SQL().Database(dbkey).Update(TianYiSetting._)
+				.SetP(TianYiSetting._TianYiExePath, tianYiSetting.TianYiExePath)
+				.Where(new Where()
+					.And(TianYiSetting._TianYiID, "(" + tianYiIDList .Join(",") + ")", Operator.In)
+				).Where(where).ToExec();
+			if (value <= 0) return false;
+			if (delCache.IsNull()) return true;
+			Cache2.Remove("TH.Mailer.TianYiSettingCache_", delCache);
+			return true;
+		}
+		/// <summary>
+		/// ÌìÒíÁ¬½ÓÉèÖÃĞŞ¸Ä¶àÌõ¼ÇÂ¼
+		/// </summary>
+		/// <param name="tianYiIDList">ÌìÒíÁ¬½ÓÉèÖÃ±àºÅÁĞ±í£¬ÓÃ¡°,¡±ºÅ·Ö¸ô</param>
+		/// <param name="tianYiSetting">ÌìÒíÁ¬½ÓÉèÖÃÊµÌåÀà</param>
+		/// <returns>ĞŞ¸ÄÊÇ·ñ³É¹¦</returns>
+		public static bool UpdateByIDList(IEnumerable<int> tianYiIDList,  TianYiSetting tianYiSetting, string dbkey) {
+			return UpdateByIDList(tianYiIDList,  tianYiSetting, dbkey, null, null);
+		}
+ 		/// <summary>
+		/// ÌìÒíÁ¬½ÓÉèÖÃÉ¾³ı¼ÇÂ¼
+		/// </summary>
+		/// <param name="tianYiID">ÌìÒíÁ¬½ÓÉèÖÃ±àºÅ</param>
+		/// <param name="where">ĞŞ¸ÄÊ±¸½¼ÓÌõ¼ş£¬Í³Ò»µÄÇ°ÃæÒª¼ÓÁ´½Ó·û£¨and¡¢orµÈµÈ£©</param>
+		/// <param name="delCache">É¾³ı³É¹¦ºóÇåÀíµÄCACHE key£¬Ö§³ÖÕıÔò</param>
+		/// <param name="dbkey">´æÔÚÊı¾İ¿âÁ¬½Ó³ØÖĞµÄÁ¬½Ókey£¬Îª¿ÕÊ±Ê¹ÓÃConnStringÁ¬½Ó</param>
+		/// <returns>É¾³ıÊÇ·ñ³É¹¦</returns>
+		public static bool DeleteByID(int? tianYiID,  string dbkey = "", Where where = null, string[] delCache = null) {
+			if (tianYiID.IsNull()) return false;
+			int value = new SQL().Database(dbkey).Delete(TianYiSetting._)
+				.Where(new Where()
+					.AndP(TianYiSetting._TianYiID, tianYiID, Operator.Equal, true)
+				).Where(where).ToExec();
+			if (value != 1) return false;
+			if (delCache.IsNull()) return true;
+			Cache2.Remove("TH.Mailer.TianYiSettingCache_", delCache);
+			return true;
+		}
+		/// <summary>
+		/// ÌìÒíÁ¬½ÓÉèÖÃÉ¾³ı¼ÇÂ¼
+		/// </summary>
+		/// <param name="tianYiID">ÌìÒíÁ¬½ÓÉèÖÃ±àºÅ</param>
+		/// <returns>É¾³ıÊÇ·ñ³É¹¦</returns>
+		public static bool DeleteByID(int? tianYiID, string dbkey) {
+			return DeleteByID(tianYiID,  dbkey, null, null);
+		}
+		/// <summary>
+		/// ÌìÒíÁ¬½ÓÉèÖÃÉ¾³ı¼ÇÂ¼
+		/// </summary>
+		/// <param name="tianYiID">ÌìÒíÁ¬½ÓÉèÖÃ±àºÅ</param>
+		/// <param name="where">ĞŞ¸ÄÊ±¸½¼ÓÌõ¼ş£¬Í³Ò»µÄÇ°ÃæÒª¼ÓÁ´½Ó·û£¨and¡¢orµÈµÈ£©</param>
+		/// <param name="delCache">É¾³ı³É¹¦ºóÇåÀíµÄCACHE key£¬Ö§³ÖÕıÔò</param>
+		/// <param name="dbkey">´æÔÚÊı¾İ¿âÁ¬½Ó³ØÖĞµÄÁ¬½Ókey£¬Îª¿ÕÊ±Ê¹ÓÃConnStringÁ¬½Ó</param>
+		/// <returns>É¾³ıÊÇ·ñ³É¹¦</returns>
+		public static bool DeleteByID(int tianYiID,  string dbkey = "", Where where = null, string[] delCache = null) {
+			return DeleteByID((int?)tianYiID,  dbkey, where, delCache);
+		}
+		/// <summary>
+		/// ÌìÒíÁ¬½ÓÉèÖÃÉ¾³ı¼ÇÂ¼
+		/// </summary>
+		/// <param name="tianYiID">ÌìÒíÁ¬½ÓÉèÖÃ±àºÅ</param>
+		/// <returns>É¾³ıÊÇ·ñ³É¹¦</returns>
+		public static bool DeleteByID(int tianYiID, string dbkey) {
+			return DeleteByID((int?)tianYiID,  dbkey, null, null);
+		}
+		/// <summary>
+		/// ÌìÒíÁ¬½ÓÉèÖÃÉ¾³ı¶àÌõ¼ÇÂ¼
+		/// </summary>
+		/// <param name="tianYiIDList">ÌìÒíÁ¬½ÓÉèÖÃ±àºÅÁĞ±í£¬ÓÃ¡°,¡±ºÅ·Ö¸ô</param>
+		/// <param name="where">É¾³ıÊ±¸½¼ÓÌõ¼ş£¬Í³Ò»µÄÇ°ÃæÒª¼ÓÁ´½Ó·û£¨and¡¢orµÈµÈ£©</param>
+		/// <param name="delCache">ĞŞ¸Ä³É¹¦ºóÇåÀíµÄCACHE key£¬Ö§³ÖÕıÔò</param>
+		/// <param name="dbkey">´æÔÚÊı¾İ¿âÁ¬½Ó³ØÖĞµÄÁ¬½Ókey£¬Îª¿ÕÊ±Ê¹ÓÃConnStringÁ¬½Ó</param>
+		/// <returns>É¾³ıÊÇ·ñ³É¹¦</returns>
+		public static bool DeleteByIDList(IEnumerable<int> tianYiIDList,  string dbkey = "", Where where = null, string[] delCache = null) {
+			int value = new SQL().Database(dbkey).Delete(TianYiSetting._)
+				.Where(new Where()
+					.And(TianYiSetting._TianYiID, "(" + tianYiIDList .Join(",") + ")", Operator.In)
+				).Where(where).ToExec();
+			if (value <= 0) return false;
+			if (delCache.IsNull()) return true;
+			Cache2.Remove("TH.Mailer.TianYiSettingCache_", delCache);
+			return true;
+		}
+		/// <summary>
+		/// ÌìÒíÁ¬½ÓÉèÖÃÉ¾³ı¶àÌõ¼ÇÂ¼
+		/// </summary>
+		/// <param name="tianYiIDList">ÌìÒíÁ¬½ÓÉèÖÃ±àºÅÁĞ±í£¬ÓÃ¡°,¡±ºÅ·Ö¸ô</param>
+		/// <param name="where">É¾³ıÊ±¸½¼ÓÌõ¼ş£¬Í³Ò»µÄÇ°ÃæÒª¼ÓÁ´½Ó·û£¨and¡¢orµÈµÈ£©</param>
+		/// <param name="delCache">ĞŞ¸Ä³É¹¦ºóÇåÀíµÄCACHE key£¬Ö§³ÖÕıÔò</param>
+		/// <param name="dbkey">´æÔÚÊı¾İ¿âÁ¬½Ó³ØÖĞµÄÁ¬½Ókey£¬Îª¿ÕÊ±Ê¹ÓÃConnStringÁ¬½Ó</param>
+		/// <returns>É¾³ıÊÇ·ñ³É¹¦</returns>
+		public static bool DeleteByIDList(IEnumerable<int> tianYiIDList, string dbkey) {
+			return DeleteByIDList(tianYiIDList,  dbkey, null, null);
+		}
+		/// <summary>
+		/// ÌìÒíÁ¬½ÓÉèÖÃ°´Ö÷¼ü²éÑ¯£¬·µ»ØÊı¾İµÄÊµÌåÀà
+		/// </summary>
+		/// <param name="tianYiID">ÌìÒíÁ¬½ÓÉèÖÃ±àºÅ</param>
+		/// <param name="where">¸½¼ÓÌõ¼ş£¬Í³Ò»µÄÇ°ÃæÒª¼ÓÁ´½Ó·û£¨and¡¢orµÈµÈ£©</param>
+		/// <param name="dbkey">´æÔÚÊı¾İ¿âÁ¬½Ó³ØÖĞµÄÁ¬½Ókey£¬Îª¿ÕÊ±Ëæ»úÈ¡Á¬½Ókey</param>
+		/// <returns>·µ»Øµ¥Ìõ¼ÇÂ¼µÄÊµÌåÀà</returns>
+		public static TianYiSetting SelectByID(int tianYiID,  string dbkey = "", Where where = null) {
+			string cacheNameKey = "TH.Mailer.TianYiSettingCache_SelectByID_{0}".FormatWith(tianYiID + "_" +  "_" + where);
+			return Cache2.Get<TianYiSetting>(cacheNameKey, cacheSeconds, () => {
+				TianYiSetting obj = new SQL().Database(dbkey).From(TianYiSetting._)
+					.Select(TianYiSetting._TianYiID)
+					.Select(TianYiSetting._TianYiExePath)
+					.Where(new Where()
+						.AndP(TianYiSetting._TianYiID, tianYiID, Operator.Equal)
+					).Where(where).ToEntity<TianYiSetting>();
+				return obj;
+			});
+		}
+		/// <summary>
+		/// ÌìÒíÁ¬½ÓÉèÖÃ°´Ö÷¼ü²éÑ¯£¬·µ»ØÊı¾İµÄÊµÌåÀà
+		/// </summary>
+		/// <param name="tianYiID">ÌìÒíÁ¬½ÓÉèÖÃ±àºÅ</param>
+		/// <returns>·µ»Øµ¥Ìõ¼ÇÂ¼µÄÊµÌåÀà</returns>
+		public static TianYiSetting SelectByID(int tianYiID, string dbkey) {
+			return SelectByID(tianYiID,  dbkey, null);
+		}
+		/// <summary>
+		/// Çå³ıÌìÒíÁ¬½ÓÉèÖÃ°´Ö÷¼ü²éÑ¯µÄ»º´æ
+		/// </summary>
+		public static void ClearCacheSelectByID(int tianYiID,  Where where = null) {
+			string cacheName = "TH.Mailer.TianYiSettingCache_SelectByID_{0}";
+			string cacheNameKey = string.Format(cacheName, tianYiID + "_" +  "_" + where);
+			Cache2.Remove(cacheNameKey);
+		}
+		/// <summary>
+		/// ÌìÒíÁ¬½ÓÉèÖÃ²éÑ¯Êı¾İ£¬´ø·ÖÒ³
+		/// </summary>
+		/// <param name="pageIndex">µ±Ç°µÚ¼¸Ò³£¬´Ó1¿ªÊ¼</param>
+		/// <param name="pageSize">Ã¿Ò³¼ÇÂ¼Êı</param>
+		/// <param name="totalRecords">·µ»Ø×Ü¼ÇÂ¼Êı</param>
+		/// <param name="where">¸½¼ÓÌõ¼ş£¬Í³Ò»µÄÇ°ÃæÒª¼ÓÁ´½Ó·û£¨and¡¢orµÈµÈ£©</param>
+		/// <param name="order">ÅÅĞò×Ö¶Î£¬²»¼Ó¡°order by¡±</param>
+		/// <param name="fieldList">ÉèÖÃĞèÒª·µ»ØµÄ×Ö¶Î</param>
+		/// <param name="dbkey">´æÔÚÊı¾İ¿âÁ¬½Ó³ØÖĞµÄÁ¬½Ókey£¬Îª¿ÕÊ±Ëæ»úÈ¡Á¬½Ókey</param>
+		/// <param name="pageEnum">Ê¹ÓÃÄÄÖÖ·ÖÒ³·½Ê½£¨not_in¡¢max_top¡¢top_top¡¢row_number¡¢mysql¡¢oracle¡¢sqlite£©</param>
+		/// <returns>·µ»ØÊµÌå¼ÇÂ¼¼¯</returns>
+		public static IList<TianYiSetting> SelectPageList(int pageIndex, int pageSize, out int totalRecords, string dbkey = "", Where where = null, string order = "", string fieldList = "", PagerSQLEnum pageEnum = PagerSQLEnum.sqlite) {
+			totalRecords = 0;
+			string cacheNameKey = "TH.Mailer.TianYiSettingCache_SelectPageList_{0}_{1}_{2}_{3}_{4}".FormatWith(pageIndex, pageSize, where, order, fieldList);
+			string cacheRecordsKey = "TH.Mailer.TianYiSettingCache_RecordsSelectPageList_{0}_{1}_{2}_{3}_{4}".FormatWith(pageIndex, pageSize, where, order, fieldList);
+			IList<TianYiSetting> list = (IList<TianYiSetting>)Cache2.Get(cacheNameKey);
+			if (!list.IsNull()) { totalRecords = (int)Cache2.Get(cacheRecordsKey); return list; }
 
-            using (PagerSQLHelper s = new PagerSQLHelper(pageEnum)) {
-                PagerSql sql = s.GetSQL(pageIndex, pageSize, TianYiSetting._, TianYiSetting._TianYiID, fieldList.IfNullOrEmpty("[TianYiID],[TianYiExePath],"), where, "", order);
-                DataSet ds = Data.Pool(dbkey).GetDataSet(sql.DataSql + ";" + sql.CountSql);
-                if (ds.IsNull()) return list;
-                list = ds.Tables[0].ToList<TianYiSetting>();
-                totalRecords = ds.Tables[1].Rows[0][0].ToString().ToInt();
-                ds.Dispose(); ds = null;
-            }
-            Cache2.Insert(cacheNameKey, list, cacheSeconds);
-            Cache2.Insert(cacheRecordsKey, totalRecords, cacheSeconds);
-            return list;
-        }
-        /// <summary>
-        /// å¤©ç¿¼è¿æ¥è®¾ç½®æŸ¥è¯¢è®°å½•ï¼Œå¸¦åˆ†é¡µ
-        /// </summary>
-        /// <param name="pageIndex">å½“å‰ç¬¬å‡ é¡µï¼Œä»1å¼€å§‹</param>
-        /// <param name="pageSize">æ¯é¡µè®°å½•æ•°</param>
-        /// <param name="totalRecords">è¿”å›æ€»è®°å½•æ•°</param>
-        /// <returns>è¿”å›å®ä½“è®°å½•é›†</returns>
-        public static IList<TianYiSetting> SelectPageList(int pageIndex, int pageSize, out int totalRecords, string dbkey) {
-            return SelectPageList(pageIndex, pageSize, out totalRecords, dbkey, null, "", "", PagerSQLEnum.sqlite);
-        }
-        /// <summary>
-        /// æ¸…é™¤å¤©ç¿¼è¿æ¥è®¾ç½®æŸ¥è¯¢è®°å½•ï¼Œå¸¦åˆ†é¡µçš„ç¼“å­˜
-        /// </summary>
-        public static void ClearCacheSelectPageList() {
-            string cacheNameKey = "TH.Mailer.TianYiSettingCache_SelectPageList_(.+?)";
-            string cacheRecordsKey = "TH.Mailer.TianYiSettingCache_RecordsSelectPageList_(.+?)";
-            Cache2.RemoveByPattern(cacheNameKey);
-            Cache2.RemoveByPattern(cacheRecordsKey);
-        }
-        /// <summary>
-        /// å¤©ç¿¼è¿æ¥è®¾ç½®åˆ é™¤æ‰€æœ‰è®°å½•
-        /// </summary>
-        /// <param name="dbkey">å­˜åœ¨æ•°æ®åº“è¿æ¥æ± ä¸­çš„è¿æ¥keyï¼Œä¸ºç©ºæ—¶éšæœºå–è¿æ¥key</param>
-        /// <returns>è¿”å›å®ä½“è®°å½•é›†</returns>
-        public static bool RemoveAll(string dbkey = "") {
-            return (new SQL().Database(dbkey).Delete(TianYiSetting._).ToExec()) > 0;
-        }
-        /// <summary>
-        /// æ¸…é™¤å¤©ç¿¼è¿æ¥è®¾ç½®æŸ¥è¯¢æ‰€æœ‰è®°å½•çš„ç¼“å­˜
-        /// </summary>
-        public static void ClearCacheSelectListByAll() {
-            //Cache2.Remove("TH.Mailer.TianYiSettingCache_SelectListByAll___");
-            Cache2.RemoveByPattern("TH.Mailer.TianYiSettingCache_SelectListByAll_(.+?)");
-        }
-        /// <summary>
-        /// æ¸…é™¤å¤©ç¿¼è¿æ¥è®¾ç½®æ‰€æœ‰ç¼“å­˜
-        /// </summary>
-        public static void ClearCacheAll() {
-            Cache2.RemoveByPattern("TH.Mailer.TianYiSettingCache_(.+?)");
-        }
-    }
+			using (PagerSQLHelper s = new PagerSQLHelper(pageEnum)) {
+				PagerSql sql = s.GetSQL(pageIndex, pageSize, TianYiSetting._, TianYiSetting._TianYiID, fieldList.IfNullOrEmpty("[TianYiID],[TianYiExePath],"), where, "", order);
+				IDataReader dr = Data.Pool(dbkey).GetDbDataReader(sql.DataSql + ";" + sql.CountSql);
+				if (dr.IsNull()) return list;
+				list = dr.ToList<TianYiSetting>(false);
+				bool result = dr.NextResult();
+				if (result) { dr.Read(); totalRecords = dr[0].ToString().ToInt(); }
+				dr.Close (); dr.Dispose(); dr = null;
+			}
+			Cache2.Insert(cacheNameKey, list, cacheSeconds);
+			Cache2.Insert(cacheRecordsKey, totalRecords, cacheSeconds);
+			return list;
+		}
+		/// <summary>
+		/// ÌìÒíÁ¬½ÓÉèÖÃ²éÑ¯¼ÇÂ¼£¬´ø·ÖÒ³
+		/// </summary>
+		/// <param name="pageIndex">µ±Ç°µÚ¼¸Ò³£¬´Ó1¿ªÊ¼</param>
+		/// <param name="pageSize">Ã¿Ò³¼ÇÂ¼Êı</param>
+		/// <param name="totalRecords">·µ»Ø×Ü¼ÇÂ¼Êı</param>
+		/// <returns>·µ»ØÊµÌå¼ÇÂ¼¼¯</returns>
+		public static IList<TianYiSetting> SelectPageList(int pageIndex, int pageSize, out int totalRecords, string dbkey) {
+			return SelectPageList(pageIndex, pageSize, out totalRecords, dbkey, null, "", "", PagerSQLEnum.sqlite);
+		}
+		/// <summary>
+		/// Çå³ıÌìÒíÁ¬½ÓÉèÖÃ²éÑ¯¼ÇÂ¼£¬´ø·ÖÒ³µÄ»º´æ
+		/// </summary>
+		public static void ClearCacheSelectPageList() {
+			string cacheNameKey = "TH.Mailer.TianYiSettingCache_SelectPageList_(.+?)";
+			string cacheRecordsKey = "TH.Mailer.TianYiSettingCache_RecordsSelectPageList_(.+?)";
+			Cache2.RemoveByPattern(cacheNameKey);
+			Cache2.RemoveByPattern(cacheRecordsKey);
+		}
+		/// <summary>
+		/// ÌìÒíÁ¬½ÓÉèÖÃÉ¾³ıËùÓĞ¼ÇÂ¼
+		/// </summary>
+		/// <param name="dbkey">´æÔÚÊı¾İ¿âÁ¬½Ó³ØÖĞµÄÁ¬½Ókey£¬Îª¿ÕÊ±Ëæ»úÈ¡Á¬½Ókey</param>
+		/// <returns>·µ»ØÊµÌå¼ÇÂ¼¼¯</returns>
+		public static bool RemoveAll(string dbkey = "") {
+			return (new SQL().Database(dbkey).Delete(TianYiSetting._).ToExec()) > 0;
+		}
+		/// <summary>
+		/// Çå³ıÌìÒíÁ¬½ÓÉèÖÃ²éÑ¯ËùÓĞ¼ÇÂ¼µÄ»º´æ
+		/// </summary>
+		public static void ClearCacheSelectListByAll() {
+			//Cache2.Remove("TH.Mailer.TianYiSettingCache_SelectListByAll___");
+			Cache2.RemoveByPattern("TH.Mailer.TianYiSettingCache_SelectListByAll_(.+?)");
+		}
+		/// <summary>
+		/// Çå³ıÌìÒíÁ¬½ÓÉèÖÃËùÓĞ»º´æ
+		/// </summary>
+		public static void ClearCacheAll() {
+			Cache2.RemoveByPattern("TH.Mailer.TianYiSettingCache_(.+?)");
+		}
+	}
 }
 

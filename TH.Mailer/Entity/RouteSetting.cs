@@ -1,4 +1,4 @@
-ï»¿//-------------------------------------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------------------------------------
 // All Rights Reserved , Copyright (C) 2013 , TH , Ltd.
 //-------------------------------------------------------------------------------------------------------------------------------------
 
@@ -8,98 +8,98 @@ using System.Text;
 using Pub.Class;
 
 namespace TH.Mailer.Entity {
-    /// <summary>
-    /// è·¯ç”±å®ä½“ç±»
-    /// 
-    /// ä¿®æ”¹çºªå½•
-    ///     2013-06-03 ç‰ˆæœ¬ï¼š1.0 ç³»ç»Ÿè‡ªåŠ¨åˆ›å»ºæ­¤ç±»
-    /// 
-    /// </summary>
-    [Serializable]
-    [EntityInfo("è·¯ç”±")]
-    public partial class RouteSetting {
-        /// <summary>
-        /// è·¯ç”±
-        /// </summary>
-        public static readonly string _ = "RouteSetting";
+	/// <summary>
+	/// Â·ÓÉÊµÌåÀà
+	///
+	/// ĞŞ¸Ä¼ÍÂ¼
+	///	 2013-06-03 °æ±¾£º1.0 ÏµÍ³×Ô¶¯´´½¨´ËÀà
+	///
+	/// </summary>
+	[Serializable]
+	[EntityInfo("Â·ÓÉ")]
+	public partial class RouteSetting {
+		/// <summary>
+		/// Â·ÓÉ
+		/// </summary>
+		public static readonly string _ = "RouteSetting";
 
-        /// <summary>
-        /// è·¯ç”±ç¼–å·
-        /// </summary>
-        public static readonly string _RouteID = "RouteID";
-        private int? routeID = null;
-        /// <summary>
-        /// è·¯ç”±ç¼–å·
-        /// </summary>
-        [EntityInfo("è·¯ç”±ç¼–å·")]
-        public new int? RouteID { get { return routeID; } set { routeID = value; } }
+		/// <summary>
+		/// Â·ÓÉ±àºÅ
+		/// </summary>
+		public static readonly string _RouteID = "RouteID";
+		private int? routeID = null;
+		/// <summary>
+		/// Â·ÓÉ±àºÅ
+		/// </summary>
+		[EntityInfo("Â·ÓÉ±àºÅ")]
+		public new int? RouteID { get { return routeID; } set { routeID = value; } }
 
-        /// <summary>
-        /// è·¯ç”±åœ°å€
-        /// </summary>
-        public static readonly string _RouteIP = "RouteIP";
-        private string routeIP = null;
-        /// <summary>
-        /// è·¯ç”±åœ°å€
-        /// </summary>
-        [EntityInfo("è·¯ç”±åœ°å€")]
-        public new string RouteIP { get { return routeIP; } set { routeIP = value; } }
+		/// <summary>
+		/// Â·ÓÉµØÖ·
+		/// </summary>
+		public static readonly string _RouteIP = "RouteIP";
+		private string routeIP = null;
+		/// <summary>
+		/// Â·ÓÉµØÖ·
+		/// </summary>
+		[EntityInfo("Â·ÓÉµØÖ·")]
+		public new string RouteIP { get { return routeIP; } set { routeIP = value; } }
 
-        /// <summary>
-        /// ç™»å½•è´¦å·
-        /// </summary>
-        public static readonly string _UserName = "UserName";
-        private string userName = null;
-        /// <summary>
-        /// ç™»å½•è´¦å·
-        /// </summary>
-        [EntityInfo("ç™»å½•è´¦å·")]
-        public new string UserName { get { return userName; } set { userName = value; } }
+		/// <summary>
+		/// µÇÂ¼ÕËºÅ
+		/// </summary>
+		public static readonly string _UserName = "UserName";
+		private string userName = null;
+		/// <summary>
+		/// µÇÂ¼ÕËºÅ
+		/// </summary>
+		[EntityInfo("µÇÂ¼ÕËºÅ")]
+		public new string UserName { get { return userName; } set { userName = value; } }
 
-        /// <summary>
-        /// ç™»å½•å¯†ç 
-        /// </summary>
-        public static readonly string _RPassword = "RPassword";
-        private string rPassword = null;
-        /// <summary>
-        /// ç™»å½•å¯†ç 
-        /// </summary>
-        [EntityInfo("ç™»å½•å¯†ç ")]
-        public new string RPassword { get { return rPassword; } set { rPassword = value; } }
+		/// <summary>
+		/// µÇÂ¼ÃÜÂë
+		/// </summary>
+		public static readonly string _RPassword = "RPassword";
+		private string rPassword = null;
+		/// <summary>
+		/// µÇÂ¼ÃÜÂë
+		/// </summary>
+		[EntityInfo("µÇÂ¼ÃÜÂë")]
+		public new string RPassword { get { return rPassword; } set { rPassword = value; } }
 
-        /// <summary>
-        /// è¿æ¥å‚æ•°
-        /// </summary>
-        public static readonly string _RouteConnect = "RouteConnect";
-        private string routeConnect = null;
-        /// <summary>
-        /// è¿æ¥å‚æ•°
-        /// </summary>
-        [EntityInfo("è¿æ¥å‚æ•°")]
-        public new string RouteConnect { get { return routeConnect; } set { routeConnect = value; } }
+		/// <summary>
+		/// Á¬½Ó²ÎÊı
+		/// </summary>
+		public static readonly string _RouteConnect = "RouteConnect";
+		private string routeConnect = null;
+		/// <summary>
+		/// Á¬½Ó²ÎÊı
+		/// </summary>
+		[EntityInfo("Á¬½Ó²ÎÊı")]
+		public new string RouteConnect { get { return routeConnect; } set { routeConnect = value; } }
 
-        /// <summary>
-        /// æ–­å¼€è¿æ¥å‚æ•°
-        /// </summary>
-        public static readonly string _RouteDisConnect = "RouteDisConnect";
-        private string routeDisConnect = null;
-        /// <summary>
-        /// æ–­å¼€è¿æ¥å‚æ•°
-        /// </summary>
-        [EntityInfo("æ–­å¼€è¿æ¥å‚æ•°")]
-        public new string RouteDisConnect { get { return routeDisConnect; } set { routeDisConnect = value; } }
+		/// <summary>
+		/// ¶Ï¿ªÁ¬½Ó²ÎÊı
+		/// </summary>
+		public static readonly string _RouteDisConnect = "RouteDisConnect";
+		private string routeDisConnect = null;
+		/// <summary>
+		/// ¶Ï¿ªÁ¬½Ó²ÎÊı
+		/// </summary>
+		[EntityInfo("¶Ï¿ªÁ¬½Ó²ÎÊı")]
+		public new string RouteDisConnect { get { return routeDisConnect; } set { routeDisConnect = value; } }
 
-        /// <summary>
-        /// è¯·æ±‚æ–¹å¼ POST GET
-        /// </summary>
-        public static readonly string _RouteMethod = "RouteMethod";
-        private string routeMethod = null;
-        /// <summary>
-        /// è¯·æ±‚æ–¹å¼ POST GET
-        /// </summary>
-        [EntityInfo("è¯·æ±‚æ–¹å¼ POST GET")]
-        public new string RouteMethod { get { return routeMethod; } set { routeMethod = value; } }
-    }
+		/// <summary>
+		/// ÇëÇó·½Ê½ POST GET
+		/// </summary>
+		public static readonly string _RouteMethod = "RouteMethod";
+		private string routeMethod = null;
+		/// <summary>
+		/// ÇëÇó·½Ê½ POST GET
+		/// </summary>
+		[EntityInfo("ÇëÇó·½Ê½ POST GET")]
+		public new string RouteMethod { get { return routeMethod; } set { routeMethod = value; } }
+	}
 }
 
 

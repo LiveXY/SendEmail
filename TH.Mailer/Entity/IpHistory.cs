@@ -1,4 +1,4 @@
-ï»¿//-------------------------------------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------------------------------------
 // All Rights Reserved , Copyright (C) 2013 , TH , Ltd.
 //-------------------------------------------------------------------------------------------------------------------------------------
 
@@ -8,43 +8,43 @@ using System.Text;
 using Pub.Class;
 
 namespace TH.Mailer.Entity {
-    /// <summary>
-    /// å®ä½“ç±»
-    /// 
-    /// ä¿®æ”¹çºªå½•
-    ///     2013-06-03 ç‰ˆæœ¬ï¼š1.0 ç³»ç»Ÿè‡ªåŠ¨åˆ›å»ºæ­¤ç±»
-    /// 
-    /// </summary>
-    [Serializable]
-    [EntityInfo("")]
-    public partial class IpHistory {
-        /// <summary>
-        /// 
-        /// </summary>
-        public static readonly string _ = "IpHistory";
+	/// <summary>
+	/// ÊµÌåÀà
+	///
+	/// ĞŞ¸Ä¼ÍÂ¼
+	///	 2013-06-03 °æ±¾£º1.0 ÏµÍ³×Ô¶¯´´½¨´ËÀà
+	///
+	/// </summary>
+	[Serializable]
+	[EntityInfo("")]
+	public partial class IpHistory {
+		/// <summary>
+		/// 
+		/// </summary>
+		public static readonly string _ = "IpHistory";
 
-        /// <summary>
-        /// IPåœ°å€
-        /// </summary>
-        public static readonly string _IP = "IP";
-        private string iP = null;
-        /// <summary>
-        /// IPåœ°å€
-        /// </summary>
-        [EntityInfo("IPåœ°å€")]
-        public new string IP { get { return iP; } set { iP = value; } }
+		/// <summary>
+		/// IPµØÖ·
+		/// </summary>
+		public static readonly string _IP = "IP";
+		private string iP = null;
+		/// <summary>
+		/// IPµØÖ·
+		/// </summary>
+		[EntityInfo("IPµØÖ·")]
+		public new string IP { get { return iP; } set { iP = value; } }
 
-        /// <summary>
-        /// ä½¿ç”¨æ—¶é—´
-        /// </summary>
-        public static readonly string _CreateTime = "CreateTime";
-        private DateTime? createTime = null;
-        /// <summary>
-        /// ä½¿ç”¨æ—¶é—´
-        /// </summary>
-        [EntityInfo("ä½¿ç”¨æ—¶é—´")]
-        public new DateTime? CreateTime { get { return createTime; } set { createTime = value; } }
-    }
+		/// <summary>
+		/// Ê¹ÓÃÊ±¼ä
+		/// </summary>
+		public static readonly string _CreateTime = "CreateTime";
+		private DateTime? createTime = null;
+		/// <summary>
+		/// Ê¹ÓÃÊ±¼ä
+		/// </summary>
+		[EntityInfo("Ê¹ÓÃÊ±¼ä")]
+		public new DateTime? CreateTime { get { return createTime; } set { createTime = value; } }
+	}
 }
 
 

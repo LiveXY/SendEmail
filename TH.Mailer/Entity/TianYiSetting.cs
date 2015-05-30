@@ -1,4 +1,4 @@
-ï»¿//-------------------------------------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------------------------------------
 // All Rights Reserved , Copyright (C) 2013 , TH , Ltd.
 //-------------------------------------------------------------------------------------------------------------------------------------
 
@@ -8,43 +8,43 @@ using System.Text;
 using Pub.Class;
 
 namespace TH.Mailer.Entity {
-    /// <summary>
-    /// å¤©ç¿¼è¿æ¥è®¾ç½®å®ä½“ç±»
-    /// 
-    /// ä¿®æ”¹çºªå½•
-    ///     2013-06-03 ç‰ˆæœ¬ï¼š1.0 ç³»ç»Ÿè‡ªåŠ¨åˆ›å»ºæ­¤ç±»
-    /// 
-    /// </summary>
-    [Serializable]
-    [EntityInfo("å¤©ç¿¼è¿æ¥è®¾ç½®")]
-    public partial class TianYiSetting {
-        /// <summary>
-        /// å¤©ç¿¼è¿æ¥è®¾ç½®
-        /// </summary>
-        public static readonly string _ = "TianYiSetting";
+	/// <summary>
+	/// ÌìÒíÁ¬½ÓÉèÖÃÊµÌåÀà
+	///
+	/// ĞŞ¸Ä¼ÍÂ¼
+	///	 2013-06-03 °æ±¾£º1.0 ÏµÍ³×Ô¶¯´´½¨´ËÀà
+	///
+	/// </summary>
+	[Serializable]
+	[EntityInfo("ÌìÒíÁ¬½ÓÉèÖÃ")]
+	public partial class TianYiSetting {
+		/// <summary>
+		/// ÌìÒíÁ¬½ÓÉèÖÃ
+		/// </summary>
+		public static readonly string _ = "TianYiSetting";
 
-        /// <summary>
-        /// å¤©ç¿¼è¿æ¥è®¾ç½®ç¼–å·
-        /// </summary>
-        public static readonly string _TianYiID = "TianYiID";
-        private int? tianYiID = null;
-        /// <summary>
-        /// å¤©ç¿¼è¿æ¥è®¾ç½®ç¼–å·
-        /// </summary>
-        [EntityInfo("å¤©ç¿¼è¿æ¥è®¾ç½®ç¼–å·")]
-        public new int? TianYiID { get { return tianYiID; } set { tianYiID = value; } }
+		/// <summary>
+		/// ÌìÒíÁ¬½ÓÉèÖÃ±àºÅ
+		/// </summary>
+		public static readonly string _TianYiID = "TianYiID";
+		private int? tianYiID = null;
+		/// <summary>
+		/// ÌìÒíÁ¬½ÓÉèÖÃ±àºÅ
+		/// </summary>
+		[EntityInfo("ÌìÒíÁ¬½ÓÉèÖÃ±àºÅ")]
+		public new int? TianYiID { get { return tianYiID; } set { tianYiID = value; } }
 
-        /// <summary>
-        /// å¤©ç¿¼ä¸»ç¨‹åºè·¯å¾„
-        /// </summary>
-        public static readonly string _TianYiExePath = "TianYiExePath";
-        private string tianYiExePath = null;
-        /// <summary>
-        /// å¤©ç¿¼ä¸»ç¨‹åºè·¯å¾„
-        /// </summary>
-        [EntityInfo("å¤©ç¿¼ä¸»ç¨‹åºè·¯å¾„")]
-        public new string TianYiExePath { get { return tianYiExePath; } set { tianYiExePath = value; } }
-    }
+		/// <summary>
+		/// ÌìÒíÖ÷³ÌĞòÂ·¾¶
+		/// </summary>
+		public static readonly string _TianYiExePath = "TianYiExePath";
+		private string tianYiExePath = null;
+		/// <summary>
+		/// ÌìÒíÖ÷³ÌĞòÂ·¾¶
+		/// </summary>
+		[EntityInfo("ÌìÒíÖ÷³ÌĞòÂ·¾¶")]
+		public new string TianYiExePath { get { return tianYiExePath; } set { tianYiExePath = value; } }
+	}
 }
 
 

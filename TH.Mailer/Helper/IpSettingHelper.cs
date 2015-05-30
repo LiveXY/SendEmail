@@ -1,4 +1,4 @@
-ï»¿//-------------------------------------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------------------------------------
 // All Rights Reserved , Copyright (C) 2013 , TH , Ltd.
 //-------------------------------------------------------------------------------------------------------------------------------------
 
@@ -17,241 +17,241 @@ using TH.Mailer.Entity;
 using Pub.Class;
 
 namespace TH.Mailer.Helper {
-    /// <summary>
-    /// è·å–IPé…ç½®æ“ä½œç±»
-    /// 
-    /// ä¿®æ”¹çºªå½•
-    ///     2013-06-03 ç‰ˆæœ¬ï¼š1.0 ç³»ç»Ÿè‡ªåŠ¨åˆ›å»ºæ­¤ç±»
-    /// 
-    /// </summary>
-    public partial class IpSettingHelper {
-        /// <summary>
-        /// è·å–IPé…ç½®ç¼“å­˜å¤šå°‘ç§’ x 5
-        /// </summary>
-        public static int cacheSeconds = 1440;
-        /// <summary>
-        /// è·å–IPé…ç½®æ·»åŠ è®°å½•
-        /// </summary>
-        /// <param name="ipSetting">è·å–IPé…ç½®å®ä½“ç±»</param>
-        /// <param name="delCache">æ·»åŠ æˆåŠŸåæ¸…ç†çš„CACHE keyï¼Œæ”¯æŒæ­£åˆ™</param>
-        /// <param name="dbkey">å­˜åœ¨æ•°æ®åº“è¿æ¥æ± ä¸­çš„è¿æ¥keyï¼Œä¸ºç©ºæ—¶ä½¿ç”¨ConnStringè¿æ¥</param>
-        /// <returns>è¿”å›æ·»åŠ æˆåŠŸåçš„ID</returns>
-        public static Int64 Insert(IpSetting ipSetting, string dbkey = "", string[] delCache = null) {
-            object obj = new SQL().Database(dbkey).Insert(IpSetting._)
-                .ValueP(IpSetting._IPCID, ipSetting.IPCID)
-                .ValueP(IpSetting._WebName, ipSetting.WebName)
-                .ValueP(IpSetting._IPUrl, ipSetting.IPUrl)
-                .ValueP(IpSetting._IPRegex, ipSetting.IPRegex)
-                .ValueP(IpSetting._DataEncode, ipSetting.DataEncode)
-                .ToExec();
-            if (obj.ToInt() != 1) return 0;
-            obj = new SQL().Database(dbkey).From(IpSetting._).Max("IPCID").ToScalar();
-            if (obj.IsAllNull()) return 0;
-            Int64 value = obj.ToString().ToBigInt();
-            if (delCache.IsNull()) return value;
-            Cache2.Remove("TH.Mailer.IpSettingCache_", delCache);
-            return value;
-        }
-        /// <summary>
-        /// è·å–IPé…ç½®æ·»åŠ è®°å½•
-        /// </summary>
-        /// <param name="ipSetting">è·å–IPé…ç½®å®ä½“ç±»</param>
-        /// <returns>è¿”å›æ·»åŠ æˆåŠŸåçš„ID</returns>
-        public static Int64 Insert(IpSetting ipSetting, string dbkey) {
-            return Insert(ipSetting, dbkey, null);
-        }
-        /// <summary>
-        /// è·å–IPé…ç½®ä¿®æ”¹è®°å½•
-        /// </summary>
-        /// <param name="ipSetting">è·å–IPé…ç½®å®ä½“ç±»</param>
-        /// <param name="where">ä¿®æ”¹æ—¶é™„åŠ æ¡ä»¶ï¼Œç»Ÿä¸€çš„å‰é¢è¦åŠ é“¾æ¥ç¬¦ï¼ˆandã€orç­‰ç­‰ï¼‰</param>
-        /// <param name="delCache">ä¿®æ”¹æˆåŠŸåæ¸…ç†çš„CACHE keyï¼Œæ”¯æŒæ­£åˆ™</param>
-        /// <param name="dbkey">å­˜åœ¨æ•°æ®åº“è¿æ¥æ± ä¸­çš„è¿æ¥keyï¼Œä¸ºç©ºæ—¶ä½¿ç”¨ConnStringè¿æ¥</param>
-        /// <returns>ä¿®æ”¹æ˜¯å¦æˆåŠŸ</returns>
-        public static bool Update(IpSetting ipSetting, string dbkey = "", Where where = null, string[] delCache = null) {
-            if (ipSetting.IPCID.IsNull()) return false;
-            int value = new SQL().Database(dbkey).Update(IpSetting._)
-                .SetP(IpSetting._WebName, ipSetting.WebName)
-                .SetP(IpSetting._IPUrl, ipSetting.IPUrl)
-                .SetP(IpSetting._IPRegex, ipSetting.IPRegex)
-                .SetP(IpSetting._DataEncode, ipSetting.DataEncode)
-                .Where(new Where()
-                    .AndP(IpSetting._IPCID, ipSetting.IPCID, Operator.Equal, true)
-                ).Where(where).ToExec();
-            if (value <= 0) return false;
-            if (delCache.IsNull()) return true;
-            Cache2.Remove("TH.Mailer.IpSettingCache_", delCache);
-            return true;
-        }
-        /// <summary>
-        /// è·å–IPé…ç½®ä¿®æ”¹è®°å½•
-        /// </summary>
-        /// <param name="ipSetting">è·å–IPé…ç½®å®ä½“ç±»</param>
-        /// <returns>ä¿®æ”¹æ˜¯å¦æˆåŠŸ</returns>
-        public static bool Update(IpSetting ipSetting, string dbkey) {
-            return Update(ipSetting, dbkey, null, null);
-        }
-        /// <summary>
-        /// è·å–IPé…ç½®ä¿®æ”¹å¤šæ¡è®°å½•
-        /// </summary>
-        /// <param name="iPCIDList">è·å–IPé…ç½®ç¼–å·åˆ—è¡¨ï¼Œç”¨â€œ,â€å·åˆ†éš”</param>
-        /// <param name="ipSetting">è·å–IPé…ç½®å®ä½“ç±»</param>
-        /// <param name="where">ä¿®æ”¹æ—¶é™„åŠ æ¡ä»¶ï¼Œç»Ÿä¸€çš„å‰é¢è¦åŠ é“¾æ¥ç¬¦ï¼ˆandã€orç­‰ç­‰ï¼‰</param>
-        /// <param name="delCache">ä¿®æ”¹æˆåŠŸåæ¸…ç†çš„CACHE keyï¼Œæ”¯æŒæ­£åˆ™</param>
-        /// <param name="dbkey">å­˜åœ¨æ•°æ®åº“è¿æ¥æ± ä¸­çš„è¿æ¥keyï¼Œä¸ºç©ºæ—¶ä½¿ç”¨ConnStringè¿æ¥</param>
-        /// <returns>ä¿®æ”¹æ˜¯å¦æˆåŠŸ</returns>
-        public static bool UpdateByIDList(IEnumerable<Int64> iPCIDList,  IpSetting ipSetting, string dbkey = "", Where where = null, string[] delCache = null) {
-            int value = new SQL().Database(dbkey).Update(IpSetting._)
-                .SetP(IpSetting._WebName, ipSetting.WebName)
-                .SetP(IpSetting._IPUrl, ipSetting.IPUrl)
-                .SetP(IpSetting._IPRegex, ipSetting.IPRegex)
-                .SetP(IpSetting._DataEncode, ipSetting.DataEncode)
-                .Where(new Where()
-                    .And(IpSetting._IPCID, "(" + iPCIDList .Join(",") + ")", Operator.In)
-                ).Where(where).ToExec();
-            if (value <= 0) return false;
-            if (delCache.IsNull()) return true;
-            Cache2.Remove("TH.Mailer.IpSettingCache_", delCache);
-            return true;
-        }
-        /// <summary>
-        /// è·å–IPé…ç½®ä¿®æ”¹å¤šæ¡è®°å½•
-        /// </summary>
-        /// <param name="iPCIDList">è·å–IPé…ç½®ç¼–å·åˆ—è¡¨ï¼Œç”¨â€œ,â€å·åˆ†éš”</param>
-        /// <param name="ipSetting">è·å–IPé…ç½®å®ä½“ç±»</param>
-        /// <returns>ä¿®æ”¹æ˜¯å¦æˆåŠŸ</returns>
-        public static bool UpdateByIDList(IEnumerable<Int64> iPCIDList,  IpSetting ipSetting, string dbkey) {
-            return UpdateByIDList(iPCIDList,  ipSetting, dbkey, null, null);
-        }
-         /// <summary>
-        /// è·å–IPé…ç½®åˆ é™¤è®°å½•
-        /// </summary>
-        /// <param name="iPCID">è·å–IPé…ç½®ç¼–å·</param>
-        /// <param name="where">ä¿®æ”¹æ—¶é™„åŠ æ¡ä»¶ï¼Œç»Ÿä¸€çš„å‰é¢è¦åŠ é“¾æ¥ç¬¦ï¼ˆandã€orç­‰ç­‰ï¼‰</param>
-        /// <param name="delCache">åˆ é™¤æˆåŠŸåæ¸…ç†çš„CACHE keyï¼Œæ”¯æŒæ­£åˆ™</param>
-        /// <param name="dbkey">å­˜åœ¨æ•°æ®åº“è¿æ¥æ± ä¸­çš„è¿æ¥keyï¼Œä¸ºç©ºæ—¶ä½¿ç”¨ConnStringè¿æ¥</param>
-        /// <returns>åˆ é™¤æ˜¯å¦æˆåŠŸ</returns>
-        public static bool DeleteByID(Int64? iPCID,  string dbkey = "", Where where = null, string[] delCache = null) {
-            if (iPCID.IsNull()) return false;
-            int value = new SQL().Database(dbkey).Delete(IpSetting._)
-                .Where(new Where()
-                    .AndP(IpSetting._IPCID, iPCID, Operator.Equal, true)
-                ).Where(where).ToExec();
-            if (value != 1) return false;
-            if (delCache.IsNull()) return true;
-            Cache2.Remove("TH.Mailer.IpSettingCache_", delCache);
-            return true;
-        }
-        /// <summary>
-        /// è·å–IPé…ç½®åˆ é™¤è®°å½•
-        /// </summary>
-        /// <param name="iPCID">è·å–IPé…ç½®ç¼–å·</param>
-        /// <returns>åˆ é™¤æ˜¯å¦æˆåŠŸ</returns>
-        public static bool DeleteByID(Int64? iPCID, string dbkey) {
-            return DeleteByID(iPCID,  dbkey, null, null);
-        }
-        /// <summary>
-        /// è·å–IPé…ç½®åˆ é™¤è®°å½•
-        /// </summary>
-        /// <param name="iPCID">è·å–IPé…ç½®ç¼–å·</param>
-        /// <param name="where">ä¿®æ”¹æ—¶é™„åŠ æ¡ä»¶ï¼Œç»Ÿä¸€çš„å‰é¢è¦åŠ é“¾æ¥ç¬¦ï¼ˆandã€orç­‰ç­‰ï¼‰</param>
-        /// <param name="delCache">åˆ é™¤æˆåŠŸåæ¸…ç†çš„CACHE keyï¼Œæ”¯æŒæ­£åˆ™</param>
-        /// <param name="dbkey">å­˜åœ¨æ•°æ®åº“è¿æ¥æ± ä¸­çš„è¿æ¥keyï¼Œä¸ºç©ºæ—¶ä½¿ç”¨ConnStringè¿æ¥</param>
-        /// <returns>åˆ é™¤æ˜¯å¦æˆåŠŸ</returns>
-        public static bool DeleteByID(Int64 iPCID,  string dbkey = "", Where where = null, string[] delCache = null) {
-            return DeleteByID((Int64?)iPCID,  dbkey, where, delCache);
-        }
-        /// <summary>
-        /// è·å–IPé…ç½®åˆ é™¤è®°å½•
-        /// </summary>
-        /// <param name="iPCID">è·å–IPé…ç½®ç¼–å·</param>
-        /// <returns>åˆ é™¤æ˜¯å¦æˆåŠŸ</returns>
-        public static bool DeleteByID(Int64 iPCID, string dbkey) {
-            return DeleteByID((Int64?)iPCID,  dbkey, null, null);
-        }
-        /// <summary>
-        /// è·å–IPé…ç½®åˆ é™¤å¤šæ¡è®°å½•
-        /// </summary>
-        /// <param name="iPCIDList">è·å–IPé…ç½®ç¼–å·åˆ—è¡¨ï¼Œç”¨â€œ,â€å·åˆ†éš”</param>
-        /// <param name="where">åˆ é™¤æ—¶é™„åŠ æ¡ä»¶ï¼Œç»Ÿä¸€çš„å‰é¢è¦åŠ é“¾æ¥ç¬¦ï¼ˆandã€orç­‰ç­‰ï¼‰</param>
-        /// <param name="delCache">ä¿®æ”¹æˆåŠŸåæ¸…ç†çš„CACHE keyï¼Œæ”¯æŒæ­£åˆ™</param>
-        /// <param name="dbkey">å­˜åœ¨æ•°æ®åº“è¿æ¥æ± ä¸­çš„è¿æ¥keyï¼Œä¸ºç©ºæ—¶ä½¿ç”¨ConnStringè¿æ¥</param>
-        /// <returns>åˆ é™¤æ˜¯å¦æˆåŠŸ</returns>
-        public static bool DeleteByIDList(IEnumerable<Int64> iPCIDList,  string dbkey = "", Where where = null, string[] delCache = null) {
-            int value = new SQL().Database(dbkey).Delete(IpSetting._)
-                .Where(new Where()
-                    .And(IpSetting._IPCID, "(" + iPCIDList .Join(",") + ")", Operator.In)
-                ).Where(where).ToExec();
-            if (value <= 0) return false;
-            if (delCache.IsNull()) return true;
-            Cache2.Remove("TH.Mailer.IpSettingCache_", delCache);
-            return true;
-        }
-        /// <summary>
-        /// è·å–IPé…ç½®åˆ é™¤å¤šæ¡è®°å½•
-        /// </summary>
-        /// <param name="iPCIDList">è·å–IPé…ç½®ç¼–å·åˆ—è¡¨ï¼Œç”¨â€œ,â€å·åˆ†éš”</param>
-        /// <param name="where">åˆ é™¤æ—¶é™„åŠ æ¡ä»¶ï¼Œç»Ÿä¸€çš„å‰é¢è¦åŠ é“¾æ¥ç¬¦ï¼ˆandã€orç­‰ç­‰ï¼‰</param>
-        /// <param name="delCache">ä¿®æ”¹æˆåŠŸåæ¸…ç†çš„CACHE keyï¼Œæ”¯æŒæ­£åˆ™</param>
-        /// <param name="dbkey">å­˜åœ¨æ•°æ®åº“è¿æ¥æ± ä¸­çš„è¿æ¥keyï¼Œä¸ºç©ºæ—¶ä½¿ç”¨ConnStringè¿æ¥</param>
-        /// <returns>åˆ é™¤æ˜¯å¦æˆåŠŸ</returns>
-        public static bool DeleteByIDList(IEnumerable<Int64> iPCIDList, string dbkey) {
-            return DeleteByIDList(iPCIDList,  dbkey, null, null);
-        }
-        /// <summary>
-        /// è·å–IPé…ç½®æŸ¥è¯¢æ‰€æœ‰è®°å½•
-        /// </summary>
-        /// <param name="where">é™„åŠ æ¡ä»¶ï¼Œç»Ÿä¸€çš„å‰é¢è¦åŠ é“¾æ¥ç¬¦ï¼ˆandã€orç­‰ç­‰ï¼‰</param>
-        /// <param name="order">æ’åºå­—æ®µï¼Œä¸åŠ â€œorder byâ€</param>
-        /// <param name="fieldList">è®¾ç½®éœ€è¦è¿”å›çš„å­—æ®µ</param>
-        /// <param name="dbkey">å­˜åœ¨æ•°æ®åº“è¿æ¥æ± ä¸­çš„è¿æ¥keyï¼Œä¸ºç©ºæ—¶éšæœºå–è¿æ¥key</param>
-        /// <returns>è¿”å›å®ä½“è®°å½•é›†</returns>
-        public static IList<IpSetting> SelectListByAll(string dbkey = "", Where where = null, string order = "", string fieldList = "") {
-            string cacheNameKey = "TH.Mailer.IpSettingCache_SelectListByAll_{0}_{1}_{2}".FormatWith(where, order, fieldList);
-            return Cache2.Get<IList<IpSetting>>(cacheNameKey, cacheSeconds, () => {
-                IList<IpSetting> list = new List<IpSetting>();
-                if (fieldList.IsNullEmpty()) {
-                    list = new SQL().Database(dbkey).From(IpSetting._)
-                        .Select(IpSetting._IPCID)
-                        .Select(IpSetting._WebName)
-                        .Select(IpSetting._IPUrl)
-                        .Select(IpSetting._IPRegex)
-                        .Select(IpSetting._DataEncode)
-                        .Where(where).Order(order).ToList<IpSetting>();
-                } else {
-                    list = new SQL().Database(dbkey).From(IpSetting._).Select(fieldList).Where(where).Order(order).ToList<IpSetting>();
-                }
-                return list;
-            });
-        }
-        /// <summary>
-        /// è·å–IPé…ç½®æŸ¥è¯¢æ‰€æœ‰è®°å½•
-        /// </summary>
-        /// <returns>è¿”å›å®ä½“è®°å½•é›†</returns>
-        public static IList<IpSetting> SelectListByAll(string dbkey) {
-            return SelectListByAll(dbkey, null, "", "");
-        }
-        /// <summary>
-        /// è·å–IPé…ç½®åˆ é™¤æ‰€æœ‰è®°å½•
-        /// </summary>
-        /// <param name="dbkey">å­˜åœ¨æ•°æ®åº“è¿æ¥æ± ä¸­çš„è¿æ¥keyï¼Œä¸ºç©ºæ—¶éšæœºå–è¿æ¥key</param>
-        /// <returns>è¿”å›å®ä½“è®°å½•é›†</returns>
-        public static bool RemoveAll(string dbkey = "") {
-            return (new SQL().Database(dbkey).Delete(IpSetting._).ToExec()) > 0;
-        }
-        /// <summary>
-        /// æ¸…é™¤è·å–IPé…ç½®æŸ¥è¯¢æ‰€æœ‰è®°å½•çš„ç¼“å­˜
-        /// </summary>
-        public static void ClearCacheSelectListByAll() {
-            //Cache2.Remove("TH.Mailer.IpSettingCache_SelectListByAll___");
-            Cache2.RemoveByPattern("TH.Mailer.IpSettingCache_SelectListByAll_(.+?)");
-        }
-        /// <summary>
-        /// æ¸…é™¤è·å–IPé…ç½®æ‰€æœ‰ç¼“å­˜
-        /// </summary>
-        public static void ClearCacheAll() {
-            Cache2.RemoveByPattern("TH.Mailer.IpSettingCache_(.+?)");
-        }
-    }
+	/// <summary>
+	/// »ñÈ¡IPÅäÖÃ²Ù×÷Àà
+	///
+	/// ĞŞ¸Ä¼ÍÂ¼
+	///	 2013-06-03 °æ±¾£º1.0 ÏµÍ³×Ô¶¯´´½¨´ËÀà
+	///
+	/// </summary>
+	public partial class IpSettingHelper {
+		/// <summary>
+		/// »ñÈ¡IPÅäÖÃ»º´æ¶àÉÙÃë x 5
+		/// </summary>
+		public static int cacheSeconds = 1440;
+		/// <summary>
+		/// »ñÈ¡IPÅäÖÃÌí¼Ó¼ÇÂ¼
+		/// </summary>
+		/// <param name="ipSetting">»ñÈ¡IPÅäÖÃÊµÌåÀà</param>
+		/// <param name="delCache">Ìí¼Ó³É¹¦ºóÇåÀíµÄCACHE key£¬Ö§³ÖÕıÔò</param>
+		/// <param name="dbkey">´æÔÚÊı¾İ¿âÁ¬½Ó³ØÖĞµÄÁ¬½Ókey£¬Îª¿ÕÊ±Ê¹ÓÃConnStringÁ¬½Ó</param>
+		/// <returns>·µ»ØÌí¼Ó³É¹¦ºóµÄID</returns>
+		public static Int64 Insert(IpSetting ipSetting, string dbkey = "", string[] delCache = null) {
+			object obj = new SQL().Database(dbkey).Insert(IpSetting._)
+				.ValueP(IpSetting._IPCID, ipSetting.IPCID)
+				.ValueP(IpSetting._WebName, ipSetting.WebName)
+				.ValueP(IpSetting._IPUrl, ipSetting.IPUrl)
+				.ValueP(IpSetting._IPRegex, ipSetting.IPRegex)
+				.ValueP(IpSetting._DataEncode, ipSetting.DataEncode)
+				.ToExec();
+			if (obj.ToInt() != 1) return 0;
+			obj = new SQL().Database(dbkey).From(IpSetting._).Max("IPCID").ToScalar();
+			if (obj.IsAllNull()) return 0;
+			Int64 value = obj.ToString().ToBigInt();
+			if (delCache.IsNull()) return value;
+			Cache2.Remove("TH.Mailer.IpSettingCache_", delCache);
+			return value;
+		}
+		/// <summary>
+		/// »ñÈ¡IPÅäÖÃÌí¼Ó¼ÇÂ¼
+		/// </summary>
+		/// <param name="ipSetting">»ñÈ¡IPÅäÖÃÊµÌåÀà</param>
+		/// <returns>·µ»ØÌí¼Ó³É¹¦ºóµÄID</returns>
+		public static Int64 Insert(IpSetting ipSetting, string dbkey) {
+			return Insert(ipSetting, dbkey, null);
+		}
+		/// <summary>
+		/// »ñÈ¡IPÅäÖÃĞŞ¸Ä¼ÇÂ¼
+		/// </summary>
+		/// <param name="ipSetting">»ñÈ¡IPÅäÖÃÊµÌåÀà</param>
+		/// <param name="where">ĞŞ¸ÄÊ±¸½¼ÓÌõ¼ş£¬Í³Ò»µÄÇ°ÃæÒª¼ÓÁ´½Ó·û£¨and¡¢orµÈµÈ£©</param>
+		/// <param name="delCache">ĞŞ¸Ä³É¹¦ºóÇåÀíµÄCACHE key£¬Ö§³ÖÕıÔò</param>
+		/// <param name="dbkey">´æÔÚÊı¾İ¿âÁ¬½Ó³ØÖĞµÄÁ¬½Ókey£¬Îª¿ÕÊ±Ê¹ÓÃConnStringÁ¬½Ó</param>
+		/// <returns>ĞŞ¸ÄÊÇ·ñ³É¹¦</returns>
+		public static bool Update(IpSetting ipSetting, string dbkey = "", Where where = null, string[] delCache = null) {
+			if (ipSetting.IPCID.IsNull()) return false;
+			int value = new SQL().Database(dbkey).Update(IpSetting._)
+				.SetP(IpSetting._WebName, ipSetting.WebName)
+				.SetP(IpSetting._IPUrl, ipSetting.IPUrl)
+				.SetP(IpSetting._IPRegex, ipSetting.IPRegex)
+				.SetP(IpSetting._DataEncode, ipSetting.DataEncode)
+				.Where(new Where()
+					.AndP(IpSetting._IPCID, ipSetting.IPCID, Operator.Equal, true)
+				).Where(where).ToExec();
+			if (value <= 0) return false;
+			if (delCache.IsNull()) return true;
+			Cache2.Remove("TH.Mailer.IpSettingCache_", delCache);
+			return true;
+		}
+		/// <summary>
+		/// »ñÈ¡IPÅäÖÃĞŞ¸Ä¼ÇÂ¼
+		/// </summary>
+		/// <param name="ipSetting">»ñÈ¡IPÅäÖÃÊµÌåÀà</param>
+		/// <returns>ĞŞ¸ÄÊÇ·ñ³É¹¦</returns>
+		public static bool Update(IpSetting ipSetting, string dbkey) {
+			return Update(ipSetting, dbkey, null, null);
+		}
+		/// <summary>
+		/// »ñÈ¡IPÅäÖÃĞŞ¸Ä¶àÌõ¼ÇÂ¼
+		/// </summary>
+		/// <param name="iPCIDList">»ñÈ¡IPÅäÖÃ±àºÅÁĞ±í£¬ÓÃ¡°,¡±ºÅ·Ö¸ô</param>
+		/// <param name="ipSetting">»ñÈ¡IPÅäÖÃÊµÌåÀà</param>
+		/// <param name="where">ĞŞ¸ÄÊ±¸½¼ÓÌõ¼ş£¬Í³Ò»µÄÇ°ÃæÒª¼ÓÁ´½Ó·û£¨and¡¢orµÈµÈ£©</param>
+		/// <param name="delCache">ĞŞ¸Ä³É¹¦ºóÇåÀíµÄCACHE key£¬Ö§³ÖÕıÔò</param>
+		/// <param name="dbkey">´æÔÚÊı¾İ¿âÁ¬½Ó³ØÖĞµÄÁ¬½Ókey£¬Îª¿ÕÊ±Ê¹ÓÃConnStringÁ¬½Ó</param>
+		/// <returns>ĞŞ¸ÄÊÇ·ñ³É¹¦</returns>
+		public static bool UpdateByIDList(IEnumerable<Int64> iPCIDList,  IpSetting ipSetting, string dbkey = "", Where where = null, string[] delCache = null) {
+			int value = new SQL().Database(dbkey).Update(IpSetting._)
+				.SetP(IpSetting._WebName, ipSetting.WebName)
+				.SetP(IpSetting._IPUrl, ipSetting.IPUrl)
+				.SetP(IpSetting._IPRegex, ipSetting.IPRegex)
+				.SetP(IpSetting._DataEncode, ipSetting.DataEncode)
+				.Where(new Where()
+					.And(IpSetting._IPCID, "(" + iPCIDList .Join(",") + ")", Operator.In)
+				).Where(where).ToExec();
+			if (value <= 0) return false;
+			if (delCache.IsNull()) return true;
+			Cache2.Remove("TH.Mailer.IpSettingCache_", delCache);
+			return true;
+		}
+		/// <summary>
+		/// »ñÈ¡IPÅäÖÃĞŞ¸Ä¶àÌõ¼ÇÂ¼
+		/// </summary>
+		/// <param name="iPCIDList">»ñÈ¡IPÅäÖÃ±àºÅÁĞ±í£¬ÓÃ¡°,¡±ºÅ·Ö¸ô</param>
+		/// <param name="ipSetting">»ñÈ¡IPÅäÖÃÊµÌåÀà</param>
+		/// <returns>ĞŞ¸ÄÊÇ·ñ³É¹¦</returns>
+		public static bool UpdateByIDList(IEnumerable<Int64> iPCIDList,  IpSetting ipSetting, string dbkey) {
+			return UpdateByIDList(iPCIDList,  ipSetting, dbkey, null, null);
+		}
+ 		/// <summary>
+		/// »ñÈ¡IPÅäÖÃÉ¾³ı¼ÇÂ¼
+		/// </summary>
+		/// <param name="iPCID">»ñÈ¡IPÅäÖÃ±àºÅ</param>
+		/// <param name="where">ĞŞ¸ÄÊ±¸½¼ÓÌõ¼ş£¬Í³Ò»µÄÇ°ÃæÒª¼ÓÁ´½Ó·û£¨and¡¢orµÈµÈ£©</param>
+		/// <param name="delCache">É¾³ı³É¹¦ºóÇåÀíµÄCACHE key£¬Ö§³ÖÕıÔò</param>
+		/// <param name="dbkey">´æÔÚÊı¾İ¿âÁ¬½Ó³ØÖĞµÄÁ¬½Ókey£¬Îª¿ÕÊ±Ê¹ÓÃConnStringÁ¬½Ó</param>
+		/// <returns>É¾³ıÊÇ·ñ³É¹¦</returns>
+		public static bool DeleteByID(Int64? iPCID,  string dbkey = "", Where where = null, string[] delCache = null) {
+			if (iPCID.IsNull()) return false;
+			int value = new SQL().Database(dbkey).Delete(IpSetting._)
+				.Where(new Where()
+					.AndP(IpSetting._IPCID, iPCID, Operator.Equal, true)
+				).Where(where).ToExec();
+			if (value != 1) return false;
+			if (delCache.IsNull()) return true;
+			Cache2.Remove("TH.Mailer.IpSettingCache_", delCache);
+			return true;
+		}
+		/// <summary>
+		/// »ñÈ¡IPÅäÖÃÉ¾³ı¼ÇÂ¼
+		/// </summary>
+		/// <param name="iPCID">»ñÈ¡IPÅäÖÃ±àºÅ</param>
+		/// <returns>É¾³ıÊÇ·ñ³É¹¦</returns>
+		public static bool DeleteByID(Int64? iPCID, string dbkey) {
+			return DeleteByID(iPCID,  dbkey, null, null);
+		}
+		/// <summary>
+		/// »ñÈ¡IPÅäÖÃÉ¾³ı¼ÇÂ¼
+		/// </summary>
+		/// <param name="iPCID">»ñÈ¡IPÅäÖÃ±àºÅ</param>
+		/// <param name="where">ĞŞ¸ÄÊ±¸½¼ÓÌõ¼ş£¬Í³Ò»µÄÇ°ÃæÒª¼ÓÁ´½Ó·û£¨and¡¢orµÈµÈ£©</param>
+		/// <param name="delCache">É¾³ı³É¹¦ºóÇåÀíµÄCACHE key£¬Ö§³ÖÕıÔò</param>
+		/// <param name="dbkey">´æÔÚÊı¾İ¿âÁ¬½Ó³ØÖĞµÄÁ¬½Ókey£¬Îª¿ÕÊ±Ê¹ÓÃConnStringÁ¬½Ó</param>
+		/// <returns>É¾³ıÊÇ·ñ³É¹¦</returns>
+		public static bool DeleteByID(Int64 iPCID,  string dbkey = "", Where where = null, string[] delCache = null) {
+			return DeleteByID((Int64?)iPCID,  dbkey, where, delCache);
+		}
+		/// <summary>
+		/// »ñÈ¡IPÅäÖÃÉ¾³ı¼ÇÂ¼
+		/// </summary>
+		/// <param name="iPCID">»ñÈ¡IPÅäÖÃ±àºÅ</param>
+		/// <returns>É¾³ıÊÇ·ñ³É¹¦</returns>
+		public static bool DeleteByID(Int64 iPCID, string dbkey) {
+			return DeleteByID((Int64?)iPCID,  dbkey, null, null);
+		}
+		/// <summary>
+		/// »ñÈ¡IPÅäÖÃÉ¾³ı¶àÌõ¼ÇÂ¼
+		/// </summary>
+		/// <param name="iPCIDList">»ñÈ¡IPÅäÖÃ±àºÅÁĞ±í£¬ÓÃ¡°,¡±ºÅ·Ö¸ô</param>
+		/// <param name="where">É¾³ıÊ±¸½¼ÓÌõ¼ş£¬Í³Ò»µÄÇ°ÃæÒª¼ÓÁ´½Ó·û£¨and¡¢orµÈµÈ£©</param>
+		/// <param name="delCache">ĞŞ¸Ä³É¹¦ºóÇåÀíµÄCACHE key£¬Ö§³ÖÕıÔò</param>
+		/// <param name="dbkey">´æÔÚÊı¾İ¿âÁ¬½Ó³ØÖĞµÄÁ¬½Ókey£¬Îª¿ÕÊ±Ê¹ÓÃConnStringÁ¬½Ó</param>
+		/// <returns>É¾³ıÊÇ·ñ³É¹¦</returns>
+		public static bool DeleteByIDList(IEnumerable<Int64> iPCIDList,  string dbkey = "", Where where = null, string[] delCache = null) {
+			int value = new SQL().Database(dbkey).Delete(IpSetting._)
+				.Where(new Where()
+					.And(IpSetting._IPCID, "(" + iPCIDList .Join(",") + ")", Operator.In)
+				).Where(where).ToExec();
+			if (value <= 0) return false;
+			if (delCache.IsNull()) return true;
+			Cache2.Remove("TH.Mailer.IpSettingCache_", delCache);
+			return true;
+		}
+		/// <summary>
+		/// »ñÈ¡IPÅäÖÃÉ¾³ı¶àÌõ¼ÇÂ¼
+		/// </summary>
+		/// <param name="iPCIDList">»ñÈ¡IPÅäÖÃ±àºÅÁĞ±í£¬ÓÃ¡°,¡±ºÅ·Ö¸ô</param>
+		/// <param name="where">É¾³ıÊ±¸½¼ÓÌõ¼ş£¬Í³Ò»µÄÇ°ÃæÒª¼ÓÁ´½Ó·û£¨and¡¢orµÈµÈ£©</param>
+		/// <param name="delCache">ĞŞ¸Ä³É¹¦ºóÇåÀíµÄCACHE key£¬Ö§³ÖÕıÔò</param>
+		/// <param name="dbkey">´æÔÚÊı¾İ¿âÁ¬½Ó³ØÖĞµÄÁ¬½Ókey£¬Îª¿ÕÊ±Ê¹ÓÃConnStringÁ¬½Ó</param>
+		/// <returns>É¾³ıÊÇ·ñ³É¹¦</returns>
+		public static bool DeleteByIDList(IEnumerable<Int64> iPCIDList, string dbkey) {
+			return DeleteByIDList(iPCIDList,  dbkey, null, null);
+		}
+		/// <summary>
+		/// »ñÈ¡IPÅäÖÃ²éÑ¯ËùÓĞ¼ÇÂ¼
+		/// </summary>
+		/// <param name="where">¸½¼ÓÌõ¼ş£¬Í³Ò»µÄÇ°ÃæÒª¼ÓÁ´½Ó·û£¨and¡¢orµÈµÈ£©</param>
+		/// <param name="order">ÅÅĞò×Ö¶Î£¬²»¼Ó¡°order by¡±</param>
+		/// <param name="fieldList">ÉèÖÃĞèÒª·µ»ØµÄ×Ö¶Î</param>
+		/// <param name="dbkey">´æÔÚÊı¾İ¿âÁ¬½Ó³ØÖĞµÄÁ¬½Ókey£¬Îª¿ÕÊ±Ëæ»úÈ¡Á¬½Ókey</param>
+		/// <returns>·µ»ØÊµÌå¼ÇÂ¼¼¯</returns>
+		public static IList<IpSetting> SelectListByAll(string dbkey = "", Where where = null, string order = "", string fieldList = "") {
+			string cacheNameKey = "TH.Mailer.IpSettingCache_SelectListByAll_{0}_{1}_{2}".FormatWith(where, order, fieldList);
+			return Cache2.Get<IList<IpSetting>>(cacheNameKey, cacheSeconds, () => {
+				IList<IpSetting> list = new List<IpSetting>();
+				if (fieldList.IsNullEmpty()) {
+					list = new SQL().Database(dbkey).From(IpSetting._)
+						.Select(IpSetting._IPCID)
+						.Select(IpSetting._WebName)
+						.Select(IpSetting._IPUrl)
+						.Select(IpSetting._IPRegex)
+						.Select(IpSetting._DataEncode)
+						.Where(where).Order(order).ToList<IpSetting>();
+				} else {
+					list = new SQL().Database(dbkey).From(IpSetting._).Select(fieldList).Where(where).Order(order).ToList<IpSetting>();
+				}
+				return list;
+			});
+		}
+		/// <summary>
+		/// »ñÈ¡IPÅäÖÃ²éÑ¯ËùÓĞ¼ÇÂ¼
+		/// </summary>
+		/// <returns>·µ»ØÊµÌå¼ÇÂ¼¼¯</returns>
+		public static IList<IpSetting> SelectListByAll(string dbkey) {
+			return SelectListByAll(dbkey, null, "", "");
+		}
+		/// <summary>
+		/// »ñÈ¡IPÅäÖÃÉ¾³ıËùÓĞ¼ÇÂ¼
+		/// </summary>
+		/// <param name="dbkey">´æÔÚÊı¾İ¿âÁ¬½Ó³ØÖĞµÄÁ¬½Ókey£¬Îª¿ÕÊ±Ëæ»úÈ¡Á¬½Ókey</param>
+		/// <returns>·µ»ØÊµÌå¼ÇÂ¼¼¯</returns>
+		public static bool RemoveAll(string dbkey = "") {
+			return (new SQL().Database(dbkey).Delete(IpSetting._).ToExec()) > 0;
+		}
+		/// <summary>
+		/// Çå³ı»ñÈ¡IPÅäÖÃ²éÑ¯ËùÓĞ¼ÇÂ¼µÄ»º´æ
+		/// </summary>
+		public static void ClearCacheSelectListByAll() {
+			//Cache2.Remove("TH.Mailer.IpSettingCache_SelectListByAll___");
+			Cache2.RemoveByPattern("TH.Mailer.IpSettingCache_SelectListByAll_(.+?)");
+		}
+		/// <summary>
+		/// Çå³ı»ñÈ¡IPÅäÖÃËùÓĞ»º´æ
+		/// </summary>
+		public static void ClearCacheAll() {
+			Cache2.RemoveByPattern("TH.Mailer.IpSettingCache_(.+?)");
+		}
+	}
 }
 

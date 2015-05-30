@@ -1,4 +1,4 @@
-ï»¿//-------------------------------------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------------------------------------
 // All Rights Reserved , Copyright (C) 2013 , TH , Ltd.
 //-------------------------------------------------------------------------------------------------------------------------------------
 
@@ -8,131 +8,131 @@ using System.Text;
 using Pub.Class;
 
 namespace TH.Mailer.Entity {
-    /// <summary>
-    /// è®¾ç½®å®ä½“ç±»
-    /// 
-    /// ä¿®æ”¹çºªå½•
-    ///     2013-06-03 ç‰ˆæœ¬ï¼š1.0 ç³»ç»Ÿè‡ªåŠ¨åˆ›å»ºæ­¤ç±»
-    /// 
-    /// </summary>
-    [Serializable]
-    [EntityInfo("è®¾ç½®")]
-    public partial class SendSetting {
-        /// <summary>
-        /// è®¾ç½®
-        /// </summary>
-        public static readonly string _ = "SendSetting";
+	/// <summary>
+	/// ÉèÖÃÊµÌåÀà
+	///
+	/// ĞŞ¸Ä¼ÍÂ¼
+	///	 2013-06-03 °æ±¾£º1.0 ÏµÍ³×Ô¶¯´´½¨´ËÀà
+	///
+	/// </summary>
+	[Serializable]
+	[EntityInfo("ÉèÖÃ")]
+	public partial class SendSetting {
+		/// <summary>
+		/// ÉèÖÃ
+		/// </summary>
+		public static readonly string _ = "SendSetting";
 
-        /// <summary>
-        /// è®¾ç½®ç¼–å·
-        /// </summary>
-        public static readonly string _SettingID = "SettingID";
-        private int? settingID = null;
-        /// <summary>
-        /// è®¾ç½®ç¼–å·
-        /// </summary>
-        [EntityInfo("è®¾ç½®ç¼–å·")]
-        public new int? SettingID { get { return settingID; } set { settingID = value; } }
+		/// <summary>
+		/// ÉèÖÃ±àºÅ
+		/// </summary>
+		public static readonly string _SettingID = "SettingID";
+		private int? settingID = null;
+		/// <summary>
+		/// ÉèÖÃ±àºÅ
+		/// </summary>
+		[EntityInfo("ÉèÖÃ±àºÅ")]
+		public new int? SettingID { get { return settingID; } set { settingID = value; } }
 
-        /// <summary>
-        /// å‘é€ä¸»é¢˜ç¼–å·
-        /// </summary>
-        public static readonly string _TemplateID = "TemplateID";
-        private Int64? templateID = null;
-        /// <summary>
-        /// å‘é€ä¸»é¢˜ç¼–å·
-        /// </summary>
-        [EntityInfo("å‘é€ä¸»é¢˜ç¼–å·")]
-        public new Int64? TemplateID { get { return templateID; } set { templateID = value; } }
+		/// <summary>
+		/// ·¢ËÍÖ÷Ìâ±àºÅ
+		/// </summary>
+		public static readonly string _TemplateID = "TemplateID";
+		private Int64? templateID = null;
+		/// <summary>
+		/// ·¢ËÍÖ÷Ìâ±àºÅ
+		/// </summary>
+		[EntityInfo("·¢ËÍÖ÷Ìâ±àºÅ")]
+		public new Int64? TemplateID { get { return templateID; } set { templateID = value; } }
 
-        /// <summary>
-        /// è¿ç½‘ç±»å‹ 0ä½¿ç”¨è·¯ç”±è¿æ¥ 1ä½¿ç”¨æ‹¨å·è¿æ¥
-        /// </summary>
-        public static readonly string _ConnectType = "ConnectType";
-        private int? connectType = null;
-        /// <summary>
-        /// è¿ç½‘ç±»å‹ 0ä½¿ç”¨è·¯ç”±è¿æ¥ 1ä½¿ç”¨æ‹¨å·è¿æ¥
-        /// </summary>
-        [EntityInfo("è¿ç½‘ç±»å‹ 0ä½¿ç”¨è·¯ç”±è¿æ¥ 1ä½¿ç”¨æ‹¨å·è¿æ¥")]
-        public new int? ConnectType { get { return connectType; } set { connectType = value; } }
+		/// <summary>
+		/// Á¬ÍøÀàĞÍ 0Ê¹ÓÃÂ·ÓÉÁ¬½Ó 1Ê¹ÓÃ²¦ºÅÁ¬½Ó
+		/// </summary>
+		public static readonly string _ConnectType = "ConnectType";
+		private int? connectType = null;
+		/// <summary>
+		/// Á¬ÍøÀàĞÍ 0Ê¹ÓÃÂ·ÓÉÁ¬½Ó 1Ê¹ÓÃ²¦ºÅÁ¬½Ó
+		/// </summary>
+		[EntityInfo("Á¬ÍøÀàĞÍ 0Ê¹ÓÃÂ·ÓÉÁ¬½Ó 1Ê¹ÓÃ²¦ºÅÁ¬½Ó")]
+		public new int? ConnectType { get { return connectType; } set { connectType = value; } }
 
-        /// <summary>
-        /// å‘é€é‚®ä»¶æ—¶é—´é—´éš”(æ¯«ç§’)
-        /// </summary>
-        public static readonly string _SendInterval = "SendInterval";
-        private int? sendInterval = null;
-        /// <summary>
-        /// å‘é€é‚®ä»¶æ—¶é—´é—´éš”(æ¯«ç§’)
-        /// </summary>
-        [EntityInfo("å‘é€é‚®ä»¶æ—¶é—´é—´éš”(æ¯«ç§’)")]
-        public new int? SendInterval { get { return sendInterval; } set { sendInterval = value; } }
+		/// <summary>
+		/// ·¢ËÍÓÊ¼şÊ±¼ä¼ä¸ô(ºÁÃë)
+		/// </summary>
+		public static readonly string _SendInterval = "SendInterval";
+		private int? sendInterval = null;
+		/// <summary>
+		/// ·¢ËÍÓÊ¼şÊ±¼ä¼ä¸ô(ºÁÃë)
+		/// </summary>
+		[EntityInfo("·¢ËÍÓÊ¼şÊ±¼ä¼ä¸ô(ºÁÃë)")]
+		public new int? SendInterval { get { return sendInterval; } set { sendInterval = value; } }
 
-        /// <summary>
-        /// å‘é€å¤šå°‘å°é‚®ä»¶åæ›´æ¢IP
-        /// </summary>
-        public static readonly string _IPInterval = "IPInterval";
-        private int? iPInterval = null;
-        /// <summary>
-        /// å‘é€å¤šå°‘å°é‚®ä»¶åæ›´æ¢IP
-        /// </summary>
-        [EntityInfo("å‘é€å¤šå°‘å°é‚®ä»¶åæ›´æ¢IP")]
-        public new int? IPInterval { get { return iPInterval; } set { iPInterval = value; } }
+		/// <summary>
+		/// ·¢ËÍ¶àÉÙ·âÓÊ¼şºó¸ü»»IP
+		/// </summary>
+		public static readonly string _IPInterval = "IPInterval";
+		private int? iPInterval = null;
+		/// <summary>
+		/// ·¢ËÍ¶àÉÙ·âÓÊ¼şºó¸ü»»IP
+		/// </summary>
+		[EntityInfo("·¢ËÍ¶àÉÙ·âÓÊ¼şºó¸ü»»IP")]
+		public new int? IPInterval { get { return iPInterval; } set { iPInterval = value; } }
 
-        /// <summary>
-        /// å‘é€å¤šå°‘å°é‚®ä»¶åæ›´æ¢SMTP
-        /// </summary>
-        public static readonly string _SmtpInterval = "SmtpInterval";
-        private int? smtpInterval = null;
-        /// <summary>
-        /// å‘é€å¤šå°‘å°é‚®ä»¶åæ›´æ¢SMTP
-        /// </summary>
-        [EntityInfo("å‘é€å¤šå°‘å°é‚®ä»¶åæ›´æ¢SMTP")]
-        public new int? SmtpInterval { get { return smtpInterval; } set { smtpInterval = value; } }
+		/// <summary>
+		/// ·¢ËÍ¶àÉÙ·âÓÊ¼şºó¸ü»»SMTP
+		/// </summary>
+		public static readonly string _SmtpInterval = "SmtpInterval";
+		private int? smtpInterval = null;
+		/// <summary>
+		/// ·¢ËÍ¶àÉÙ·âÓÊ¼şºó¸ü»»SMTP
+		/// </summary>
+		[EntityInfo("·¢ËÍ¶àÉÙ·âÓÊ¼şºó¸ü»»SMTP")]
+		public new int? SmtpInterval { get { return smtpInterval; } set { smtpInterval = value; } }
 
-        /// <summary>
-        /// æ¸…ç†å¤šå°‘åˆ†é’Ÿä¹‹å‰çš„å†å²IP
-        /// </summary>
-        public static readonly string _DeleteInterval = "DeleteInterval";
-        private int? deleteInterval = null;
-        /// <summary>
-        /// æ¸…ç†å¤šå°‘åˆ†é’Ÿä¹‹å‰çš„å†å²IP
-        /// </summary>
-        [EntityInfo("æ¸…ç†å¤šå°‘åˆ†é’Ÿä¹‹å‰çš„å†å²IP")]
-        public new int? DeleteInterval { get { return deleteInterval; } set { deleteInterval = value; } }
+		/// <summary>
+		/// ÇåÀí¶àÉÙ·ÖÖÓÖ®Ç°µÄÀúÊ·IP
+		/// </summary>
+		public static readonly string _DeleteInterval = "DeleteInterval";
+		private int? deleteInterval = null;
+		/// <summary>
+		/// ÇåÀí¶àÉÙ·ÖÖÓÖ®Ç°µÄÀúÊ·IP
+		/// </summary>
+		[EntityInfo("ÇåÀí¶àÉÙ·ÖÖÓÖ®Ç°µÄÀúÊ·IP")]
+		public new int? DeleteInterval { get { return deleteInterval; } set { deleteInterval = value; } }
 
-        /// <summary>
-        /// æœ€å¤šé‡è¯•æ¬¡æ•°
-        /// </summary>
-        public static readonly string _MaxRetryCount = "MaxRetryCount";
-        private int? maxRetryCount = null;
-        /// <summary>
-        /// æœ€å¤šé‡è¯•æ¬¡æ•°
-        /// </summary>
-        [EntityInfo("æœ€å¤šé‡è¯•æ¬¡æ•°")]
-        public new int? MaxRetryCount { get { return maxRetryCount; } set { maxRetryCount = value; } }
+		/// <summary>
+		/// ×î¶àÖØÊÔ´ÎÊı
+		/// </summary>
+		public static readonly string _MaxRetryCount = "MaxRetryCount";
+		private int? maxRetryCount = null;
+		/// <summary>
+		/// ×î¶àÖØÊÔ´ÎÊı
+		/// </summary>
+		[EntityInfo("×î¶àÖØÊÔ´ÎÊı")]
+		public new int? MaxRetryCount { get { return maxRetryCount; } set { maxRetryCount = value; } }
 
-        /// <summary>
-        /// å‘é€é‚®ä»¶å¤±è´¥é‡è¯•æ¬¡æ•°
-        /// </summary>
-        public static readonly string _SendRetryCount = "SendRetryCount";
-        private int? sendRetryCount = null;
-        /// <summary>
-        /// å‘é€é‚®ä»¶å¤±è´¥é‡è¯•æ¬¡æ•°
-        /// </summary>
-        [EntityInfo("å‘é€é‚®ä»¶å¤±è´¥é‡è¯•æ¬¡æ•°")]
-        public new int? SendRetryCount { get { return sendRetryCount; } set { sendRetryCount = value; } }
+		/// <summary>
+		/// ·¢ËÍÓÊ¼şÊ§°ÜÖØÊÔ´ÎÊı
+		/// </summary>
+		public static readonly string _SendRetryCount = "SendRetryCount";
+		private int? sendRetryCount = null;
+		/// <summary>
+		/// ·¢ËÍÓÊ¼şÊ§°ÜÖØÊÔ´ÎÊı
+		/// </summary>
+		[EntityInfo("·¢ËÍÓÊ¼şÊ§°ÜÖØÊÔ´ÎÊı")]
+		public new int? SendRetryCount { get { return sendRetryCount; } set { sendRetryCount = value; } }
 
-        /// <summary>
-        /// çŠ¶æ€  0ç­‰å¾…å‘é€ 1æ­£åœ¨å‘é€ 2å·²å‘é€å®Œæˆ
-        /// </summary>
-        public static readonly string _Status = "Status";
-        private int? status = null;
-        /// <summary>
-        /// çŠ¶æ€  0ç­‰å¾…å‘é€ 1æ­£åœ¨å‘é€ 2å·²å‘é€å®Œæˆ
-        /// </summary>
-        [EntityInfo("çŠ¶æ€  0ç­‰å¾…å‘é€ 1æ­£åœ¨å‘é€ 2å·²å‘é€å®Œæˆ")]
-        public new int? Status { get { return status; } set { status = value; } }
-    }
+		/// <summary>
+		/// ×´Ì¬  0µÈ´ı·¢ËÍ 1ÕıÔÚ·¢ËÍ 2ÒÑ·¢ËÍÍê³É
+		/// </summary>
+		public static readonly string _Status = "Status";
+		private int? status = null;
+		/// <summary>
+		/// ×´Ì¬  0µÈ´ı·¢ËÍ 1ÕıÔÚ·¢ËÍ 2ÒÑ·¢ËÍÍê³É
+		/// </summary>
+		[EntityInfo("×´Ì¬  0µÈ´ı·¢ËÍ 1ÕıÔÚ·¢ËÍ 2ÒÑ·¢ËÍÍê³É")]
+		public new int? Status { get { return status; } set { status = value; } }
+	}
 }
 
 

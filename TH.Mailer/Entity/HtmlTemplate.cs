@@ -1,4 +1,4 @@
-ï»¿//-------------------------------------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------------------------------------
 // All Rights Reserved , Copyright (C) 2013 , TH , Ltd.
 //-------------------------------------------------------------------------------------------------------------------------------------
 
@@ -8,98 +8,98 @@ using System.Text;
 using Pub.Class;
 
 namespace TH.Mailer.Entity {
-    /// <summary>
-    /// é‚®ä»¶æ¨¡ç‰ˆå®ä½“ç±»
-    /// 
-    /// ä¿®æ”¹çºªå½•
-    ///     2013-06-03 ç‰ˆæœ¬ï¼š1.0 ç³»ç»Ÿè‡ªåŠ¨åˆ›å»ºæ­¤ç±»
-    /// 
-    /// </summary>
-    [Serializable]
-    [EntityInfo("é‚®ä»¶æ¨¡ç‰ˆ")]
-    public partial class HtmlTemplate {
-        /// <summary>
-        /// é‚®ä»¶æ¨¡ç‰ˆ
-        /// </summary>
-        public static readonly string _ = "HtmlTemplate";
+	/// <summary>
+	/// ÓÊ¼şÄ£°æÊµÌåÀà
+	///
+	/// ĞŞ¸Ä¼ÍÂ¼
+	///	 2013-06-03 °æ±¾£º1.0 ÏµÍ³×Ô¶¯´´½¨´ËÀà
+	///
+	/// </summary>
+	[Serializable]
+	[EntityInfo("ÓÊ¼şÄ£°æ")]
+	public partial class HtmlTemplate {
+		/// <summary>
+		/// ÓÊ¼şÄ£°æ
+		/// </summary>
+		public static readonly string _ = "HtmlTemplate";
 
-        /// <summary>
-        /// é‚®ä»¶æ¨¡ç‰ˆç¼–å·
-        /// </summary>
-        public static readonly string _TemplateID = "TemplateID";
-        private Int64? templateID = null;
-        /// <summary>
-        /// é‚®ä»¶æ¨¡ç‰ˆç¼–å·
-        /// </summary>
-        [EntityInfo("é‚®ä»¶æ¨¡ç‰ˆç¼–å·")]
-        public new Int64? TemplateID { get { return templateID; } set { templateID = value; } }
+		/// <summary>
+		/// ÓÊ¼şÄ£°æ±àºÅ
+		/// </summary>
+		public static readonly string _TemplateID = "TemplateID";
+		private Int64? templateID = null;
+		/// <summary>
+		/// ÓÊ¼şÄ£°æ±àºÅ
+		/// </summary>
+		[EntityInfo("ÓÊ¼şÄ£°æ±àºÅ")]
+		public new Int64? TemplateID { get { return templateID; } set { templateID = value; } }
 
-        /// <summary>
-        /// ä¸»é¢˜
-        /// </summary>
-        public static readonly string _Subject = "Subject";
-        private string subject = null;
-        /// <summary>
-        /// ä¸»é¢˜
-        /// </summary>
-        [EntityInfo("ä¸»é¢˜")]
-        public new string Subject { get { return subject; } set { subject = value; } }
+		/// <summary>
+		/// Ö÷Ìâ
+		/// </summary>
+		public static readonly string _Subject = "Subject";
+		private string subject = null;
+		/// <summary>
+		/// Ö÷Ìâ
+		/// </summary>
+		[EntityInfo("Ö÷Ìâ")]
+		public new string Subject { get { return subject; } set { subject = value; } }
 
-        /// <summary>
-        /// å†…å®¹
-        /// </summary>
-        public static readonly string _Body = "Body";
-        private string body = null;
-        /// <summary>
-        /// å†…å®¹
-        /// </summary>
-        [EntityInfo("å†…å®¹")]
-        public new string Body { get { return body; } set { body = value; } }
+		/// <summary>
+		/// ÄÚÈİ
+		/// </summary>
+		public static readonly string _Body = "Body";
+		private string body = null;
+		/// <summary>
+		/// ÄÚÈİ
+		/// </summary>
+		[EntityInfo("ÄÚÈİ")]
+		public new string Body { get { return body; } set { body = value; } }
 
-        /// <summary>
-        /// æ˜¾ç¤ºå‘ä»¶äººåç§°
-        /// </summary>
-        public static readonly string _ShowName = "ShowName";
-        private string showName = null;
-        /// <summary>
-        /// æ˜¾ç¤ºå‘ä»¶äººåç§°
-        /// </summary>
-        [EntityInfo("æ˜¾ç¤ºå‘ä»¶äººåç§°")]
-        public new string ShowName { get { return showName; } set { showName = value; } }
+		/// <summary>
+		/// ÏÔÊ¾·¢¼şÈËÃû³Æ
+		/// </summary>
+		public static readonly string _ShowName = "ShowName";
+		private string showName = null;
+		/// <summary>
+		/// ÏÔÊ¾·¢¼şÈËÃû³Æ
+		/// </summary>
+		[EntityInfo("ÏÔÊ¾·¢¼şÈËÃû³Æ")]
+		public new string ShowName { get { return showName; } set { showName = value; } }
 
-        /// <summary>
-        /// æ˜¯å¦ä½¿ç”¨HTMLå‘é€
-        /// </summary>
-        public static readonly string _IsHTML = "IsHTML";
-        private bool? isHTML = null;
-        /// <summary>
-        /// æ˜¯å¦ä½¿ç”¨HTMLå‘é€
-        /// </summary>
-        [EntityInfo("æ˜¯å¦ä½¿ç”¨HTMLå‘é€")]
-        public new bool? IsHTML { get { return isHTML; } set { isHTML = value; } }
+		/// <summary>
+		/// ÊÇ·ñÊ¹ÓÃHTML·¢ËÍ
+		/// </summary>
+		public static readonly string _IsHTML = "IsHTML";
+		private bool? isHTML = null;
+		/// <summary>
+		/// ÊÇ·ñÊ¹ÓÃHTML·¢ËÍ
+		/// </summary>
+		[EntityInfo("ÊÇ·ñÊ¹ÓÃHTML·¢ËÍ")]
+		public new bool? IsHTML { get { return isHTML; } set { isHTML = value; } }
 
-        /// <summary>
-        /// çŠ¶æ€ 0å¯ç”¨ 1ä¸å¯ç”¨
-        /// </summary>
-        public static readonly string _Status = "Status";
-        private int? status = null;
-        /// <summary>
-        /// çŠ¶æ€ 0å¯ç”¨ 1ä¸å¯ç”¨
-        /// </summary>
-        [EntityInfo("çŠ¶æ€ 0å¯ç”¨ 1ä¸å¯ç”¨")]
-        public new int? Status { get { return status; } set { status = value; } }
+		/// <summary>
+		/// ×´Ì¬ 0¿ÉÓÃ 1²»¿ÉÓÃ
+		/// </summary>
+		public static readonly string _Status = "Status";
+		private int? status = null;
+		/// <summary>
+		/// ×´Ì¬ 0¿ÉÓÃ 1²»¿ÉÓÃ
+		/// </summary>
+		[EntityInfo("×´Ì¬ 0¿ÉÓÃ 1²»¿ÉÓÃ")]
+		public new int? Status { get { return status; } set { status = value; } }
 
-        /// <summary>
-        /// åˆ›å»ºæ—¶é—´
-        /// </summary>
-        public static readonly string _CreateTime = "CreateTime";
-        private DateTime? createTime = null;
-        /// <summary>
-        /// åˆ›å»ºæ—¶é—´
-        /// </summary>
-        [EntityInfo("åˆ›å»ºæ—¶é—´")]
-        public new DateTime? CreateTime { get { return createTime; } set { createTime = value; } }
-    }
+		/// <summary>
+		/// ´´½¨Ê±¼ä
+		/// </summary>
+		public static readonly string _CreateTime = "CreateTime";
+		private DateTime? createTime = null;
+		/// <summary>
+		/// ´´½¨Ê±¼ä
+		/// </summary>
+		[EntityInfo("´´½¨Ê±¼ä")]
+		public new DateTime? CreateTime { get { return createTime; } set { createTime = value; } }
+	}
 }
 
 

@@ -1,4 +1,4 @@
-ï»¿//-------------------------------------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------------------------------------
 // All Rights Reserved , Copyright (C) 2013 , TH , Ltd.
 //-------------------------------------------------------------------------------------------------------------------------------------
 
@@ -17,278 +17,279 @@ using TH.Mailer.Entity;
 using Pub.Class;
 
 namespace TH.Mailer.Helper {
-    /// <summary>
-    /// æ“ä½œç±»
-    /// 
-    /// ä¿®æ”¹çºªå½•
-    ///     2013-06-03 ç‰ˆæœ¬ï¼š1.0 ç³»ç»Ÿè‡ªåŠ¨åˆ›å»ºæ­¤ç±»
-    /// 
-    /// </summary>
-    public partial class IpHistoryHelper {
-        /// <summary>
-        /// ç¼“å­˜å¤šå°‘ç§’ x 5
-        /// </summary>
-        public static int cacheSeconds = 1440;
-        /// <summary>
-        /// æ·»åŠ è®°å½•
-        /// </summary>
-        /// <param name="ipHistory">å®ä½“ç±»</param>
-        /// <param name="delCache">æ·»åŠ æˆåŠŸåæ¸…ç†çš„CACHE keyï¼Œæ”¯æŒæ­£åˆ™</param>
-        /// <param name="dbkey">å­˜åœ¨æ•°æ®åº“è¿æ¥æ± ä¸­çš„è¿æ¥keyï¼Œä¸ºç©ºæ—¶ä½¿ç”¨ConnStringè¿æ¥</param>
-        /// <returns>æ·»åŠ æ˜¯å¦æˆåŠŸ</returns>
-        public static bool Insert(IpHistory ipHistory, string dbkey = "", string[] delCache = null) {
-            int obj = new SQL().Database(dbkey).Insert(IpHistory._)
-                .ValueP(IpHistory._IP, ipHistory.IP)
-                .ValueP(IpHistory._CreateTime, ipHistory.CreateTime)
-                .ToExec();
-            if (delCache.IsNull()) return obj == 1;
-            Cache2.Remove("TH.Mailer.IpHistoryCache_", delCache);
-            return obj == 1;
-        }
-        /// <summary>
-        /// æ·»åŠ è®°å½•
-        /// </summary>
-        /// <param name="ipHistory">å®ä½“ç±»</param>
-        /// <returns>æ·»åŠ æ˜¯å¦æˆåŠŸ</returns>
-        public static bool Insert(IpHistory ipHistory, string dbkey) {
-            return Insert(ipHistory, dbkey, null);
-        }
-        /// <summary>
-        /// ä¿®æ”¹è®°å½•
-        /// </summary>
-        /// <param name="ipHistory">å®ä½“ç±»</param>
-        /// <param name="where">ä¿®æ”¹æ—¶é™„åŠ æ¡ä»¶ï¼Œç»Ÿä¸€çš„å‰é¢è¦åŠ é“¾æ¥ç¬¦ï¼ˆandã€orç­‰ç­‰ï¼‰</param>
-        /// <param name="delCache">ä¿®æ”¹æˆåŠŸåæ¸…ç†çš„CACHE keyï¼Œæ”¯æŒæ­£åˆ™</param>
-        /// <param name="dbkey">å­˜åœ¨æ•°æ®åº“è¿æ¥æ± ä¸­çš„è¿æ¥keyï¼Œä¸ºç©ºæ—¶ä½¿ç”¨ConnStringè¿æ¥</param>
-        /// <returns>ä¿®æ”¹æ˜¯å¦æˆåŠŸ</returns>
-        public static bool Update(IpHistory ipHistory, string dbkey = "", Where where = null, string[] delCache = null) {
-            if (ipHistory.IP.IsNullEmpty()) return false;
-            int value = new SQL().Database(dbkey).Update(IpHistory._)
-                .SetP(IpHistory._CreateTime, ipHistory.CreateTime)
-                .Where(new Where()
-                    .AndP(IpHistory._IP, ipHistory.IP, Operator.Equal, true)
-                ).Where(where).ToExec();
-            if (value <= 0) return false;
-            if (delCache.IsNull()) return true;
-            Cache2.Remove("TH.Mailer.IpHistoryCache_", delCache);
-            return true;
-        }
-        /// <summary>
-        /// ä¿®æ”¹è®°å½•
-        /// </summary>
-        /// <param name="ipHistory">å®ä½“ç±»</param>
-        /// <returns>ä¿®æ”¹æ˜¯å¦æˆåŠŸ</returns>
-        public static bool Update(IpHistory ipHistory, string dbkey) {
-            return Update(ipHistory, dbkey, null, null);
-        }
-        /// <summary>
-        /// ä¿®æ”¹å¤šæ¡è®°å½•
-        /// </summary>
-        /// <param name="iPList">IPåœ°å€åˆ—è¡¨ï¼Œç”¨â€œ,â€å·åˆ†éš”</param>
-        /// <param name="ipHistory">å®ä½“ç±»</param>
-        /// <param name="where">ä¿®æ”¹æ—¶é™„åŠ æ¡ä»¶ï¼Œç»Ÿä¸€çš„å‰é¢è¦åŠ é“¾æ¥ç¬¦ï¼ˆandã€orç­‰ç­‰ï¼‰</param>
-        /// <param name="delCache">ä¿®æ”¹æˆåŠŸåæ¸…ç†çš„CACHE keyï¼Œæ”¯æŒæ­£åˆ™</param>
-        /// <param name="dbkey">å­˜åœ¨æ•°æ®åº“è¿æ¥æ± ä¸­çš„è¿æ¥keyï¼Œä¸ºç©ºæ—¶ä½¿ç”¨ConnStringè¿æ¥</param>
-        /// <returns>ä¿®æ”¹æ˜¯å¦æˆåŠŸ</returns>
-        public static bool UpdateByIDList(IEnumerable<string> iPList,  IpHistory ipHistory, string dbkey = "", Where where = null, string[] delCache = null) {
-            int value = new SQL().Database(dbkey).Update(IpHistory._)
-                .SetP(IpHistory._CreateTime, ipHistory.CreateTime)
-                .Where(new Where()
-                    .And(IpHistory._IP, "(" + iPList .Join(",") + ")", Operator.In)
-                ).Where(where).ToExec();
-            if (value <= 0) return false;
-            if (delCache.IsNull()) return true;
-            Cache2.Remove("TH.Mailer.IpHistoryCache_", delCache);
-            return true;
-        }
-        /// <summary>
-        /// ä¿®æ”¹å¤šæ¡è®°å½•
-        /// </summary>
-        /// <param name="iPList">IPåœ°å€åˆ—è¡¨ï¼Œç”¨â€œ,â€å·åˆ†éš”</param>
-        /// <param name="ipHistory">å®ä½“ç±»</param>
-        /// <returns>ä¿®æ”¹æ˜¯å¦æˆåŠŸ</returns>
-        public static bool UpdateByIDList(IEnumerable<string> iPList,  IpHistory ipHistory, string dbkey) {
-            return UpdateByIDList(iPList,  ipHistory, dbkey, null, null);
-        }
-        /// <summary>
-        /// åˆ é™¤è®°å½•
-        /// </summary>
-        /// <param name="iP">IPåœ°å€</param>
-        /// <param name="where">ä¿®æ”¹æ—¶é™„åŠ æ¡ä»¶ï¼Œç»Ÿä¸€çš„å‰é¢è¦åŠ é“¾æ¥ç¬¦ï¼ˆandã€orç­‰ç­‰ï¼‰</param>
-        /// <param name="delCache">åˆ é™¤æˆåŠŸåæ¸…ç†çš„CACHE keyï¼Œæ”¯æŒæ­£åˆ™</param>
-        /// <param name="dbkey">å­˜åœ¨æ•°æ®åº“è¿æ¥æ± ä¸­çš„è¿æ¥keyï¼Œä¸ºç©ºæ—¶ä½¿ç”¨ConnStringè¿æ¥</param>
-        /// <returns>åˆ é™¤æ˜¯å¦æˆåŠŸ</returns>
-        public static bool DeleteByID(string iP,  string dbkey = "", Where where = null, string[] delCache = null) {
-            if (iP.IsNullEmpty()) return false;
-            int value = new SQL().Database(dbkey).Delete(IpHistory._)
-                .Where(new Where()
-                    .AndP(IpHistory._IP, iP, Operator.Equal, true)
-                ).Where(where).ToExec();
-            if (value != 1) return false;
-            if (delCache.IsNull()) return true;
-            Cache2.Remove("TH.Mailer.IpHistoryCache_", delCache);
-            return true;
-        }
-        /// <summary>
-        /// åˆ é™¤è®°å½•
-        /// </summary>
-        /// <param name="iP">IPåœ°å€</param>
-        /// <returns>åˆ é™¤æ˜¯å¦æˆåŠŸ</returns>
-        public static bool DeleteByID(string iP, string dbkey) {
-            return DeleteByID(iP,  dbkey, null, null);
-        }
-        /// <summary>
-        /// åˆ é™¤å¤šæ¡è®°å½•
-        /// </summary>
-        /// <param name="iPList">IPåœ°å€åˆ—è¡¨ï¼Œç”¨â€œ,â€å·åˆ†éš”</param>
-        /// <param name="where">åˆ é™¤æ—¶é™„åŠ æ¡ä»¶ï¼Œç»Ÿä¸€çš„å‰é¢è¦åŠ é“¾æ¥ç¬¦ï¼ˆandã€orç­‰ç­‰ï¼‰</param>
-        /// <param name="delCache">ä¿®æ”¹æˆåŠŸåæ¸…ç†çš„CACHE keyï¼Œæ”¯æŒæ­£åˆ™</param>
-        /// <param name="dbkey">å­˜åœ¨æ•°æ®åº“è¿æ¥æ± ä¸­çš„è¿æ¥keyï¼Œä¸ºç©ºæ—¶ä½¿ç”¨ConnStringè¿æ¥</param>
-        /// <returns>åˆ é™¤æ˜¯å¦æˆåŠŸ</returns>
-        public static bool DeleteByIDList(IEnumerable<string> iPList,  string dbkey = "", Where where = null, string[] delCache = null) {
-            int value = new SQL().Database(dbkey).Delete(IpHistory._)
-                .Where(new Where()
-                    .And(IpHistory._IP, "(" + iPList .Join(",") + ")", Operator.In)
-                ).Where(where).ToExec();
-            if (value <= 0) return false;
-            if (delCache.IsNull()) return true;
-            Cache2.Remove("TH.Mailer.IpHistoryCache_", delCache);
-            return true;
-        }
-        /// <summary>
-        /// åˆ é™¤å¤šæ¡è®°å½•
-        /// </summary>
-        /// <param name="iPList">IPåœ°å€åˆ—è¡¨ï¼Œç”¨â€œ,â€å·åˆ†éš”</param>
-        /// <param name="where">åˆ é™¤æ—¶é™„åŠ æ¡ä»¶ï¼Œç»Ÿä¸€çš„å‰é¢è¦åŠ é“¾æ¥ç¬¦ï¼ˆandã€orç­‰ç­‰ï¼‰</param>
-        /// <param name="delCache">ä¿®æ”¹æˆåŠŸåæ¸…ç†çš„CACHE keyï¼Œæ”¯æŒæ­£åˆ™</param>
-        /// <param name="dbkey">å­˜åœ¨æ•°æ®åº“è¿æ¥æ± ä¸­çš„è¿æ¥keyï¼Œä¸ºç©ºæ—¶ä½¿ç”¨ConnStringè¿æ¥</param>
-        /// <returns>åˆ é™¤æ˜¯å¦æˆåŠŸ</returns>
-        public static bool DeleteByIDList(IEnumerable<string> iPList, string dbkey) {
-            return DeleteByIDList(iPList,  dbkey, null, null);
-        }
-        /// <summary>
-        /// è®°å½•æ˜¯å¦å­˜åœ¨
-        /// </summary>
-        /// <param name="iP">IPåœ°å€</param>
-        /// <param name="where">é™„åŠ æ¡ä»¶ï¼Œç»Ÿä¸€çš„å‰é¢è¦åŠ é“¾æ¥ç¬¦ï¼ˆandã€orç­‰ç­‰ï¼‰</param>
-        /// <param name="dbkey">å­˜åœ¨æ•°æ®åº“è¿æ¥æ± ä¸­çš„è¿æ¥keyï¼Œä¸ºç©ºæ—¶ä½¿ç”¨ConnStringè¿æ¥</param>
-        /// <returns>è®°å½•æ˜¯å¦å­˜åœ¨</returns>
-        public static bool IsExistByID(string iP,  string dbkey = "", Where where = null) {
-            long value = new SQL().Database(dbkey).Count(IpHistory._IP).From(IpHistory._)
-                .Where(new Where()
-                    .AndP(IpHistory._IP, iP, Operator.Equal)
-                ).Where(where).ToScalar().ToString().ToBigInt();
-            return value == 1;
-        }
-        /// <summary>
-        /// è®°å½•æ˜¯å¦å­˜åœ¨
-        /// </summary>
-        /// <param name="iP">IPåœ°å€</param>
-        /// <returns>è®°å½•æ˜¯å¦å­˜åœ¨</returns>
-        public static bool IsExistByID(string iP, string dbkey) {
-            return IsExistByID(iP,  dbkey, null);
-        }
-        /// <summary>
-        /// æŸ¥è¯¢æ•°æ®ï¼Œå¸¦åˆ†é¡µ
-        /// </summary>
-        /// <param name="pageIndex">å½“å‰ç¬¬å‡ é¡µï¼Œä»1å¼€å§‹</param>
-        /// <param name="pageSize">æ¯é¡µè®°å½•æ•°</param>
-        /// <param name="totalRecords">è¿”å›æ€»è®°å½•æ•°</param>
-        /// <param name="where">é™„åŠ æ¡ä»¶ï¼Œç»Ÿä¸€çš„å‰é¢è¦åŠ é“¾æ¥ç¬¦ï¼ˆandã€orç­‰ç­‰ï¼‰</param>
-        /// <param name="order">æ’åºå­—æ®µï¼Œä¸åŠ â€œorder byâ€</param>
-        /// <param name="fieldList">è®¾ç½®éœ€è¦è¿”å›çš„å­—æ®µ</param>
-        /// <param name="dbkey">å­˜åœ¨æ•°æ®åº“è¿æ¥æ± ä¸­çš„è¿æ¥keyï¼Œä¸ºç©ºæ—¶éšæœºå–è¿æ¥key</param>
-        /// <param name="pageEnum">ä½¿ç”¨å“ªç§åˆ†é¡µæ–¹å¼ï¼ˆnot_inã€max_topã€top_topã€row_numberã€mysqlã€oracleã€sqliteï¼‰</param>
-        /// <returns>è¿”å›å®ä½“è®°å½•é›†</returns>
-        public static IList<IpHistory> SelectPageList(int pageIndex, int pageSize, out int totalRecords, string dbkey = "", Where where = null, string order = "", string fieldList = "", PagerSQLEnum pageEnum = PagerSQLEnum.sqlite) {
-            totalRecords = 0;
-            string cacheNameKey = "TH.Mailer.IpHistoryCache_SelectPageList_{0}_{1}_{2}_{3}_{4}".FormatWith(pageIndex, pageSize, where, order, fieldList);
-            string cacheRecordsKey = "TH.Mailer.IpHistoryCache_RecordsSelectPageList_{0}_{1}_{2}_{3}_{4}".FormatWith(pageIndex, pageSize, where, order, fieldList);
-            IList<IpHistory> list = (IList<IpHistory>)Cache2.Get(cacheNameKey);
-            if (!list.IsNull()) { totalRecords = (int)Cache2.Get(cacheRecordsKey); return list; }
+	/// <summary>
+	/// ²Ù×÷Àà
+	///
+	/// ĞŞ¸Ä¼ÍÂ¼
+	///	 2013-06-03 °æ±¾£º1.0 ÏµÍ³×Ô¶¯´´½¨´ËÀà
+	///
+	/// </summary>
+	public partial class IpHistoryHelper {
+		/// <summary>
+		/// »º´æ¶àÉÙÃë x 5
+		/// </summary>
+		public static int cacheSeconds = 1440;
+		/// <summary>
+		/// Ìí¼Ó¼ÇÂ¼
+		/// </summary>
+		/// <param name="ipHistory">ÊµÌåÀà</param>
+		/// <param name="delCache">Ìí¼Ó³É¹¦ºóÇåÀíµÄCACHE key£¬Ö§³ÖÕıÔò</param>
+		/// <param name="dbkey">´æÔÚÊı¾İ¿âÁ¬½Ó³ØÖĞµÄÁ¬½Ókey£¬Îª¿ÕÊ±Ê¹ÓÃConnStringÁ¬½Ó</param>
+		/// <returns>Ìí¼ÓÊÇ·ñ³É¹¦</returns>
+		public static bool Insert(IpHistory ipHistory, string dbkey = "", string[] delCache = null) {
+			int obj = new SQL().Database(dbkey).Insert(IpHistory._)
+				.ValueP(IpHistory._IP, ipHistory.IP)
+				.ValueP(IpHistory._CreateTime, ipHistory.CreateTime)
+				.ToExec();
+			if (delCache.IsNull()) return obj == 1;
+			Cache2.Remove("TH.Mailer.IpHistoryCache_", delCache);
+			return obj == 1;
+		}
+		/// <summary>
+		/// Ìí¼Ó¼ÇÂ¼
+		/// </summary>
+		/// <param name="ipHistory">ÊµÌåÀà</param>
+		/// <returns>Ìí¼ÓÊÇ·ñ³É¹¦</returns>
+		public static bool Insert(IpHistory ipHistory, string dbkey) {
+			return Insert(ipHistory, dbkey, null);
+		}
+		/// <summary>
+		/// ĞŞ¸Ä¼ÇÂ¼
+		/// </summary>
+		/// <param name="ipHistory">ÊµÌåÀà</param>
+		/// <param name="where">ĞŞ¸ÄÊ±¸½¼ÓÌõ¼ş£¬Í³Ò»µÄÇ°ÃæÒª¼ÓÁ´½Ó·û£¨and¡¢orµÈµÈ£©</param>
+		/// <param name="delCache">ĞŞ¸Ä³É¹¦ºóÇåÀíµÄCACHE key£¬Ö§³ÖÕıÔò</param>
+		/// <param name="dbkey">´æÔÚÊı¾İ¿âÁ¬½Ó³ØÖĞµÄÁ¬½Ókey£¬Îª¿ÕÊ±Ê¹ÓÃConnStringÁ¬½Ó</param>
+		/// <returns>ĞŞ¸ÄÊÇ·ñ³É¹¦</returns>
+		public static bool Update(IpHistory ipHistory, string dbkey = "", Where where = null, string[] delCache = null) {
+			if (ipHistory.IP.IsNullEmpty()) return false;
+			int value = new SQL().Database(dbkey).Update(IpHistory._)
+				.SetP(IpHistory._CreateTime, ipHistory.CreateTime)
+				.Where(new Where()
+					.AndP(IpHistory._IP, ipHistory.IP, Operator.Equal, true)
+				).Where(where).ToExec();
+			if (value <= 0) return false;
+			if (delCache.IsNull()) return true;
+			Cache2.Remove("TH.Mailer.IpHistoryCache_", delCache);
+			return true;
+		}
+		/// <summary>
+		/// ĞŞ¸Ä¼ÇÂ¼
+		/// </summary>
+		/// <param name="ipHistory">ÊµÌåÀà</param>
+		/// <returns>ĞŞ¸ÄÊÇ·ñ³É¹¦</returns>
+		public static bool Update(IpHistory ipHistory, string dbkey) {
+			return Update(ipHistory, dbkey, null, null);
+		}
+		/// <summary>
+		/// ĞŞ¸Ä¶àÌõ¼ÇÂ¼
+		/// </summary>
+		/// <param name="iPList">IPµØÖ·ÁĞ±í£¬ÓÃ¡°,¡±ºÅ·Ö¸ô</param>
+		/// <param name="ipHistory">ÊµÌåÀà</param>
+		/// <param name="where">ĞŞ¸ÄÊ±¸½¼ÓÌõ¼ş£¬Í³Ò»µÄÇ°ÃæÒª¼ÓÁ´½Ó·û£¨and¡¢orµÈµÈ£©</param>
+		/// <param name="delCache">ĞŞ¸Ä³É¹¦ºóÇåÀíµÄCACHE key£¬Ö§³ÖÕıÔò</param>
+		/// <param name="dbkey">´æÔÚÊı¾İ¿âÁ¬½Ó³ØÖĞµÄÁ¬½Ókey£¬Îª¿ÕÊ±Ê¹ÓÃConnStringÁ¬½Ó</param>
+		/// <returns>ĞŞ¸ÄÊÇ·ñ³É¹¦</returns>
+		public static bool UpdateByIDList(IEnumerable<string> iPList,  IpHistory ipHistory, string dbkey = "", Where where = null, string[] delCache = null) {
+			int value = new SQL().Database(dbkey).Update(IpHistory._)
+				.SetP(IpHistory._CreateTime, ipHistory.CreateTime)
+				.Where(new Where()
+					.And(IpHistory._IP, "(" + iPList .Join(",") + ")", Operator.In)
+				).Where(where).ToExec();
+			if (value <= 0) return false;
+			if (delCache.IsNull()) return true;
+			Cache2.Remove("TH.Mailer.IpHistoryCache_", delCache);
+			return true;
+		}
+		/// <summary>
+		/// ĞŞ¸Ä¶àÌõ¼ÇÂ¼
+		/// </summary>
+		/// <param name="iPList">IPµØÖ·ÁĞ±í£¬ÓÃ¡°,¡±ºÅ·Ö¸ô</param>
+		/// <param name="ipHistory">ÊµÌåÀà</param>
+		/// <returns>ĞŞ¸ÄÊÇ·ñ³É¹¦</returns>
+		public static bool UpdateByIDList(IEnumerable<string> iPList,  IpHistory ipHistory, string dbkey) {
+			return UpdateByIDList(iPList,  ipHistory, dbkey, null, null);
+		}
+		/// <summary>
+		/// É¾³ı¼ÇÂ¼
+		/// </summary>
+		/// <param name="iP">IPµØÖ·</param>
+		/// <param name="where">ĞŞ¸ÄÊ±¸½¼ÓÌõ¼ş£¬Í³Ò»µÄÇ°ÃæÒª¼ÓÁ´½Ó·û£¨and¡¢orµÈµÈ£©</param>
+		/// <param name="delCache">É¾³ı³É¹¦ºóÇåÀíµÄCACHE key£¬Ö§³ÖÕıÔò</param>
+		/// <param name="dbkey">´æÔÚÊı¾İ¿âÁ¬½Ó³ØÖĞµÄÁ¬½Ókey£¬Îª¿ÕÊ±Ê¹ÓÃConnStringÁ¬½Ó</param>
+		/// <returns>É¾³ıÊÇ·ñ³É¹¦</returns>
+		public static bool DeleteByID(string iP,  string dbkey = "", Where where = null, string[] delCache = null) {
+			if (iP.IsNullEmpty()) return false;
+			int value = new SQL().Database(dbkey).Delete(IpHistory._)
+				.Where(new Where()
+					.AndP(IpHistory._IP, iP, Operator.Equal, true)
+				).Where(where).ToExec();
+			if (value != 1) return false;
+			if (delCache.IsNull()) return true;
+			Cache2.Remove("TH.Mailer.IpHistoryCache_", delCache);
+			return true;
+		}
+		/// <summary>
+		/// É¾³ı¼ÇÂ¼
+		/// </summary>
+		/// <param name="iP">IPµØÖ·</param>
+		/// <returns>É¾³ıÊÇ·ñ³É¹¦</returns>
+		public static bool DeleteByID(string iP, string dbkey) {
+			return DeleteByID(iP,  dbkey, null, null);
+		}
+		/// <summary>
+		/// É¾³ı¶àÌõ¼ÇÂ¼
+		/// </summary>
+		/// <param name="iPList">IPµØÖ·ÁĞ±í£¬ÓÃ¡°,¡±ºÅ·Ö¸ô</param>
+		/// <param name="where">É¾³ıÊ±¸½¼ÓÌõ¼ş£¬Í³Ò»µÄÇ°ÃæÒª¼ÓÁ´½Ó·û£¨and¡¢orµÈµÈ£©</param>
+		/// <param name="delCache">ĞŞ¸Ä³É¹¦ºóÇåÀíµÄCACHE key£¬Ö§³ÖÕıÔò</param>
+		/// <param name="dbkey">´æÔÚÊı¾İ¿âÁ¬½Ó³ØÖĞµÄÁ¬½Ókey£¬Îª¿ÕÊ±Ê¹ÓÃConnStringÁ¬½Ó</param>
+		/// <returns>É¾³ıÊÇ·ñ³É¹¦</returns>
+		public static bool DeleteByIDList(IEnumerable<string> iPList,  string dbkey = "", Where where = null, string[] delCache = null) {
+			int value = new SQL().Database(dbkey).Delete(IpHistory._)
+				.Where(new Where()
+					.And(IpHistory._IP, "(" + iPList .Join(",") + ")", Operator.In)
+				).Where(where).ToExec();
+			if (value <= 0) return false;
+			if (delCache.IsNull()) return true;
+			Cache2.Remove("TH.Mailer.IpHistoryCache_", delCache);
+			return true;
+		}
+		/// <summary>
+		/// É¾³ı¶àÌõ¼ÇÂ¼
+		/// </summary>
+		/// <param name="iPList">IPµØÖ·ÁĞ±í£¬ÓÃ¡°,¡±ºÅ·Ö¸ô</param>
+		/// <param name="where">É¾³ıÊ±¸½¼ÓÌõ¼ş£¬Í³Ò»µÄÇ°ÃæÒª¼ÓÁ´½Ó·û£¨and¡¢orµÈµÈ£©</param>
+		/// <param name="delCache">ĞŞ¸Ä³É¹¦ºóÇåÀíµÄCACHE key£¬Ö§³ÖÕıÔò</param>
+		/// <param name="dbkey">´æÔÚÊı¾İ¿âÁ¬½Ó³ØÖĞµÄÁ¬½Ókey£¬Îª¿ÕÊ±Ê¹ÓÃConnStringÁ¬½Ó</param>
+		/// <returns>É¾³ıÊÇ·ñ³É¹¦</returns>
+		public static bool DeleteByIDList(IEnumerable<string> iPList, string dbkey) {
+			return DeleteByIDList(iPList,  dbkey, null, null);
+		}
+		/// <summary>
+		/// ¼ÇÂ¼ÊÇ·ñ´æÔÚ
+		/// </summary>
+		/// <param name="iP">IPµØÖ·</param>
+		/// <param name="where">¸½¼ÓÌõ¼ş£¬Í³Ò»µÄÇ°ÃæÒª¼ÓÁ´½Ó·û£¨and¡¢orµÈµÈ£©</param>
+		/// <param name="dbkey">´æÔÚÊı¾İ¿âÁ¬½Ó³ØÖĞµÄÁ¬½Ókey£¬Îª¿ÕÊ±Ê¹ÓÃConnStringÁ¬½Ó</param>
+		/// <returns>¼ÇÂ¼ÊÇ·ñ´æÔÚ</returns>
+		public static bool IsExistByID(string iP,  string dbkey = "", Where where = null) {
+			long value = new SQL().Database(dbkey).Count(IpHistory._IP).From(IpHistory._)
+				.Where(new Where()
+					.AndP(IpHistory._IP, iP, Operator.Equal)
+				).Where(where).ToScalar().ToString().ToBigInt();
+			return value == 1;
+		}
+		/// <summary>
+		/// ¼ÇÂ¼ÊÇ·ñ´æÔÚ
+		/// </summary>
+		/// <param name="iP">IPµØÖ·</param>
+		/// <returns>¼ÇÂ¼ÊÇ·ñ´æÔÚ</returns>
+		public static bool IsExistByID(string iP, string dbkey) {
+			return IsExistByID(iP,  dbkey, null);
+		}
+		/// <summary>
+		/// ²éÑ¯Êı¾İ£¬´ø·ÖÒ³
+		/// </summary>
+		/// <param name="pageIndex">µ±Ç°µÚ¼¸Ò³£¬´Ó1¿ªÊ¼</param>
+		/// <param name="pageSize">Ã¿Ò³¼ÇÂ¼Êı</param>
+		/// <param name="totalRecords">·µ»Ø×Ü¼ÇÂ¼Êı</param>
+		/// <param name="where">¸½¼ÓÌõ¼ş£¬Í³Ò»µÄÇ°ÃæÒª¼ÓÁ´½Ó·û£¨and¡¢orµÈµÈ£©</param>
+		/// <param name="order">ÅÅĞò×Ö¶Î£¬²»¼Ó¡°order by¡±</param>
+		/// <param name="fieldList">ÉèÖÃĞèÒª·µ»ØµÄ×Ö¶Î</param>
+		/// <param name="dbkey">´æÔÚÊı¾İ¿âÁ¬½Ó³ØÖĞµÄÁ¬½Ókey£¬Îª¿ÕÊ±Ëæ»úÈ¡Á¬½Ókey</param>
+		/// <param name="pageEnum">Ê¹ÓÃÄÄÖÖ·ÖÒ³·½Ê½£¨not_in¡¢max_top¡¢top_top¡¢row_number¡¢mysql¡¢oracle¡¢sqlite£©</param>
+		/// <returns>·µ»ØÊµÌå¼ÇÂ¼¼¯</returns>
+		public static IList<IpHistory> SelectPageList(int pageIndex, int pageSize, out int totalRecords, string dbkey = "", Where where = null, string order = "", string fieldList = "", PagerSQLEnum pageEnum = PagerSQLEnum.sqlite) {
+			totalRecords = 0;
+			string cacheNameKey = "TH.Mailer.IpHistoryCache_SelectPageList_{0}_{1}_{2}_{3}_{4}".FormatWith(pageIndex, pageSize, where, order, fieldList);
+			string cacheRecordsKey = "TH.Mailer.IpHistoryCache_RecordsSelectPageList_{0}_{1}_{2}_{3}_{4}".FormatWith(pageIndex, pageSize, where, order, fieldList);
+			IList<IpHistory> list = (IList<IpHistory>)Cache2.Get(cacheNameKey);
+			if (!list.IsNull()) { totalRecords = (int)Cache2.Get(cacheRecordsKey); return list; }
 
-            using (PagerSQLHelper s = new PagerSQLHelper(pageEnum)) {
-                PagerSql sql = s.GetSQL(pageIndex, pageSize, IpHistory._, IpHistory._IP, fieldList.IfNullOrEmpty("[IP],[CreateTime],"), where, "", order);
-                DataSet ds = Data.Pool(dbkey).GetDataSet(sql.DataSql + ";" + sql.CountSql);
-                if (ds.IsNull()) return list;
-                list = ds.Tables[0].ToList<IpHistory>();
-                totalRecords = ds.Tables[1].Rows[0][0].ToString().ToInt();
-                ds.Dispose(); ds = null;
-            }
-            Cache2.Insert(cacheNameKey, list, cacheSeconds);
-            Cache2.Insert(cacheRecordsKey, totalRecords, cacheSeconds);
-            return list;
-        }
-        /// <summary>
-        /// æŸ¥è¯¢è®°å½•ï¼Œå¸¦åˆ†é¡µ
-        /// </summary>
-        /// <param name="pageIndex">å½“å‰ç¬¬å‡ é¡µï¼Œä»1å¼€å§‹</param>
-        /// <param name="pageSize">æ¯é¡µè®°å½•æ•°</param>
-        /// <param name="totalRecords">è¿”å›æ€»è®°å½•æ•°</param>
-        /// <returns>è¿”å›å®ä½“è®°å½•é›†</returns>
-        public static IList<IpHistory> SelectPageList(int pageIndex, int pageSize, out int totalRecords, string dbkey) {
-            return SelectPageList(pageIndex, pageSize, out totalRecords, dbkey, null, "", "", PagerSQLEnum.sqlite);
-        }
-        /// <summary>
-        /// æ¸…é™¤æŸ¥è¯¢è®°å½•ï¼Œå¸¦åˆ†é¡µçš„ç¼“å­˜
-        /// </summary>
-        public static void ClearCacheSelectPageList() {
-            string cacheNameKey = "TH.Mailer.IpHistoryCache_SelectPageList_(.+?)";
-            string cacheRecordsKey = "TH.Mailer.IpHistoryCache_RecordsSelectPageList_(.+?)";
-            Cache2.RemoveByPattern(cacheNameKey);
-            Cache2.RemoveByPattern(cacheRecordsKey);
-        }
-        /// <summary>
-        /// æŸ¥è¯¢æ‰€æœ‰è®°å½•
-        /// </summary>
-        /// <param name="where">é™„åŠ æ¡ä»¶ï¼Œç»Ÿä¸€çš„å‰é¢è¦åŠ é“¾æ¥ç¬¦ï¼ˆandã€orç­‰ç­‰ï¼‰</param>
-        /// <param name="order">æ’åºå­—æ®µï¼Œä¸åŠ â€œorder byâ€</param>
-        /// <param name="fieldList">è®¾ç½®éœ€è¦è¿”å›çš„å­—æ®µ</param>
-        /// <param name="dbkey">å­˜åœ¨æ•°æ®åº“è¿æ¥æ± ä¸­çš„è¿æ¥keyï¼Œä¸ºç©ºæ—¶éšæœºå–è¿æ¥key</param>
-        /// <returns>è¿”å›å®ä½“è®°å½•é›†</returns>
-        public static IList<IpHistory> SelectListByAll(string dbkey = "", Where where = null, string order = "", string fieldList = "") {
-            string cacheNameKey = "TH.Mailer.IpHistoryCache_SelectListByAll_{0}_{1}_{2}".FormatWith(where, order, fieldList);
-            return Cache2.Get<IList<IpHistory>>(cacheNameKey, cacheSeconds, () => {
-                IList<IpHistory> list = new List<IpHistory>();
-                if (fieldList.IsNullEmpty()) {
-                    list = new SQL().Database(dbkey).From(IpHistory._)
-                        .Select(IpHistory._IP)
-                        .Select(IpHistory._CreateTime)
-                        .Where(where).Order(order).ToList<IpHistory>();
-                } else {
-                    list = new SQL().Database(dbkey).From(IpHistory._).Select(fieldList).Where(where).Order(order).ToList<IpHistory>();
-                }
-                return list;
-            });
-        }
-        /// <summary>
-        /// æŸ¥è¯¢æ‰€æœ‰è®°å½•
-        /// </summary>
-        /// <returns>è¿”å›å®ä½“è®°å½•é›†</returns>
-        public static IList<IpHistory> SelectListByAll(string dbkey) {
-            return SelectListByAll(dbkey, null, "", "");
-        }
-        /// <summary>
-        /// åˆ é™¤æ‰€æœ‰è®°å½•
-        /// </summary>
-        /// <param name="dbkey">å­˜åœ¨æ•°æ®åº“è¿æ¥æ± ä¸­çš„è¿æ¥keyï¼Œä¸ºç©ºæ—¶éšæœºå–è¿æ¥key</param>
-        /// <returns>è¿”å›å®ä½“è®°å½•é›†</returns>
-        public static bool RemoveAll(string dbkey = "") {
-            return (new SQL().Database(dbkey).Delete(IpHistory._).ToExec()) > 0;
-        }
-        /// <summary>
-        /// æ¸…é™¤æŸ¥è¯¢æ‰€æœ‰è®°å½•çš„ç¼“å­˜
-        /// </summary>
-        public static void ClearCacheSelectListByAll() {
-            //Cache2.Remove("TH.Mailer.IpHistoryCache_SelectListByAll___");
-            Cache2.RemoveByPattern("TH.Mailer.IpHistoryCache_SelectListByAll_(.+?)");
-        }
-        /// <summary>
-        /// æ¸…é™¤æ‰€æœ‰ç¼“å­˜
-        /// </summary>
-        public static void ClearCacheAll() {
-            Cache2.RemoveByPattern("TH.Mailer.IpHistoryCache_(.+?)");
-        }
-    }
+			using (PagerSQLHelper s = new PagerSQLHelper(pageEnum)) {
+				PagerSql sql = s.GetSQL(pageIndex, pageSize, IpHistory._, IpHistory._IP, fieldList.IfNullOrEmpty("[IP],[CreateTime],"), where, "", order);
+				IDataReader dr = Data.Pool(dbkey).GetDbDataReader(sql.DataSql + ";" + sql.CountSql);
+				if (dr.IsNull()) return list;
+				list = dr.ToList<IpHistory>(false);
+				bool result = dr.NextResult();
+				if (result) { dr.Read(); totalRecords = dr[0].ToString().ToInt(); }
+				dr.Close (); dr.Dispose(); dr = null;
+			}
+			Cache2.Insert(cacheNameKey, list, cacheSeconds);
+			Cache2.Insert(cacheRecordsKey, totalRecords, cacheSeconds);
+			return list;
+		}
+		/// <summary>
+		/// ²éÑ¯¼ÇÂ¼£¬´ø·ÖÒ³
+		/// </summary>
+		/// <param name="pageIndex">µ±Ç°µÚ¼¸Ò³£¬´Ó1¿ªÊ¼</param>
+		/// <param name="pageSize">Ã¿Ò³¼ÇÂ¼Êı</param>
+		/// <param name="totalRecords">·µ»Ø×Ü¼ÇÂ¼Êı</param>
+		/// <returns>·µ»ØÊµÌå¼ÇÂ¼¼¯</returns>
+		public static IList<IpHistory> SelectPageList(int pageIndex, int pageSize, out int totalRecords, string dbkey) {
+			return SelectPageList(pageIndex, pageSize, out totalRecords, dbkey, null, "", "", PagerSQLEnum.sqlite);
+		}
+		/// <summary>
+		/// Çå³ı²éÑ¯¼ÇÂ¼£¬´ø·ÖÒ³µÄ»º´æ
+		/// </summary>
+		public static void ClearCacheSelectPageList() {
+			string cacheNameKey = "TH.Mailer.IpHistoryCache_SelectPageList_(.+?)";
+			string cacheRecordsKey = "TH.Mailer.IpHistoryCache_RecordsSelectPageList_(.+?)";
+			Cache2.RemoveByPattern(cacheNameKey);
+			Cache2.RemoveByPattern(cacheRecordsKey);
+		}
+		/// <summary>
+		/// ²éÑ¯ËùÓĞ¼ÇÂ¼
+		/// </summary>
+		/// <param name="where">¸½¼ÓÌõ¼ş£¬Í³Ò»µÄÇ°ÃæÒª¼ÓÁ´½Ó·û£¨and¡¢orµÈµÈ£©</param>
+		/// <param name="order">ÅÅĞò×Ö¶Î£¬²»¼Ó¡°order by¡±</param>
+		/// <param name="fieldList">ÉèÖÃĞèÒª·µ»ØµÄ×Ö¶Î</param>
+		/// <param name="dbkey">´æÔÚÊı¾İ¿âÁ¬½Ó³ØÖĞµÄÁ¬½Ókey£¬Îª¿ÕÊ±Ëæ»úÈ¡Á¬½Ókey</param>
+		/// <returns>·µ»ØÊµÌå¼ÇÂ¼¼¯</returns>
+		public static IList<IpHistory> SelectListByAll(string dbkey = "", Where where = null, string order = "", string fieldList = "") {
+			string cacheNameKey = "TH.Mailer.IpHistoryCache_SelectListByAll_{0}_{1}_{2}".FormatWith(where, order, fieldList);
+			return Cache2.Get<IList<IpHistory>>(cacheNameKey, cacheSeconds, () => {
+				IList<IpHistory> list = new List<IpHistory>();
+				if (fieldList.IsNullEmpty()) {
+					list = new SQL().Database(dbkey).From(IpHistory._)
+						.Select(IpHistory._IP)
+						.Select(IpHistory._CreateTime)
+						.Where(where).Order(order).ToList<IpHistory>();
+				} else {
+					list = new SQL().Database(dbkey).From(IpHistory._).Select(fieldList).Where(where).Order(order).ToList<IpHistory>();
+				}
+				return list;
+			});
+		}
+		/// <summary>
+		/// ²éÑ¯ËùÓĞ¼ÇÂ¼
+		/// </summary>
+		/// <returns>·µ»ØÊµÌå¼ÇÂ¼¼¯</returns>
+		public static IList<IpHistory> SelectListByAll(string dbkey) {
+			return SelectListByAll(dbkey, null, "", "");
+		}
+		/// <summary>
+		/// É¾³ıËùÓĞ¼ÇÂ¼
+		/// </summary>
+		/// <param name="dbkey">´æÔÚÊı¾İ¿âÁ¬½Ó³ØÖĞµÄÁ¬½Ókey£¬Îª¿ÕÊ±Ëæ»úÈ¡Á¬½Ókey</param>
+		/// <returns>·µ»ØÊµÌå¼ÇÂ¼¼¯</returns>
+		public static bool RemoveAll(string dbkey = "") {
+			return (new SQL().Database(dbkey).Delete(IpHistory._).ToExec()) > 0;
+		}
+		/// <summary>
+		/// Çå³ı²éÑ¯ËùÓĞ¼ÇÂ¼µÄ»º´æ
+		/// </summary>
+		public static void ClearCacheSelectListByAll() {
+			//Cache2.Remove("TH.Mailer.IpHistoryCache_SelectListByAll___");
+			Cache2.RemoveByPattern("TH.Mailer.IpHistoryCache_SelectListByAll_(.+?)");
+		}
+		/// <summary>
+		/// Çå³ıËùÓĞ»º´æ
+		/// </summary>
+		public static void ClearCacheAll() {
+			Cache2.RemoveByPattern("TH.Mailer.IpHistoryCache_(.+?)");
+		}
+	}
 }
 

@@ -1,4 +1,4 @@
-ï»¿//-------------------------------------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------------------------------------
 // All Rights Reserved , Copyright (C) 2013 , TH , Ltd.
 //-------------------------------------------------------------------------------------------------------------------------------------
 
@@ -17,163 +17,163 @@ using TH.Mailer.Entity;
 using Pub.Class;
 
 namespace TH.Mailer.Helper {
-    /// <summary>
-    /// æ‹¨å·è¿æ¥æ“ä½œç±»
-    /// 
-    /// ä¿®æ”¹çºªå½•
-    ///     2013-06-03 ç‰ˆæœ¬ï¼š1.0 ç³»ç»Ÿè‡ªåŠ¨åˆ›å»ºæ­¤ç±»
-    /// 
-    /// </summary>
-    public partial class ModelSettingHelper {
-        /// <summary>
-        /// æ‹¨å·è¿æ¥ç¼“å­˜å¤šå°‘ç§’ x 5
-        /// </summary>
-        public static int cacheSeconds = 1440;
-        /// <summary>
-        /// æ‹¨å·è¿æ¥æ·»åŠ è®°å½•
-        /// </summary>
-        /// <param name="modelSetting">æ‹¨å·è¿æ¥å®ä½“ç±»</param>
-        /// <param name="delCache">æ·»åŠ æˆåŠŸåæ¸…ç†çš„CACHE keyï¼Œæ”¯æŒæ­£åˆ™</param>
-        /// <param name="dbkey">å­˜åœ¨æ•°æ®åº“è¿æ¥æ± ä¸­çš„è¿æ¥keyï¼Œä¸ºç©ºæ—¶ä½¿ç”¨ConnStringè¿æ¥</param>
-        /// <returns>æ·»åŠ æ˜¯å¦æˆåŠŸ</returns>
-        public static bool Insert(ModelSetting modelSetting, string dbkey = "", string[] delCache = null) {
-            int obj = new SQL().Database(dbkey).Insert(ModelSetting._)
-                .ValueP(ModelSetting._ModelID, modelSetting.ModelID)
-                .ValueP(ModelSetting._ModelName, modelSetting.ModelName)
-                .ValueP(ModelSetting._UserName, modelSetting.UserName)
-                .ValueP(ModelSetting._MPassword, modelSetting.MPassword)
-                .ToExec();
-            if (delCache.IsNull()) return obj == 1;
-            Cache2.Remove("TH.Mailer.ModelSettingCache_", delCache);
-            return obj == 1;
-        }
-        /// <summary>
-        /// æ‹¨å·è¿æ¥æ·»åŠ è®°å½•
-        /// </summary>
-        /// <param name="modelSetting">æ‹¨å·è¿æ¥å®ä½“ç±»</param>
-        /// <returns>æ·»åŠ æ˜¯å¦æˆåŠŸ</returns>
-        public static bool Insert(ModelSetting modelSetting, string dbkey) {
-            return Insert(modelSetting, dbkey, null);
-        }
-        /// <summary>
-        /// æ‹¨å·è¿æ¥ä¿®æ”¹è®°å½•
-        /// </summary>
-        /// <param name="modelSetting">æ‹¨å·è¿æ¥å®ä½“ç±»</param>
-        /// <param name="where">ä¿®æ”¹æ—¶é™„åŠ æ¡ä»¶ï¼Œç»Ÿä¸€çš„å‰é¢è¦åŠ é“¾æ¥ç¬¦ï¼ˆandã€orç­‰ç­‰ï¼‰</param>
-        /// <param name="delCache">ä¿®æ”¹æˆåŠŸåæ¸…ç†çš„CACHE keyï¼Œæ”¯æŒæ­£åˆ™</param>
-        /// <param name="dbkey">å­˜åœ¨æ•°æ®åº“è¿æ¥æ± ä¸­çš„è¿æ¥keyï¼Œä¸ºç©ºæ—¶ä½¿ç”¨ConnStringè¿æ¥</param>
-        /// <returns>ä¿®æ”¹æ˜¯å¦æˆåŠŸ</returns>
-        public static bool Update(ModelSetting modelSetting, string dbkey = "", Where where = null, string[] delCache = null) {
-            if (modelSetting.ModelID.IsNull()) return false;
-            int value = new SQL().Database(dbkey).Update(ModelSetting._)
-                .SetP(ModelSetting._ModelName, modelSetting.ModelName)
-                .SetP(ModelSetting._UserName, modelSetting.UserName)
-                .SetP(ModelSetting._MPassword, modelSetting.MPassword)
-                .Where(new Where()
-                    .AndP(ModelSetting._ModelID, modelSetting.ModelID, Operator.Equal, true)
-                ).Where(where).ToExec();
-            if (value <= 0) return false;
-            if (delCache.IsNull()) return true;
-            Cache2.Remove("TH.Mailer.ModelSettingCache_", delCache);
-            return true;
-        }
-        /// <summary>
-        /// æ‹¨å·è¿æ¥ä¿®æ”¹è®°å½•
-        /// </summary>
-        /// <param name="modelSetting">æ‹¨å·è¿æ¥å®ä½“ç±»</param>
-        /// <returns>ä¿®æ”¹æ˜¯å¦æˆåŠŸ</returns>
-        public static bool Update(ModelSetting modelSetting, string dbkey) {
-            return Update(modelSetting, dbkey, null, null);
-        }
-        /// <summary>
-        /// æ‹¨å·è¿æ¥ä¿®æ”¹å¤šæ¡è®°å½•
-        /// </summary>
-        /// <param name="modelIDList">æ‹¨å·è¿æ¥ç¼–å·åˆ—è¡¨ï¼Œç”¨â€œ,â€å·åˆ†éš”</param>
-        /// <param name="modelSetting">æ‹¨å·è¿æ¥å®ä½“ç±»</param>
-        /// <param name="where">ä¿®æ”¹æ—¶é™„åŠ æ¡ä»¶ï¼Œç»Ÿä¸€çš„å‰é¢è¦åŠ é“¾æ¥ç¬¦ï¼ˆandã€orç­‰ç­‰ï¼‰</param>
-        /// <param name="delCache">ä¿®æ”¹æˆåŠŸåæ¸…ç†çš„CACHE keyï¼Œæ”¯æŒæ­£åˆ™</param>
-        /// <param name="dbkey">å­˜åœ¨æ•°æ®åº“è¿æ¥æ± ä¸­çš„è¿æ¥keyï¼Œä¸ºç©ºæ—¶ä½¿ç”¨ConnStringè¿æ¥</param>
-        /// <returns>ä¿®æ”¹æ˜¯å¦æˆåŠŸ</returns>
-        public static bool UpdateByIDList(IEnumerable<int> modelIDList,  ModelSetting modelSetting, string dbkey = "", Where where = null, string[] delCache = null) {
-            int value = new SQL().Database(dbkey).Update(ModelSetting._)
-                .SetP(ModelSetting._ModelName, modelSetting.ModelName)
-                .SetP(ModelSetting._UserName, modelSetting.UserName)
-                .SetP(ModelSetting._MPassword, modelSetting.MPassword)
-                .Where(new Where()
-                    .And(ModelSetting._ModelID, "(" + modelIDList .Join(",") + ")", Operator.In)
-                ).Where(where).ToExec();
-            if (value <= 0) return false;
-            if (delCache.IsNull()) return true;
-            Cache2.Remove("TH.Mailer.ModelSettingCache_", delCache);
-            return true;
-        }
-        /// <summary>
-        /// æ‹¨å·è¿æ¥ä¿®æ”¹å¤šæ¡è®°å½•
-        /// </summary>
-        /// <param name="modelIDList">æ‹¨å·è¿æ¥ç¼–å·åˆ—è¡¨ï¼Œç”¨â€œ,â€å·åˆ†éš”</param>
-        /// <param name="modelSetting">æ‹¨å·è¿æ¥å®ä½“ç±»</param>
-        /// <returns>ä¿®æ”¹æ˜¯å¦æˆåŠŸ</returns>
-        public static bool UpdateByIDList(IEnumerable<int> modelIDList,  ModelSetting modelSetting, string dbkey) {
-            return UpdateByIDList(modelIDList,  modelSetting, dbkey, null, null);
-        }
-        /// <summary>
-        /// æ‹¨å·è¿æ¥æŒ‰ä¸»é”®æŸ¥è¯¢ï¼Œè¿”å›æ•°æ®çš„å®ä½“ç±»
-        /// </summary>
-        /// <param name="modelID">æ‹¨å·è¿æ¥ç¼–å·</param>
-        /// <param name="where">é™„åŠ æ¡ä»¶ï¼Œç»Ÿä¸€çš„å‰é¢è¦åŠ é“¾æ¥ç¬¦ï¼ˆandã€orç­‰ç­‰ï¼‰</param>
-        /// <param name="dbkey">å­˜åœ¨æ•°æ®åº“è¿æ¥æ± ä¸­çš„è¿æ¥keyï¼Œä¸ºç©ºæ—¶éšæœºå–è¿æ¥key</param>
-        /// <returns>è¿”å›å•æ¡è®°å½•çš„å®ä½“ç±»</returns>
-        public static ModelSetting SelectByID(int modelID,  string dbkey = "", Where where = null) {
-            string cacheNameKey = "TH.Mailer.ModelSettingCache_SelectByID_{0}".FormatWith(modelID + "_" +  "_" + where);
-            return Cache2.Get<ModelSetting>(cacheNameKey, cacheSeconds, () => {
-                ModelSetting obj = new SQL().Database(dbkey).From(ModelSetting._)
-                    .Select(ModelSetting._ModelID)
-                    .Select(ModelSetting._ModelName)
-                    .Select(ModelSetting._UserName)
-                    .Select(ModelSetting._MPassword)
-                    .Where(new Where()
-                        .AndP(ModelSetting._ModelID, modelID, Operator.Equal)
-                    ).Where(where).ToEntity<ModelSetting>();
-                return obj;
-            });
-        }
-        /// <summary>
-        /// æ‹¨å·è¿æ¥æŒ‰ä¸»é”®æŸ¥è¯¢ï¼Œè¿”å›æ•°æ®çš„å®ä½“ç±»
-        /// </summary>
-        /// <param name="modelID">æ‹¨å·è¿æ¥ç¼–å·</param>
-        /// <returns>è¿”å›å•æ¡è®°å½•çš„å®ä½“ç±»</returns>
-        public static ModelSetting SelectByID(int modelID, string dbkey) {
-            return SelectByID(modelID,  dbkey, null);
-        }
-        /// <summary>
-        /// æ¸…é™¤æ‹¨å·è¿æ¥æŒ‰ä¸»é”®æŸ¥è¯¢çš„ç¼“å­˜
-        /// </summary>
-        public static void ClearCacheSelectByID(int modelID,  Where where = null) {
-            string cacheName = "TH.Mailer.ModelSettingCache_SelectByID_{0}";
-            string cacheNameKey = string.Format(cacheName, modelID + "_" +  "_" + where);
-            Cache2.Remove(cacheNameKey);
-        }
-        /// <summary>
-        /// æ‹¨å·è¿æ¥åˆ é™¤æ‰€æœ‰è®°å½•
-        /// </summary>
-        /// <param name="dbkey">å­˜åœ¨æ•°æ®åº“è¿æ¥æ± ä¸­çš„è¿æ¥keyï¼Œä¸ºç©ºæ—¶éšæœºå–è¿æ¥key</param>
-        /// <returns>è¿”å›å®ä½“è®°å½•é›†</returns>
-        public static bool RemoveAll(string dbkey = "") {
-            return (new SQL().Database(dbkey).Delete(ModelSetting._).ToExec()) > 0;
-        }
-        /// <summary>
-        /// æ¸…é™¤æ‹¨å·è¿æ¥æŸ¥è¯¢æ‰€æœ‰è®°å½•çš„ç¼“å­˜
-        /// </summary>
-        public static void ClearCacheSelectListByAll() {
-            //Cache2.Remove("TH.Mailer.ModelSettingCache_SelectListByAll___");
-            Cache2.RemoveByPattern("TH.Mailer.ModelSettingCache_SelectListByAll_(.+?)");
-        }
-        /// <summary>
-        /// æ¸…é™¤æ‹¨å·è¿æ¥æ‰€æœ‰ç¼“å­˜
-        /// </summary>
-        public static void ClearCacheAll() {
-            Cache2.RemoveByPattern("TH.Mailer.ModelSettingCache_(.+?)");
-        }
-    }
+	/// <summary>
+	/// ²¦ºÅÁ¬½Ó²Ù×÷Àà
+	///
+	/// ĞŞ¸Ä¼ÍÂ¼
+	///	 2013-06-03 °æ±¾£º1.0 ÏµÍ³×Ô¶¯´´½¨´ËÀà
+	///
+	/// </summary>
+	public partial class ModelSettingHelper {
+		/// <summary>
+		/// ²¦ºÅÁ¬½Ó»º´æ¶àÉÙÃë x 5
+		/// </summary>
+		public static int cacheSeconds = 1440;
+		/// <summary>
+		/// ²¦ºÅÁ¬½ÓÌí¼Ó¼ÇÂ¼
+		/// </summary>
+		/// <param name="modelSetting">²¦ºÅÁ¬½ÓÊµÌåÀà</param>
+		/// <param name="delCache">Ìí¼Ó³É¹¦ºóÇåÀíµÄCACHE key£¬Ö§³ÖÕıÔò</param>
+		/// <param name="dbkey">´æÔÚÊı¾İ¿âÁ¬½Ó³ØÖĞµÄÁ¬½Ókey£¬Îª¿ÕÊ±Ê¹ÓÃConnStringÁ¬½Ó</param>
+		/// <returns>Ìí¼ÓÊÇ·ñ³É¹¦</returns>
+		public static bool Insert(ModelSetting modelSetting, string dbkey = "", string[] delCache = null) {
+			int obj = new SQL().Database(dbkey).Insert(ModelSetting._)
+				.ValueP(ModelSetting._ModelID, modelSetting.ModelID)
+				.ValueP(ModelSetting._ModelName, modelSetting.ModelName)
+				.ValueP(ModelSetting._UserName, modelSetting.UserName)
+				.ValueP(ModelSetting._MPassword, modelSetting.MPassword)
+				.ToExec();
+			if (delCache.IsNull()) return obj == 1;
+			Cache2.Remove("TH.Mailer.ModelSettingCache_", delCache);
+			return obj == 1;
+		}
+		/// <summary>
+		/// ²¦ºÅÁ¬½ÓÌí¼Ó¼ÇÂ¼
+		/// </summary>
+		/// <param name="modelSetting">²¦ºÅÁ¬½ÓÊµÌåÀà</param>
+		/// <returns>Ìí¼ÓÊÇ·ñ³É¹¦</returns>
+		public static bool Insert(ModelSetting modelSetting, string dbkey) {
+			return Insert(modelSetting, dbkey, null);
+		}
+		/// <summary>
+		/// ²¦ºÅÁ¬½ÓĞŞ¸Ä¼ÇÂ¼
+		/// </summary>
+		/// <param name="modelSetting">²¦ºÅÁ¬½ÓÊµÌåÀà</param>
+		/// <param name="where">ĞŞ¸ÄÊ±¸½¼ÓÌõ¼ş£¬Í³Ò»µÄÇ°ÃæÒª¼ÓÁ´½Ó·û£¨and¡¢orµÈµÈ£©</param>
+		/// <param name="delCache">ĞŞ¸Ä³É¹¦ºóÇåÀíµÄCACHE key£¬Ö§³ÖÕıÔò</param>
+		/// <param name="dbkey">´æÔÚÊı¾İ¿âÁ¬½Ó³ØÖĞµÄÁ¬½Ókey£¬Îª¿ÕÊ±Ê¹ÓÃConnStringÁ¬½Ó</param>
+		/// <returns>ĞŞ¸ÄÊÇ·ñ³É¹¦</returns>
+		public static bool Update(ModelSetting modelSetting, string dbkey = "", Where where = null, string[] delCache = null) {
+			if (modelSetting.ModelID.IsNull()) return false;
+			int value = new SQL().Database(dbkey).Update(ModelSetting._)
+				.SetP(ModelSetting._ModelName, modelSetting.ModelName)
+				.SetP(ModelSetting._UserName, modelSetting.UserName)
+				.SetP(ModelSetting._MPassword, modelSetting.MPassword)
+				.Where(new Where()
+					.AndP(ModelSetting._ModelID, modelSetting.ModelID, Operator.Equal, true)
+				).Where(where).ToExec();
+			if (value <= 0) return false;
+			if (delCache.IsNull()) return true;
+			Cache2.Remove("TH.Mailer.ModelSettingCache_", delCache);
+			return true;
+		}
+		/// <summary>
+		/// ²¦ºÅÁ¬½ÓĞŞ¸Ä¼ÇÂ¼
+		/// </summary>
+		/// <param name="modelSetting">²¦ºÅÁ¬½ÓÊµÌåÀà</param>
+		/// <returns>ĞŞ¸ÄÊÇ·ñ³É¹¦</returns>
+		public static bool Update(ModelSetting modelSetting, string dbkey) {
+			return Update(modelSetting, dbkey, null, null);
+		}
+		/// <summary>
+		/// ²¦ºÅÁ¬½ÓĞŞ¸Ä¶àÌõ¼ÇÂ¼
+		/// </summary>
+		/// <param name="modelIDList">²¦ºÅÁ¬½Ó±àºÅÁĞ±í£¬ÓÃ¡°,¡±ºÅ·Ö¸ô</param>
+		/// <param name="modelSetting">²¦ºÅÁ¬½ÓÊµÌåÀà</param>
+		/// <param name="where">ĞŞ¸ÄÊ±¸½¼ÓÌõ¼ş£¬Í³Ò»µÄÇ°ÃæÒª¼ÓÁ´½Ó·û£¨and¡¢orµÈµÈ£©</param>
+		/// <param name="delCache">ĞŞ¸Ä³É¹¦ºóÇåÀíµÄCACHE key£¬Ö§³ÖÕıÔò</param>
+		/// <param name="dbkey">´æÔÚÊı¾İ¿âÁ¬½Ó³ØÖĞµÄÁ¬½Ókey£¬Îª¿ÕÊ±Ê¹ÓÃConnStringÁ¬½Ó</param>
+		/// <returns>ĞŞ¸ÄÊÇ·ñ³É¹¦</returns>
+		public static bool UpdateByIDList(IEnumerable<int> modelIDList,  ModelSetting modelSetting, string dbkey = "", Where where = null, string[] delCache = null) {
+			int value = new SQL().Database(dbkey).Update(ModelSetting._)
+				.SetP(ModelSetting._ModelName, modelSetting.ModelName)
+				.SetP(ModelSetting._UserName, modelSetting.UserName)
+				.SetP(ModelSetting._MPassword, modelSetting.MPassword)
+				.Where(new Where()
+					.And(ModelSetting._ModelID, "(" + modelIDList .Join(",") + ")", Operator.In)
+				).Where(where).ToExec();
+			if (value <= 0) return false;
+			if (delCache.IsNull()) return true;
+			Cache2.Remove("TH.Mailer.ModelSettingCache_", delCache);
+			return true;
+		}
+		/// <summary>
+		/// ²¦ºÅÁ¬½ÓĞŞ¸Ä¶àÌõ¼ÇÂ¼
+		/// </summary>
+		/// <param name="modelIDList">²¦ºÅÁ¬½Ó±àºÅÁĞ±í£¬ÓÃ¡°,¡±ºÅ·Ö¸ô</param>
+		/// <param name="modelSetting">²¦ºÅÁ¬½ÓÊµÌåÀà</param>
+		/// <returns>ĞŞ¸ÄÊÇ·ñ³É¹¦</returns>
+		public static bool UpdateByIDList(IEnumerable<int> modelIDList,  ModelSetting modelSetting, string dbkey) {
+			return UpdateByIDList(modelIDList,  modelSetting, dbkey, null, null);
+		}
+		/// <summary>
+		/// ²¦ºÅÁ¬½Ó°´Ö÷¼ü²éÑ¯£¬·µ»ØÊı¾İµÄÊµÌåÀà
+		/// </summary>
+		/// <param name="modelID">²¦ºÅÁ¬½Ó±àºÅ</param>
+		/// <param name="where">¸½¼ÓÌõ¼ş£¬Í³Ò»µÄÇ°ÃæÒª¼ÓÁ´½Ó·û£¨and¡¢orµÈµÈ£©</param>
+		/// <param name="dbkey">´æÔÚÊı¾İ¿âÁ¬½Ó³ØÖĞµÄÁ¬½Ókey£¬Îª¿ÕÊ±Ëæ»úÈ¡Á¬½Ókey</param>
+		/// <returns>·µ»Øµ¥Ìõ¼ÇÂ¼µÄÊµÌåÀà</returns>
+		public static ModelSetting SelectByID(int modelID,  string dbkey = "", Where where = null) {
+			string cacheNameKey = "TH.Mailer.ModelSettingCache_SelectByID_{0}".FormatWith(modelID + "_" +  "_" + where);
+			return Cache2.Get<ModelSetting>(cacheNameKey, cacheSeconds, () => {
+				ModelSetting obj = new SQL().Database(dbkey).From(ModelSetting._)
+					.Select(ModelSetting._ModelID)
+					.Select(ModelSetting._ModelName)
+					.Select(ModelSetting._UserName)
+					.Select(ModelSetting._MPassword)
+					.Where(new Where()
+						.AndP(ModelSetting._ModelID, modelID, Operator.Equal)
+					).Where(where).ToEntity<ModelSetting>();
+				return obj;
+			});
+		}
+		/// <summary>
+		/// ²¦ºÅÁ¬½Ó°´Ö÷¼ü²éÑ¯£¬·µ»ØÊı¾İµÄÊµÌåÀà
+		/// </summary>
+		/// <param name="modelID">²¦ºÅÁ¬½Ó±àºÅ</param>
+		/// <returns>·µ»Øµ¥Ìõ¼ÇÂ¼µÄÊµÌåÀà</returns>
+		public static ModelSetting SelectByID(int modelID, string dbkey) {
+			return SelectByID(modelID,  dbkey, null);
+		}
+		/// <summary>
+		/// Çå³ı²¦ºÅÁ¬½Ó°´Ö÷¼ü²éÑ¯µÄ»º´æ
+		/// </summary>
+		public static void ClearCacheSelectByID(int modelID,  Where where = null) {
+			string cacheName = "TH.Mailer.ModelSettingCache_SelectByID_{0}";
+			string cacheNameKey = string.Format(cacheName, modelID + "_" +  "_" + where);
+			Cache2.Remove(cacheNameKey);
+		}
+		/// <summary>
+		/// ²¦ºÅÁ¬½ÓÉ¾³ıËùÓĞ¼ÇÂ¼
+		/// </summary>
+		/// <param name="dbkey">´æÔÚÊı¾İ¿âÁ¬½Ó³ØÖĞµÄÁ¬½Ókey£¬Îª¿ÕÊ±Ëæ»úÈ¡Á¬½Ókey</param>
+		/// <returns>·µ»ØÊµÌå¼ÇÂ¼¼¯</returns>
+		public static bool RemoveAll(string dbkey = "") {
+			return (new SQL().Database(dbkey).Delete(ModelSetting._).ToExec()) > 0;
+		}
+		/// <summary>
+		/// Çå³ı²¦ºÅÁ¬½Ó²éÑ¯ËùÓĞ¼ÇÂ¼µÄ»º´æ
+		/// </summary>
+		public static void ClearCacheSelectListByAll() {
+			//Cache2.Remove("TH.Mailer.ModelSettingCache_SelectListByAll___");
+			Cache2.RemoveByPattern("TH.Mailer.ModelSettingCache_SelectListByAll_(.+?)");
+		}
+		/// <summary>
+		/// Çå³ı²¦ºÅÁ¬½ÓËùÓĞ»º´æ
+		/// </summary>
+		public static void ClearCacheAll() {
+			Cache2.RemoveByPattern("TH.Mailer.ModelSettingCache_(.+?)");
+		}
+	}
 }
 

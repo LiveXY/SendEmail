@@ -1,4 +1,4 @@
-ï»¿//-------------------------------------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------------------------------------
 // All Rights Reserved , Copyright (C) 2013 , TH , Ltd.
 //-------------------------------------------------------------------------------------------------------------------------------------
 
@@ -8,65 +8,65 @@ using System.Text;
 using Pub.Class;
 
 namespace TH.Mailer.Entity {
-    /// <summary>
-    /// æ‹¨å·è¿æ¥å®ä½“ç±»
-    /// 
-    /// ä¿®æ”¹çºªå½•
-    ///     2013-06-03 ç‰ˆæœ¬ï¼š1.0 ç³»ç»Ÿè‡ªåŠ¨åˆ›å»ºæ­¤ç±»
-    /// 
-    /// </summary>
-    [Serializable]
-    [EntityInfo("æ‹¨å·è¿æ¥")]
-    public partial class ModelSetting {
-        /// <summary>
-        /// æ‹¨å·è¿æ¥
-        /// </summary>
-        public static readonly string _ = "ModelSetting";
+	/// <summary>
+	/// ²¦ºÅÁ¬½ÓÊµÌåÀà
+	///
+	/// ĞŞ¸Ä¼ÍÂ¼
+	///	 2013-06-03 °æ±¾£º1.0 ÏµÍ³×Ô¶¯´´½¨´ËÀà
+	///
+	/// </summary>
+	[Serializable]
+	[EntityInfo("²¦ºÅÁ¬½Ó")]
+	public partial class ModelSetting {
+		/// <summary>
+		/// ²¦ºÅÁ¬½Ó
+		/// </summary>
+		public static readonly string _ = "ModelSetting";
 
-        /// <summary>
-        /// æ‹¨å·è¿æ¥ç¼–å·
-        /// </summary>
-        public static readonly string _ModelID = "ModelID";
-        private int? modelID = null;
-        /// <summary>
-        /// æ‹¨å·è¿æ¥ç¼–å·
-        /// </summary>
-        [EntityInfo("æ‹¨å·è¿æ¥ç¼–å·")]
-        public new int? ModelID { get { return modelID; } set { modelID = value; } }
+		/// <summary>
+		/// ²¦ºÅÁ¬½Ó±àºÅ
+		/// </summary>
+		public static readonly string _ModelID = "ModelID";
+		private int? modelID = null;
+		/// <summary>
+		/// ²¦ºÅÁ¬½Ó±àºÅ
+		/// </summary>
+		[EntityInfo("²¦ºÅÁ¬½Ó±àºÅ")]
+		public new int? ModelID { get { return modelID; } set { modelID = value; } }
 
-        /// <summary>
-        /// æ‹¨å·è¿æ¥åç§°
-        /// </summary>
-        public static readonly string _ModelName = "ModelName";
-        private string modelName = null;
-        /// <summary>
-        /// æ‹¨å·è¿æ¥åç§°
-        /// </summary>
-        [EntityInfo("æ‹¨å·è¿æ¥åç§°")]
-        public new string ModelName { get { return modelName; } set { modelName = value; } }
+		/// <summary>
+		/// ²¦ºÅÁ¬½ÓÃû³Æ
+		/// </summary>
+		public static readonly string _ModelName = "ModelName";
+		private string modelName = null;
+		/// <summary>
+		/// ²¦ºÅÁ¬½ÓÃû³Æ
+		/// </summary>
+		[EntityInfo("²¦ºÅÁ¬½ÓÃû³Æ")]
+		public new string ModelName { get { return modelName; } set { modelName = value; } }
 
-        /// <summary>
-        /// ç™»å½•è´¦å·
-        /// </summary>
-        public static readonly string _UserName = "UserName";
-        private string userName = null;
-        /// <summary>
-        /// ç™»å½•è´¦å·
-        /// </summary>
-        [EntityInfo("ç™»å½•è´¦å·")]
-        public new string UserName { get { return userName; } set { userName = value; } }
+		/// <summary>
+		/// µÇÂ¼ÕËºÅ
+		/// </summary>
+		public static readonly string _UserName = "UserName";
+		private string userName = null;
+		/// <summary>
+		/// µÇÂ¼ÕËºÅ
+		/// </summary>
+		[EntityInfo("µÇÂ¼ÕËºÅ")]
+		public new string UserName { get { return userName; } set { userName = value; } }
 
-        /// <summary>
-        /// ç™»å½•å¯†ç 
-        /// </summary>
-        public static readonly string _MPassword = "MPassword";
-        private string mPassword = null;
-        /// <summary>
-        /// ç™»å½•å¯†ç 
-        /// </summary>
-        [EntityInfo("ç™»å½•å¯†ç ")]
-        public new string MPassword { get { return mPassword; } set { mPassword = value; } }
-    }
+		/// <summary>
+		/// µÇÂ¼ÃÜÂë
+		/// </summary>
+		public static readonly string _MPassword = "MPassword";
+		private string mPassword = null;
+		/// <summary>
+		/// µÇÂ¼ÃÜÂë
+		/// </summary>
+		[EntityInfo("µÇÂ¼ÃÜÂë")]
+		public new string MPassword { get { return mPassword; } set { mPassword = value; } }
+	}
 }
 
 

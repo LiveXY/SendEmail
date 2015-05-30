@@ -1,4 +1,4 @@
-ï»¿//-------------------------------------------------------------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------------------------------------------------------------
 // All Rights Reserved , Copyright (C) 2013 , TH , Ltd.
 //-------------------------------------------------------------------------------------------------------------------------------------
 
@@ -17,187 +17,187 @@ using TH.Mailer.Entity;
 using Pub.Class;
 
 namespace TH.Mailer.Helper {
-    /// <summary>
-    /// è®¾ç½®æ“ä½œç±»
-    /// 
-    /// ä¿®æ”¹çºªå½•
-    ///     2013-06-03 ç‰ˆæœ¬ï¼š1.0 ç³»ç»Ÿè‡ªåŠ¨åˆ›å»ºæ­¤ç±»
-    /// 
-    /// </summary>
-    public partial class SendSettingHelper {
-        /// <summary>
-        /// è®¾ç½®ç¼“å­˜å¤šå°‘ç§’ x 5
-        /// </summary>
-        public static int cacheSeconds = 1440;
-        /// <summary>
-        /// è®¾ç½®æ·»åŠ è®°å½•
-        /// </summary>
-        /// <param name="sendSetting">è®¾ç½®å®ä½“ç±»</param>
-        /// <param name="delCache">æ·»åŠ æˆåŠŸåæ¸…ç†çš„CACHE keyï¼Œæ”¯æŒæ­£åˆ™</param>
-        /// <param name="dbkey">å­˜åœ¨æ•°æ®åº“è¿æ¥æ± ä¸­çš„è¿æ¥keyï¼Œä¸ºç©ºæ—¶ä½¿ç”¨ConnStringè¿æ¥</param>
-        /// <returns>æ·»åŠ æ˜¯å¦æˆåŠŸ</returns>
-        public static bool Insert(SendSetting sendSetting, string dbkey = "", string[] delCache = null) {
-            int obj = new SQL().Database(dbkey).Insert(SendSetting._)
-                .ValueP(SendSetting._SettingID, sendSetting.SettingID)
-                .ValueP(SendSetting._TemplateID, sendSetting.TemplateID)
-                .ValueP(SendSetting._ConnectType, sendSetting.ConnectType)
-                .ValueP(SendSetting._SendInterval, sendSetting.SendInterval)
-                .ValueP(SendSetting._IPInterval, sendSetting.IPInterval)
-                .ValueP(SendSetting._SmtpInterval, sendSetting.SmtpInterval)
-                .ValueP(SendSetting._DeleteInterval, sendSetting.DeleteInterval)
-                .ValueP(SendSetting._MaxRetryCount, sendSetting.MaxRetryCount)
-                .ValueP(SendSetting._SendRetryCount, sendSetting.SendRetryCount)
-                .ValueP(SendSetting._Status, sendSetting.Status)
-                .ToExec();
-            if (delCache.IsNull()) return obj == 1;
-            Cache2.Remove("TH.Mailer.SendSettingCache_", delCache);
-            return obj == 1;
-        }
-        /// <summary>
-        /// è®¾ç½®æ·»åŠ è®°å½•
-        /// </summary>
-        /// <param name="sendSetting">è®¾ç½®å®ä½“ç±»</param>
-        /// <returns>æ·»åŠ æ˜¯å¦æˆåŠŸ</returns>
-        public static bool Insert(SendSetting sendSetting, string dbkey) {
-            return Insert(sendSetting, dbkey, null);
-        }
-        /// <summary>
-        /// è®¾ç½®ä¿®æ”¹è®°å½•
-        /// </summary>
-        /// <param name="sendSetting">è®¾ç½®å®ä½“ç±»</param>
-        /// <param name="where">ä¿®æ”¹æ—¶é™„åŠ æ¡ä»¶ï¼Œç»Ÿä¸€çš„å‰é¢è¦åŠ é“¾æ¥ç¬¦ï¼ˆandã€orç­‰ç­‰ï¼‰</param>
-        /// <param name="delCache">ä¿®æ”¹æˆåŠŸåæ¸…ç†çš„CACHE keyï¼Œæ”¯æŒæ­£åˆ™</param>
-        /// <param name="dbkey">å­˜åœ¨æ•°æ®åº“è¿æ¥æ± ä¸­çš„è¿æ¥keyï¼Œä¸ºç©ºæ—¶ä½¿ç”¨ConnStringè¿æ¥</param>
-        /// <returns>ä¿®æ”¹æ˜¯å¦æˆåŠŸ</returns>
-        public static bool Update(SendSetting sendSetting, string dbkey = "", Where where = null, string[] delCache = null) {
-            if (sendSetting.SettingID.IsNull()) return false;
-            int value = new SQL().Database(dbkey).Update(SendSetting._)
-                .SetP(SendSetting._TemplateID, sendSetting.TemplateID)
-                .SetP(SendSetting._ConnectType, sendSetting.ConnectType)
-                .SetP(SendSetting._SendInterval, sendSetting.SendInterval)
-                .SetP(SendSetting._IPInterval, sendSetting.IPInterval)
-                .SetP(SendSetting._SmtpInterval, sendSetting.SmtpInterval)
-                .SetP(SendSetting._DeleteInterval, sendSetting.DeleteInterval)
-                .SetP(SendSetting._MaxRetryCount, sendSetting.MaxRetryCount)
-                .SetP(SendSetting._SendRetryCount, sendSetting.SendRetryCount)
-                .SetP(SendSetting._Status, sendSetting.Status)
-                .Where(new Where()
-                    .AndP(SendSetting._SettingID, sendSetting.SettingID, Operator.Equal, true)
-                ).Where(where).ToExec();
-            if (value <= 0) return false;
-            if (delCache.IsNull()) return true;
-            Cache2.Remove("TH.Mailer.SendSettingCache_", delCache);
-            return true;
-        }
-        /// <summary>
-        /// è®¾ç½®ä¿®æ”¹è®°å½•
-        /// </summary>
-        /// <param name="sendSetting">è®¾ç½®å®ä½“ç±»</param>
-        /// <returns>ä¿®æ”¹æ˜¯å¦æˆåŠŸ</returns>
-        public static bool Update(SendSetting sendSetting, string dbkey) {
-            return Update(sendSetting, dbkey, null, null);
-        }
-        /// <summary>
-        /// è®¾ç½®ä¿®æ”¹å¤šæ¡è®°å½•
-        /// </summary>
-        /// <param name="settingIDList">è®¾ç½®ç¼–å·åˆ—è¡¨ï¼Œç”¨â€œ,â€å·åˆ†éš”</param>
-        /// <param name="sendSetting">è®¾ç½®å®ä½“ç±»</param>
-        /// <param name="where">ä¿®æ”¹æ—¶é™„åŠ æ¡ä»¶ï¼Œç»Ÿä¸€çš„å‰é¢è¦åŠ é“¾æ¥ç¬¦ï¼ˆandã€orç­‰ç­‰ï¼‰</param>
-        /// <param name="delCache">ä¿®æ”¹æˆåŠŸåæ¸…ç†çš„CACHE keyï¼Œæ”¯æŒæ­£åˆ™</param>
-        /// <param name="dbkey">å­˜åœ¨æ•°æ®åº“è¿æ¥æ± ä¸­çš„è¿æ¥keyï¼Œä¸ºç©ºæ—¶ä½¿ç”¨ConnStringè¿æ¥</param>
-        /// <returns>ä¿®æ”¹æ˜¯å¦æˆåŠŸ</returns>
-        public static bool UpdateByIDList(IEnumerable<int> settingIDList,  SendSetting sendSetting, string dbkey = "", Where where = null, string[] delCache = null) {
-            int value = new SQL().Database(dbkey).Update(SendSetting._)
-                .SetP(SendSetting._TemplateID, sendSetting.TemplateID)
-                .SetP(SendSetting._ConnectType, sendSetting.ConnectType)
-                .SetP(SendSetting._SendInterval, sendSetting.SendInterval)
-                .SetP(SendSetting._IPInterval, sendSetting.IPInterval)
-                .SetP(SendSetting._SmtpInterval, sendSetting.SmtpInterval)
-                .SetP(SendSetting._DeleteInterval, sendSetting.DeleteInterval)
-                .SetP(SendSetting._MaxRetryCount, sendSetting.MaxRetryCount)
-                .SetP(SendSetting._SendRetryCount, sendSetting.SendRetryCount)
-                .SetP(SendSetting._Status, sendSetting.Status)
-                .Where(new Where()
-                    .And(SendSetting._SettingID, "(" + settingIDList .Join(",") + ")", Operator.In)
-                ).Where(where).ToExec();
-            if (value <= 0) return false;
-            if (delCache.IsNull()) return true;
-            Cache2.Remove("TH.Mailer.SendSettingCache_", delCache);
-            return true;
-        }
-        /// <summary>
-        /// è®¾ç½®ä¿®æ”¹å¤šæ¡è®°å½•
-        /// </summary>
-        /// <param name="settingIDList">è®¾ç½®ç¼–å·åˆ—è¡¨ï¼Œç”¨â€œ,â€å·åˆ†éš”</param>
-        /// <param name="sendSetting">è®¾ç½®å®ä½“ç±»</param>
-        /// <returns>ä¿®æ”¹æ˜¯å¦æˆåŠŸ</returns>
-        public static bool UpdateByIDList(IEnumerable<int> settingIDList,  SendSetting sendSetting, string dbkey) {
-            return UpdateByIDList(settingIDList,  sendSetting, dbkey, null, null);
-        }
-        /// <summary>
-        /// è®¾ç½®æŒ‰ä¸»é”®æŸ¥è¯¢ï¼Œè¿”å›æ•°æ®çš„å®ä½“ç±»
-        /// </summary>
-        /// <param name="settingID">è®¾ç½®ç¼–å·</param>
-        /// <param name="where">é™„åŠ æ¡ä»¶ï¼Œç»Ÿä¸€çš„å‰é¢è¦åŠ é“¾æ¥ç¬¦ï¼ˆandã€orç­‰ç­‰ï¼‰</param>
-        /// <param name="dbkey">å­˜åœ¨æ•°æ®åº“è¿æ¥æ± ä¸­çš„è¿æ¥keyï¼Œä¸ºç©ºæ—¶éšæœºå–è¿æ¥key</param>
-        /// <returns>è¿”å›å•æ¡è®°å½•çš„å®ä½“ç±»</returns>
-        public static SendSetting SelectByID(int settingID,  string dbkey = "", Where where = null) {
-            string cacheNameKey = "TH.Mailer.SendSettingCache_SelectByID_{0}".FormatWith(settingID + "_" +  "_" + where);
-            return Cache2.Get<SendSetting>(cacheNameKey, cacheSeconds, () => {
-                SendSetting obj = new SQL().Database(dbkey).From(SendSetting._)
-                    .Select(SendSetting._SettingID)
-                    .Select(SendSetting._TemplateID)
-                    .Select(SendSetting._ConnectType)
-                    .Select(SendSetting._SendInterval)
-                    .Select(SendSetting._IPInterval)
-                    .Select(SendSetting._SmtpInterval)
-                    .Select(SendSetting._DeleteInterval)
-                    .Select(SendSetting._MaxRetryCount)
-                    .Select(SendSetting._SendRetryCount)
-                    .Select(SendSetting._Status)
-                    .Where(new Where()
-                        .AndP(SendSetting._SettingID, settingID, Operator.Equal)
-                    ).Where(where).ToEntity<SendSetting>();
-                return obj;
-            });
-        }
-        /// <summary>
-        /// è®¾ç½®æŒ‰ä¸»é”®æŸ¥è¯¢ï¼Œè¿”å›æ•°æ®çš„å®ä½“ç±»
-        /// </summary>
-        /// <param name="settingID">è®¾ç½®ç¼–å·</param>
-        /// <returns>è¿”å›å•æ¡è®°å½•çš„å®ä½“ç±»</returns>
-        public static SendSetting SelectByID(int settingID, string dbkey) {
-            return SelectByID(settingID,  dbkey, null);
-        }
-        /// <summary>
-        /// æ¸…é™¤è®¾ç½®æŒ‰ä¸»é”®æŸ¥è¯¢çš„ç¼“å­˜
-        /// </summary>
-        public static void ClearCacheSelectByID(int settingID,  Where where = null) {
-            string cacheName = "TH.Mailer.SendSettingCache_SelectByID_{0}";
-            string cacheNameKey = string.Format(cacheName, settingID + "_" +  "_" + where);
-            Cache2.Remove(cacheNameKey);
-        }
-        /// <summary>
-        /// è®¾ç½®åˆ é™¤æ‰€æœ‰è®°å½•
-        /// </summary>
-        /// <param name="dbkey">å­˜åœ¨æ•°æ®åº“è¿æ¥æ± ä¸­çš„è¿æ¥keyï¼Œä¸ºç©ºæ—¶éšæœºå–è¿æ¥key</param>
-        /// <returns>è¿”å›å®ä½“è®°å½•é›†</returns>
-        public static bool RemoveAll(string dbkey = "") {
-            return (new SQL().Database(dbkey).Delete(SendSetting._).ToExec()) > 0;
-        }
-        /// <summary>
-        /// æ¸…é™¤è®¾ç½®æŸ¥è¯¢æ‰€æœ‰è®°å½•çš„ç¼“å­˜
-        /// </summary>
-        public static void ClearCacheSelectListByAll() {
-            //Cache2.Remove("TH.Mailer.SendSettingCache_SelectListByAll___");
-            Cache2.RemoveByPattern("TH.Mailer.SendSettingCache_SelectListByAll_(.+?)");
-        }
-        /// <summary>
-        /// æ¸…é™¤è®¾ç½®æ‰€æœ‰ç¼“å­˜
-        /// </summary>
-        public static void ClearCacheAll() {
-            Cache2.RemoveByPattern("TH.Mailer.SendSettingCache_(.+?)");
-        }
-    }
+	/// <summary>
+	/// ÉèÖÃ²Ù×÷Àà
+	///
+	/// ĞŞ¸Ä¼ÍÂ¼
+	///	 2013-06-03 °æ±¾£º1.0 ÏµÍ³×Ô¶¯´´½¨´ËÀà
+	///
+	/// </summary>
+	public partial class SendSettingHelper {
+		/// <summary>
+		/// ÉèÖÃ»º´æ¶àÉÙÃë x 5
+		/// </summary>
+		public static int cacheSeconds = 1440;
+		/// <summary>
+		/// ÉèÖÃÌí¼Ó¼ÇÂ¼
+		/// </summary>
+		/// <param name="sendSetting">ÉèÖÃÊµÌåÀà</param>
+		/// <param name="delCache">Ìí¼Ó³É¹¦ºóÇåÀíµÄCACHE key£¬Ö§³ÖÕıÔò</param>
+		/// <param name="dbkey">´æÔÚÊı¾İ¿âÁ¬½Ó³ØÖĞµÄÁ¬½Ókey£¬Îª¿ÕÊ±Ê¹ÓÃConnStringÁ¬½Ó</param>
+		/// <returns>Ìí¼ÓÊÇ·ñ³É¹¦</returns>
+		public static bool Insert(SendSetting sendSetting, string dbkey = "", string[] delCache = null) {
+			int obj = new SQL().Database(dbkey).Insert(SendSetting._)
+				.ValueP(SendSetting._SettingID, sendSetting.SettingID)
+				.ValueP(SendSetting._TemplateID, sendSetting.TemplateID)
+				.ValueP(SendSetting._ConnectType, sendSetting.ConnectType)
+				.ValueP(SendSetting._SendInterval, sendSetting.SendInterval)
+				.ValueP(SendSetting._IPInterval, sendSetting.IPInterval)
+				.ValueP(SendSetting._SmtpInterval, sendSetting.SmtpInterval)
+				.ValueP(SendSetting._DeleteInterval, sendSetting.DeleteInterval)
+				.ValueP(SendSetting._MaxRetryCount, sendSetting.MaxRetryCount)
+				.ValueP(SendSetting._SendRetryCount, sendSetting.SendRetryCount)
+				.ValueP(SendSetting._Status, sendSetting.Status)
+				.ToExec();
+			if (delCache.IsNull()) return obj == 1;
+			Cache2.Remove("TH.Mailer.SendSettingCache_", delCache);
+			return obj == 1;
+		}
+		/// <summary>
+		/// ÉèÖÃÌí¼Ó¼ÇÂ¼
+		/// </summary>
+		/// <param name="sendSetting">ÉèÖÃÊµÌåÀà</param>
+		/// <returns>Ìí¼ÓÊÇ·ñ³É¹¦</returns>
+		public static bool Insert(SendSetting sendSetting, string dbkey) {
+			return Insert(sendSetting, dbkey, null);
+		}
+		/// <summary>
+		/// ÉèÖÃĞŞ¸Ä¼ÇÂ¼
+		/// </summary>
+		/// <param name="sendSetting">ÉèÖÃÊµÌåÀà</param>
+		/// <param name="where">ĞŞ¸ÄÊ±¸½¼ÓÌõ¼ş£¬Í³Ò»µÄÇ°ÃæÒª¼ÓÁ´½Ó·û£¨and¡¢orµÈµÈ£©</param>
+		/// <param name="delCache">ĞŞ¸Ä³É¹¦ºóÇåÀíµÄCACHE key£¬Ö§³ÖÕıÔò</param>
+		/// <param name="dbkey">´æÔÚÊı¾İ¿âÁ¬½Ó³ØÖĞµÄÁ¬½Ókey£¬Îª¿ÕÊ±Ê¹ÓÃConnStringÁ¬½Ó</param>
+		/// <returns>ĞŞ¸ÄÊÇ·ñ³É¹¦</returns>
+		public static bool Update(SendSetting sendSetting, string dbkey = "", Where where = null, string[] delCache = null) {
+			if (sendSetting.SettingID.IsNull()) return false;
+			int value = new SQL().Database(dbkey).Update(SendSetting._)
+				.SetP(SendSetting._TemplateID, sendSetting.TemplateID)
+				.SetP(SendSetting._ConnectType, sendSetting.ConnectType)
+				.SetP(SendSetting._SendInterval, sendSetting.SendInterval)
+				.SetP(SendSetting._IPInterval, sendSetting.IPInterval)
+				.SetP(SendSetting._SmtpInterval, sendSetting.SmtpInterval)
+				.SetP(SendSetting._DeleteInterval, sendSetting.DeleteInterval)
+				.SetP(SendSetting._MaxRetryCount, sendSetting.MaxRetryCount)
+				.SetP(SendSetting._SendRetryCount, sendSetting.SendRetryCount)
+				.SetP(SendSetting._Status, sendSetting.Status)
+				.Where(new Where()
+					.AndP(SendSetting._SettingID, sendSetting.SettingID, Operator.Equal, true)
+				).Where(where).ToExec();
+			if (value <= 0) return false;
+			if (delCache.IsNull()) return true;
+			Cache2.Remove("TH.Mailer.SendSettingCache_", delCache);
+			return true;
+		}
+		/// <summary>
+		/// ÉèÖÃĞŞ¸Ä¼ÇÂ¼
+		/// </summary>
+		/// <param name="sendSetting">ÉèÖÃÊµÌåÀà</param>
+		/// <returns>ĞŞ¸ÄÊÇ·ñ³É¹¦</returns>
+		public static bool Update(SendSetting sendSetting, string dbkey) {
+			return Update(sendSetting, dbkey, null, null);
+		}
+		/// <summary>
+		/// ÉèÖÃĞŞ¸Ä¶àÌõ¼ÇÂ¼
+		/// </summary>
+		/// <param name="settingIDList">ÉèÖÃ±àºÅÁĞ±í£¬ÓÃ¡°,¡±ºÅ·Ö¸ô</param>
+		/// <param name="sendSetting">ÉèÖÃÊµÌåÀà</param>
+		/// <param name="where">ĞŞ¸ÄÊ±¸½¼ÓÌõ¼ş£¬Í³Ò»µÄÇ°ÃæÒª¼ÓÁ´½Ó·û£¨and¡¢orµÈµÈ£©</param>
+		/// <param name="delCache">ĞŞ¸Ä³É¹¦ºóÇåÀíµÄCACHE key£¬Ö§³ÖÕıÔò</param>
+		/// <param name="dbkey">´æÔÚÊı¾İ¿âÁ¬½Ó³ØÖĞµÄÁ¬½Ókey£¬Îª¿ÕÊ±Ê¹ÓÃConnStringÁ¬½Ó</param>
+		/// <returns>ĞŞ¸ÄÊÇ·ñ³É¹¦</returns>
+		public static bool UpdateByIDList(IEnumerable<int> settingIDList,  SendSetting sendSetting, string dbkey = "", Where where = null, string[] delCache = null) {
+			int value = new SQL().Database(dbkey).Update(SendSetting._)
+				.SetP(SendSetting._TemplateID, sendSetting.TemplateID)
+				.SetP(SendSetting._ConnectType, sendSetting.ConnectType)
+				.SetP(SendSetting._SendInterval, sendSetting.SendInterval)
+				.SetP(SendSetting._IPInterval, sendSetting.IPInterval)
+				.SetP(SendSetting._SmtpInterval, sendSetting.SmtpInterval)
+				.SetP(SendSetting._DeleteInterval, sendSetting.DeleteInterval)
+				.SetP(SendSetting._MaxRetryCount, sendSetting.MaxRetryCount)
+				.SetP(SendSetting._SendRetryCount, sendSetting.SendRetryCount)
+				.SetP(SendSetting._Status, sendSetting.Status)
+				.Where(new Where()
+					.And(SendSetting._SettingID, "(" + settingIDList .Join(",") + ")", Operator.In)
+				).Where(where).ToExec();
+			if (value <= 0) return false;
+			if (delCache.IsNull()) return true;
+			Cache2.Remove("TH.Mailer.SendSettingCache_", delCache);
+			return true;
+		}
+		/// <summary>
+		/// ÉèÖÃĞŞ¸Ä¶àÌõ¼ÇÂ¼
+		/// </summary>
+		/// <param name="settingIDList">ÉèÖÃ±àºÅÁĞ±í£¬ÓÃ¡°,¡±ºÅ·Ö¸ô</param>
+		/// <param name="sendSetting">ÉèÖÃÊµÌåÀà</param>
+		/// <returns>ĞŞ¸ÄÊÇ·ñ³É¹¦</returns>
+		public static bool UpdateByIDList(IEnumerable<int> settingIDList,  SendSetting sendSetting, string dbkey) {
+			return UpdateByIDList(settingIDList,  sendSetting, dbkey, null, null);
+		}
+		/// <summary>
+		/// ÉèÖÃ°´Ö÷¼ü²éÑ¯£¬·µ»ØÊı¾İµÄÊµÌåÀà
+		/// </summary>
+		/// <param name="settingID">ÉèÖÃ±àºÅ</param>
+		/// <param name="where">¸½¼ÓÌõ¼ş£¬Í³Ò»µÄÇ°ÃæÒª¼ÓÁ´½Ó·û£¨and¡¢orµÈµÈ£©</param>
+		/// <param name="dbkey">´æÔÚÊı¾İ¿âÁ¬½Ó³ØÖĞµÄÁ¬½Ókey£¬Îª¿ÕÊ±Ëæ»úÈ¡Á¬½Ókey</param>
+		/// <returns>·µ»Øµ¥Ìõ¼ÇÂ¼µÄÊµÌåÀà</returns>
+		public static SendSetting SelectByID(int settingID,  string dbkey = "", Where where = null) {
+			string cacheNameKey = "TH.Mailer.SendSettingCache_SelectByID_{0}".FormatWith(settingID + "_" +  "_" + where);
+			return Cache2.Get<SendSetting>(cacheNameKey, cacheSeconds, () => {
+				SendSetting obj = new SQL().Database(dbkey).From(SendSetting._)
+					.Select(SendSetting._SettingID)
+					.Select(SendSetting._TemplateID)
+					.Select(SendSetting._ConnectType)
+					.Select(SendSetting._SendInterval)
+					.Select(SendSetting._IPInterval)
+					.Select(SendSetting._SmtpInterval)
+					.Select(SendSetting._DeleteInterval)
+					.Select(SendSetting._MaxRetryCount)
+					.Select(SendSetting._SendRetryCount)
+					.Select(SendSetting._Status)
+					.Where(new Where()
+						.AndP(SendSetting._SettingID, settingID, Operator.Equal)
+					).Where(where).ToEntity<SendSetting>();
+				return obj;
+			});
+		}
+		/// <summary>
+		/// ÉèÖÃ°´Ö÷¼ü²éÑ¯£¬·µ»ØÊı¾İµÄÊµÌåÀà
+		/// </summary>
+		/// <param name="settingID">ÉèÖÃ±àºÅ</param>
+		/// <returns>·µ»Øµ¥Ìõ¼ÇÂ¼µÄÊµÌåÀà</returns>
+		public static SendSetting SelectByID(int settingID, string dbkey) {
+			return SelectByID(settingID,  dbkey, null);
+		}
+		/// <summary>
+		/// Çå³ıÉèÖÃ°´Ö÷¼ü²éÑ¯µÄ»º´æ
+		/// </summary>
+		public static void ClearCacheSelectByID(int settingID,  Where where = null) {
+			string cacheName = "TH.Mailer.SendSettingCache_SelectByID_{0}";
+			string cacheNameKey = string.Format(cacheName, settingID + "_" +  "_" + where);
+			Cache2.Remove(cacheNameKey);
+		}
+		/// <summary>
+		/// ÉèÖÃÉ¾³ıËùÓĞ¼ÇÂ¼
+		/// </summary>
+		/// <param name="dbkey">´æÔÚÊı¾İ¿âÁ¬½Ó³ØÖĞµÄÁ¬½Ókey£¬Îª¿ÕÊ±Ëæ»úÈ¡Á¬½Ókey</param>
+		/// <returns>·µ»ØÊµÌå¼ÇÂ¼¼¯</returns>
+		public static bool RemoveAll(string dbkey = "") {
+			return (new SQL().Database(dbkey).Delete(SendSetting._).ToExec()) > 0;
+		}
+		/// <summary>
+		/// Çå³ıÉèÖÃ²éÑ¯ËùÓĞ¼ÇÂ¼µÄ»º´æ
+		/// </summary>
+		public static void ClearCacheSelectListByAll() {
+			//Cache2.Remove("TH.Mailer.SendSettingCache_SelectListByAll___");
+			Cache2.RemoveByPattern("TH.Mailer.SendSettingCache_SelectListByAll_(.+?)");
+		}
+		/// <summary>
+		/// Çå³ıÉèÖÃËùÓĞ»º´æ
+		/// </summary>
+		public static void ClearCacheAll() {
+			Cache2.RemoveByPattern("TH.Mailer.SendSettingCache_(.+?)");
+		}
+	}
 }
 
