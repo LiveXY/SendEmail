@@ -17,51 +17,51 @@ using Pub.Class.Linq;
 using System.Threading;
 
 namespace MailerUI {
-    public partial class frmTestIP : DockContent {
-        private Thread thread;
+	public partial class frmTestIP : DockContent {
+		private Thread thread;
 
-        public frmTestIP() {
-            InitializeComponent();
-            frmMain.Instance.ControlsHint(this);
-        }
+		public frmTestIP() {
+			InitializeComponent();
+			frmMain.Instance.ControlsHint(this);
+		}
 
-        private void mnuExit_Click(object sender, EventArgs e) {
-            Close();
-        }
+		private void mnuExit_Click(object sender, EventArgs e) {
+			Close();
+		}
 
-        private void btnTest_Click(object sender, EventArgs e) {
-            listBox1.Items.Clear();
-            btnTest.Enabled = false;
+		private void btnTest_Click(object sender, EventArgs e) {
+			listBox1.Items.Clear();
+			btnTest.Enabled = false;
 
-            if (!thread.IsNull()) { thread.Abort(); }
-            thread = new Thread(threadRun);
-            thread.IsBackground = true;
-            thread.Start();
-        }
+			if (!thread.IsNull()) { thread.Abort(); }
+			thread = new Thread(threadRun);
+			thread.IsBackground = true;
+			thread.Start();
+		}
 
-        private void threadRun() {
-            IPHelper.TestIPStart(msg => {
-                if (!listBox1.IsHandleCreated) return;
+		private void threadRun() {
+			IPHelper.TestIPStart(msg => {
+				if (!listBox1.IsHandleCreated) return;
 				listBox1.BeginInvoke(new Pub.Class.Action(() => {
-                    if (listBox1.Items.Count > 10000) listBox1.Items.Clear();
-                    listBox1.Items.Add(msg);
-                    listBox1.SelectedIndex = listBox1.Items.Count - 1;
-                }));
-            }, () => {
+					if (listBox1.Items.Count > 10000) listBox1.Items.Clear();
+					listBox1.Items.Add(msg);
+					listBox1.SelectedIndex = listBox1.Items.Count - 1;
+				}));
+			}, () => {
 				this.BeginInvoke(new Pub.Class.Action(() => {
-                    btnTest.Enabled = true;
-                }));
-            });
-        }
+					btnTest.Enabled = true;
+				}));
+			});
+		}
 
-        private void btnEdit_Click(object sender, EventArgs e) {
-            frmMain.Instance.IPSetting();
-        }
+		private void btnEdit_Click(object sender, EventArgs e) {
+			frmMain.Instance.IPSetting();
+		}
 
-        private void frmTestIP_FormClosed(object sender, FormClosedEventArgs e) {
-            IPHelper.TestIPStop();
-            thread.Abort();
-        }
+		private void frmTestIP_FormClosed(object sender, FormClosedEventArgs e) {
+			IPHelper.TestIPStop();
+			thread.Abort();
+		}
 
-    }
+	}
 }

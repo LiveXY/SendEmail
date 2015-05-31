@@ -6,10 +6,10 @@ using System.Configuration.Install;
 
 
 namespace MailerService {
-    [RunInstaller(true)]
-    public partial class MailerServiceInstaller : System.Configuration.Install.Installer {
-        public MailerServiceInstaller() {
-            InitializeComponent();
-        }
-    }
+	[RunInstaller(true)]
+	public partial class MailerServiceInstaller : System.Configuration.Install.Installer {
+		public MailerServiceInstaller() {
+			InitializeComponent();
+		}
+	}
 }

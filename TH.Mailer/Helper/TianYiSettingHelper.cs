@@ -232,21 +232,14 @@ namespace TH.Mailer.Helper {
 		/// <param name="dbkey">存在数据库连接池中的连接key，为空时随机取连接key</param>
 		/// <param name="pageEnum">使用哪种分页方式（not_in、max_top、top_top、row_number、mysql、oracle、sqlite）</param>
 		/// <returns>返回实体记录集</returns>
-		public static IList<TianYiSetting> SelectPageList(int pageIndex, int pageSize, out int totalRecords, string dbkey = "", Where where = null, string order = "", string fieldList = "", PagerSQLEnum pageEnum = PagerSQLEnum.sqlite) {
-			totalRecords = 0;
+		public static IList<TianYiSetting> SelectPageList(int pageIndex, int pageSize, out long totalRecords, string dbkey = "", Where where = null, string order = "", string fieldList = "", PagerSQLEnum pageEnum = PagerSQLEnum.sqlite) {
 			string cacheNameKey = "TH.Mailer.TianYiSettingCache_SelectPageList_{0}_{1}_{2}_{3}_{4}".FormatWith(pageIndex, pageSize, where, order, fieldList);
 			string cacheRecordsKey = "TH.Mailer.TianYiSettingCache_RecordsSelectPageList_{0}_{1}_{2}_{3}_{4}".FormatWith(pageIndex, pageSize, where, order, fieldList);
 			IList<TianYiSetting> list = (IList<TianYiSetting>)Cache2.Get(cacheNameKey);
 			if (!list.IsNull()) { totalRecords = (int)Cache2.Get(cacheRecordsKey); return list; }
 
 			using (PagerSQLHelper s = new PagerSQLHelper(pageEnum)) {
-				PagerSql sql = s.GetSQL(pageIndex, pageSize, TianYiSetting._, TianYiSetting._TianYiID, fieldList.IfNullOrEmpty("[TianYiID],[TianYiExePath],"), where, "", order);
-				IDataReader dr = Data.Pool(dbkey).GetDbDataReader(sql.DataSql + ";" + sql.CountSql);
-				if (dr.IsNull()) return list;
-				list = dr.ToList<TianYiSetting>(false);
-				bool result = dr.NextResult();
-				if (result) { dr.Read(); totalRecords = dr[0].ToString().ToInt(); }
-				dr.Close (); dr.Dispose(); dr = null;
+				list = s.GetSQL(pageIndex, pageSize, TianYiSetting._, TianYiSetting._TianYiID, fieldList.IfNullOrEmpty("[TianYiID],[TianYiExePath],"), where, "", order).ToList<TianYiSetting>(out totalRecords, dbkey);
 			}
 			Cache2.Insert(cacheNameKey, list, cacheSeconds);
 			Cache2.Insert(cacheRecordsKey, totalRecords, cacheSeconds);
@@ -259,7 +252,7 @@ namespace TH.Mailer.Helper {
 		/// <param name="pageSize">每页记录数</param>
 		/// <param name="totalRecords">返回总记录数</param>
 		/// <returns>返回实体记录集</returns>
-		public static IList<TianYiSetting> SelectPageList(int pageIndex, int pageSize, out int totalRecords, string dbkey) {
+		public static IList<TianYiSetting> SelectPageList(int pageIndex, int pageSize, out long totalRecords, string dbkey) {
 			return SelectPageList(pageIndex, pageSize, out totalRecords, dbkey, null, "", "", PagerSQLEnum.sqlite);
 		}
 		/// <summary>

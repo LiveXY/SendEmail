@@ -17,48 +17,48 @@ using Pub.Class.Linq;
 using System.Threading;
 
 namespace MailerUI {
-    public partial class frmTestModel : DockContent {
-        private Thread thread;
+	public partial class frmTestModel : DockContent {
+		private Thread thread;
 
-        public frmTestModel() {
-            InitializeComponent();
-            frmMain.Instance.ControlsHint(this);
-        }
+		public frmTestModel() {
+			InitializeComponent();
+			frmMain.Instance.ControlsHint(this);
+		}
 
-        private void btnStart_Click(object sender, EventArgs e) {
-            btnConnect.Enabled = false;
-            if (!thread.IsNull()) { thread.Abort(); }
-            thread = new Thread(threadRun);
-            thread.IsBackground = true;
-            thread.Start();
-        }
+		private void btnStart_Click(object sender, EventArgs e) {
+			btnConnect.Enabled = false;
+			if (!thread.IsNull()) { thread.Abort(); }
+			thread = new Thread(threadRun);
+			thread.IsBackground = true;
+			thread.Start();
+		}
 
-        private void threadRun() {
-            NetHelper.ChangeIP(1, msg => {
-                if (!listBox1.IsHandleCreated) return;
+		private void threadRun() {
+			NetHelper.ChangeIP(1, msg => {
+				if (!listBox1.IsHandleCreated) return;
 				listBox1.BeginInvoke(new Pub.Class.Action(() => {
-                    if (listBox1.Items.Count > 10000) listBox1.Items.Clear();
-                    listBox1.Items.Add(msg);
-                    listBox1.SelectedIndex = listBox1.Items.Count - 1;
-                }));
-            }, () => {
+					if (listBox1.Items.Count > 10000) listBox1.Items.Clear();
+					listBox1.Items.Add(msg);
+					listBox1.SelectedIndex = listBox1.Items.Count - 1;
+				}));
+			}, () => {
 				this.BeginInvoke(new Pub.Class.Action(() => {
-                    btnConnect.Enabled = true;
-                }));
-            });
-        }
+					btnConnect.Enabled = true;
+				}));
+			});
+		}
 
-        private void mnuExit_Click(object sender, EventArgs e) {
-            Close();
-        }
+		private void mnuExit_Click(object sender, EventArgs e) {
+			Close();
+		}
 
-        private void btnEdit_Click(object sender, EventArgs e) {
-            frmMain.Instance.ModelSetting();
-        }
+		private void btnEdit_Click(object sender, EventArgs e) {
+			frmMain.Instance.ModelSetting();
+		}
 
-        private void frmTestModel_FormClosed(object sender, FormClosedEventArgs e) {
-            if (!thread.IsNull()) thread.Abort();
-        }
+		private void frmTestModel_FormClosed(object sender, FormClosedEventArgs e) {
+			if (!thread.IsNull()) thread.Abort();
+		}
 
-    }
+	}
 }

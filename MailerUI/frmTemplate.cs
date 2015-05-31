@@ -13,160 +13,151 @@ using Pub.Class.Linq;
 using WeifenLuo.WinFormsUI.Docking;
 
 namespace MailerUI {
-    public partial class frmTemplate : DockContent {
+	public partial class frmTemplate : DockContent {
 
-        private long lastID = 0;
-        private int currentIndex = -1;
+		private long lastID = 0;
+		private int currentIndex = -1;
 
-        public frmTemplate() {
-            InitializeComponent();
-            frmMain.Instance.ControlsHint(this);
-        }
+		public frmTemplate() {
+			InitializeComponent();
+			frmMain.Instance.ControlsHint(this);
+		}
 
-        private void frmTemplate_Load(object sender, EventArgs e) {
-            ThreadPool.QueueUserWorkItem(new WaitCallback((o) => {
-                frmMain.Instance.ShowStatusText("正在加载模版数据....");
+		private void frmTemplate_Load(object sender, EventArgs e) {
+			ThreadPool.QueueUserWorkItem(new WaitCallback((o) => {
+				frmMain.Instance.ShowStatusText("正在加载模版数据....");
 				dataGridView.BeginInvoke(new Pub.Class.Action(() => {
-                    dataGridView.DataSource = HtmlTemplateHelper.SelectListByAll().OrderByDescending(p => p.TemplateID).Select(p => new {
-                        编号 = p.TemplateID,
-                        邮件主题 = p.Subject
-                    }).ToDataTable();
-                    getRowData();
-                    frmMain.Instance.ShowStatusText("模版数据加载完成！");
-                }));
-            }), null);
-        }
+					dataGridView.DataSource = HtmlTemplateHelper.SelectListByAll().OrderByDescending(p => p.TemplateID).Select(p => new {
+						编号 = p.TemplateID,
+						邮件主题 = p.Subject
+					}).ToDataTable();
+					getRowData();
+					frmMain.Instance.ShowStatusText("模版数据加载完成！");
+				}));
+			}), null);
+		}
 
-        private void getRowData() {
-            if (dataGridView.Rows.Count > 0) {
-                int count = dataGridView.Rows.Count;
-                currentIndex = currentIndex == -1 ? 0 : (currentIndex == count ? currentIndex - 1 : currentIndex);
-                lastID = dataGridView.Rows[currentIndex].Cells[0].Value.ToBigInt(0);
-                if (lastID < 1) return;
-                HtmlTemplate info = HtmlTemplateHelper.SelectListByAll().Where(p => p.TemplateID == lastID).FirstOrDefault();
-                if (info.IsNull() || info.TemplateID.IsNull()) return;
+		private void getRowData() {
+			if (dataGridView.Rows.Count > 0) {
+				int count = dataGridView.Rows.Count;
+				currentIndex = currentIndex == -1 ? 0 : (currentIndex == count ? currentIndex - 1 : currentIndex);
+				lastID = dataGridView.Rows[currentIndex].Cells[0].Value.ToBigInt(0);
+				if (lastID < 1) return;
+				HtmlTemplate info = HtmlTemplateHelper.SelectListByAll().Where(p => p.TemplateID == lastID).FirstOrDefault();
+				if (info.IsNull() || info.TemplateID.IsNull()) return;
 
-                txtSubject.Text = info.Subject;
-                txtBody.Text = info.Body;
-                txtShowName.Text = info.ShowName;
-                checkBoxIsHTML.Checked = info.IsHTML == true ? true : false;
-                checkBoxStatus.Checked = info.Status == 0 ? true : false;
-                info.CreateTime = System.DateTime.Now.ToDateTime().ToDateTime();
-                mnuEdit.Enabled = true;
-                mnuDelete.Enabled = true;
-            } else {
-                this.txtSubject.Text = "";
-                this.checkBoxIsHTML.Checked = false;
-                this.checkBoxStatus.Checked = true;
-                this.txtBody.Text = "";
-                mnuEdit.Enabled = false;
-                mnuDelete.Enabled = false;
-            }
-        }
+				txtSubject.Text = info.Subject;
+				txtBody.Text = info.Body;
+				txtShowName.Text = info.ShowName;
+				checkBoxIsHTML.Checked = info.IsHTML == true ? true : false;
+				checkBoxStatus.Checked = info.Status == 0 ? true : false;
+				info.CreateTime = System.DateTime.Now.ToDateTime().ToDateTime();
+				mnuEdit.Enabled = true;
+				mnuDelete.Enabled = true;
+			} else {
+				this.txtSubject.Text = "";
+				this.checkBoxIsHTML.Checked = false;
+				this.checkBoxStatus.Checked = true;
+				this.txtBody.Text = "";
+				mnuEdit.Enabled = false;
+				mnuDelete.Enabled = false;
+			}
+		}
 
-        private void dataGridView_CellClick(object sender, DataGridViewCellEventArgs e) {
-            tabControl1.SelectedTab = tabControl1.TabPages[0];
-            currentIndex = e.RowIndex;
-            if (currentIndex < 0) return;
-            lastID = dataGridView.Rows[e.RowIndex].Cells[0].Value.ToBigInt(0);
-            if (lastID < 1) return;
-            HtmlTemplate info = HtmlTemplateHelper.SelectListByAll().Where(p => p.TemplateID == lastID).FirstOrDefault();
-            if (info.IsNull() || info.TemplateID.IsNull()) return;
+		private void dataGridView_CellClick(object sender, DataGridViewCellEventArgs e) {
+			tabControl1.SelectedTab = tabControl1.TabPages[0];
+			currentIndex = e.RowIndex;
+			if (currentIndex < 0) return;
+			lastID = dataGridView.Rows[e.RowIndex].Cells[0].Value.ToBigInt(0);
+			if (lastID < 1) return;
+			HtmlTemplate info = HtmlTemplateHelper.SelectListByAll().Where(p => p.TemplateID == lastID).FirstOrDefault();
+			if (info.IsNull() || info.TemplateID.IsNull()) return;
 
-            this.txtSubject.Text = info.Subject;
-            txtSubject.Text = info.Subject;
-            txtBody.Text = info.Body;
-            txtShowName.Text = info.ShowName;
-            checkBoxIsHTML.Checked = info.IsHTML == true ? true : false;
-            checkBoxStatus.Checked = info.Status == 0 ? true : false;
-        }
+			this.txtSubject.Text = info.Subject;
+			txtSubject.Text = info.Subject;
+			txtBody.Text = info.Body;
+			txtShowName.Text = info.ShowName;
+			checkBoxIsHTML.Checked = info.IsHTML == true ? true : false;
+			checkBoxStatus.Checked = info.Status == 0 ? true : false;
+		}
 
-        private void tabControl1_SelectedIndexChanged(object sender, EventArgs e) {
-            if (tabControl1.SelectedIndex == 1) {
-                this.webBrowser1.DocumentText = this.txtBody.Text;
-            }
-        }
+		private void tabControl1_SelectedIndexChanged(object sender, EventArgs e) {
+			if (tabControl1.SelectedIndex == 1) {
+				this.webBrowser1.DocumentText = this.txtBody.Text;
+			}
+		}
 
-        private void txtBody_DoubleClick(object sender, EventArgs e) {
-            this.txtBody.SelectAll();
-        }
+		private void txtBody_DoubleClick(object sender, EventArgs e) {
+			this.txtBody.SelectAll();
+		}
 
-        private void txtBody_KeyPress(object sender, KeyPressEventArgs e) {
-            if (e.KeyChar == 1) {
-                this.txtBody.SelectAll();
-            }
-        }
+		private void txtBody_KeyPress(object sender, KeyPressEventArgs e) {
+			if (e.KeyChar == 1) {
+				this.txtBody.SelectAll();
+			}
+		}
 
-        private void mnuEdit_Click(object sender, EventArgs e) {
+		private void mnuEdit_Click(object sender, EventArgs e) {
 
-           // SendSetting info = SendSettingHelper(lastID);
+			SendSetting setting = SendSettingHelper.SelectByID(1);
+			if (setting.IsNull() || setting.TemplateID.IsNull()) return;
 
-            //int rows = new SQL().Database("ConnString").Select(IpHistory._).Where().ToExec();
+			if (setting.TemplateID == lastID && !this.checkBoxStatus.Checked) {
+				MessageBox.Show("发送邮件设置使用了此模板，该模板不能不可用", "系统提示");
+				return;
+			}
 
-            SendSetting setting = SendSettingHelper.SelectByID(1);
-            if (setting.IsNull() || setting.TemplateID.IsNull()) return;
+			tabControl1.SelectedTab = tabControl1.TabPages[0];
+			if (currentIndex < 0 || lastID < 1) return;
+			HtmlTemplate info = new HtmlTemplate();
+			info.Subject = this.txtSubject.Text;
+			info.Body = this.txtBody.Text;
+			info.IsHTML = this.checkBoxIsHTML.Checked ? true : false;
+			info.Status = this.checkBoxStatus.Checked ? 0 : 1;
+			info.ShowName = this.txtShowName.Text;
+			info.TemplateID = lastID;
+			HtmlTemplateHelper.Update(info);
+			dataGridView.Rows[currentIndex].Cells[1].Value = info.Subject;
+			HtmlTemplateHelper.ClearCacheAll();
+			MessageBox.Show("保存成功", "系统提示");
+		}
 
+		private void mnuAdd_Click(object sender, EventArgs e) {
+			tabControl1.SelectedTab = tabControl1.TabPages[0];
+			HtmlTemplate info = new HtmlTemplate();
+			info.Status = this.checkBoxStatus.Checked ? 0 : 1;
+			info.Subject = this.txtSubject.Text;
+			info.Body = this.txtBody.Text;
+			info.IsHTML = this.checkBoxIsHTML.Checked ? true : false;
+			info.ShowName = this.txtShowName.Text;
+			info.CreateTime = DateTime.Now.ToDateTime().ToDateTime();
+			long id = HtmlTemplateHelper.Insert(info);
+			HtmlTemplateHelper.ClearCacheAll();
+			frmTemplate_Load(sender, e);
+		}
 
-            if (setting.TemplateID == lastID && !this.checkBoxStatus.Checked) {
+		private void mnuDelete_Click(object sender, EventArgs e) {
+			if (dataGridView.Rows.Count == 0 || lastID < 1) return;
 
-                MessageBox.Show("发送邮件设置使用了此模板，该模板不能不可用", "系统提示");
-                return;
-            }
+			SendSetting setting = SendSettingHelper.SelectByID(1);
+			if (setting.IsNull() || setting.TemplateID.IsNull()) return;
 
-            tabControl1.SelectedTab = tabControl1.TabPages[0];
-            if (currentIndex < 0 || lastID < 1) return;
-            HtmlTemplate info = new HtmlTemplate();
-            info.Subject = this.txtSubject.Text;
-            info.Body = this.txtBody.Text;
-            info.IsHTML = this.checkBoxIsHTML.Checked ? true : false;
-            info.Status = this.checkBoxStatus.Checked ? 0 : 1;
-            info.ShowName = this.txtShowName.Text;
-            info.TemplateID = lastID;
-            HtmlTemplateHelper.Update(info);
-            dataGridView.Rows[currentIndex].Cells[1].Value = info.Subject;
-            HtmlTemplateHelper.ClearCacheAll();
-            MessageBox.Show("保存成功", "系统提示");
-        }
+			if (setting.TemplateID == lastID && !this.checkBoxStatus.Checked) {
+				MessageBox.Show("发送邮件设置使用了此模板，该模板不能删除", "系统提示");
+				return;
+			}
 
-        private void mnuAdd_Click(object sender, EventArgs e) {
-            tabControl1.SelectedTab = tabControl1.TabPages[0];
-            HtmlTemplate info = new HtmlTemplate();
-            info.Status = this.checkBoxStatus.Checked ? 0 : 1;
-            info.Subject = this.txtSubject.Text;
-            info.Body = this.txtBody.Text;
-            info.IsHTML = this.checkBoxIsHTML.Checked ? true : false;
-            info.ShowName = this.txtShowName.Text;
-            info.CreateTime = DateTime.Now.ToDateTime().ToDateTime();
-            long id = HtmlTemplateHelper.Insert(info);
-            HtmlTemplateHelper.ClearCacheAll();
-            frmTemplate_Load(sender, e);
-        }
+			if (MessageBox.Show("是否删除此邮件模板？", " 系统提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == System.Windows.Forms.DialogResult.OK) {
+				HtmlTemplateHelper.DeleteByID(lastID);
+				HtmlTemplateHelper.ClearCacheAll();
+				dataGridView.Rows.RemoveAt(currentIndex);
+				getRowData();
+			}
+			tabControl1.SelectedTab = tabControl1.TabPages[0];
+		}
 
-        private void mnuDelete_Click(object sender, EventArgs e) {
-            if (dataGridView.Rows.Count == 0 || lastID < 1) return;
-
-            SendSetting setting = SendSettingHelper.SelectByID(1);
-            if (setting.IsNull() || setting.TemplateID.IsNull()) return;
-
-
-            if (setting.TemplateID == lastID && !this.checkBoxStatus.Checked) {
-
-                MessageBox.Show("发送邮件设置使用了此模板，该模板不能删除", "系统提示");
-                return;
-            }
-
-            if (MessageBox.Show("是否删除此邮件模板？", " 系统提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == System.Windows.Forms.DialogResult.OK) {
-                
-                HtmlTemplateHelper.DeleteByID(lastID);
-                HtmlTemplateHelper.ClearCacheAll();
-                dataGridView.Rows.RemoveAt(currentIndex);
-                getRowData();
-            }
-            tabControl1.SelectedTab = tabControl1.TabPages[0];
-        }
-
-        private void mnuExit_Click(object sender, EventArgs e) {
-            Close();
-        }
-    }
+		private void mnuExit_Click(object sender, EventArgs e) {
+			Close();
+		}
+	}
 }

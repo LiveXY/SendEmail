@@ -12,11 +12,11 @@ using System.IO;
 using TH.Mailer.Helper;
 
 namespace TH.Mailer {
-    public interface IController {
-        /// <summary>
-        /// 重启接口
-        /// </summary>
-        /// <returns></returns>
-        string Reset();
-    }
+	public interface IController {
+		/// <summary>
+		/// 重启接口
+		/// </summary>
+		/// <returns></returns>
+		string Reset();
+	}
 }
