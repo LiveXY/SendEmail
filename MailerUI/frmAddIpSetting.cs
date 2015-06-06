@@ -55,7 +55,7 @@ namespace MailerUI {
 				IpSettingHelper.Update(info);
 				IpSettingHelper.ClearCacheAll();
 			} else {
-				long id = IpSettingHelper.Insert(info);
+				IpSettingHelper.Insert(info);
 				IpSettingHelper.ClearCacheAll();
 			}
 

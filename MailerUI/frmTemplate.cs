@@ -131,7 +131,7 @@ namespace MailerUI {
 			info.IsHTML = this.checkBoxIsHTML.Checked ? true : false;
 			info.ShowName = this.txtShowName.Text;
 			info.CreateTime = DateTime.Now.ToDateTime().ToDateTime();
-			long id = HtmlTemplateHelper.Insert(info);
+			HtmlTemplateHelper.Insert(info);
 			HtmlTemplateHelper.ClearCacheAll();
 			frmTemplate_Load(sender, e);
 		}
